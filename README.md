@@ -32,4 +32,31 @@ I have tried to keep everything as compatible as possible with other popular tim
 - Horton Pruning of a Tree
 - Persistence Diagrams/Barcodes
 
-Our Trees should be assumed to have the option to be both weighted or unweighted. We plan to include the ability to investigate time-varying trees (hence, time-varying duals) with appropriate interpretation on time series. 
+Our Trees should be assumed to have the option to be both weighted or unweighted. We plan to include the ability to investigate time-varying trees (hence, time-varying duals) with appropriate interpretation on time series.
+
+The graph class is general enough to allow for:
+- Allows for Vertices with or without numerical weights as well as optional labels of arbitrary data type
+- Allows for directed or undirected Edges with or without numerical weights and optional labels of arbitrary data type
+- Allows for easy and efficient recall/computation of other graph representations and important quantities such as
+- Adjacency Matrix, Incidence Matrix, Adjacency List, Laplacian Matrix, Graph Distance Matrix, etc.
+- Graph Traversal Algorithms: DFS and BFS
+- Find Shortest Path, Shortest Path Function, Hamiltonian Path, Topological Sort
+- Find Graph Distances, Find Paths (Edge/Vertex Independent as well), Find Cycles (All, Eulerian, Hamiltonian, Postman, Shortest Tour)
+- Check if two Graphs are Isomorphic
+- Graph Union, Find Maximum Flow, Path Lengths, Mean Path Lengths, etc.
+- Compute Graph Polynomials: Tutte, Chromatic, Flow
+- Check if a Graph is a Subgraph of Another Graph
+- Generate Neighborhood Graphs and Subgraphs from Graphs
+- Get Connected Components of a Graph, k-Core Components, Weakly Connected Components
+- Find Cliques
+- Check if a Graph is a Tree (and if so how k-ary), if it is Acyclic, Bipartite, Planar, Loop Free, Simple, etc.
+- Graph Self-Similarity, Small-World Property, Scale-Invariance
+- Dual of a Graph
+- Graph Metrics: Vertex and Edge Count, Vertex Degree/In and Out Degrees, Vertex Eccentricity
+- Graph Radius, Graph Diameter, Graph Center, Graph Periphery, Vertex and Edge Connectivity
+- Centrality Measures: Closeness, Betweenness, Edge Betweenness, Degree Centrality, Eigenvector Centrality,
+- KatzCentrality, PageRank Centrality, HITS Centrality,  Radiality, Status Centrality
+- Reciprocity and Transitivity Measures: Graph Reciproicty & Global, Local, and Mean Clustering Coefficients
+- Homophily, Assortative Mixing, and Similarity Measures: Assortativity, Vertex Correlation, Mean Neighbor Degree
+- Mean Degree Connectivity, Vertex Dice Similarity, Vertex Jaccard Similarity, Vertex Cosine Similarity
+- Degree Distributions, Degree Sequences, many many other things
