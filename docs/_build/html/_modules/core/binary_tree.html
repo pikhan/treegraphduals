@@ -1,0 +1,547 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core.binary_tree &mdash; treegraphduals 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            treegraphduals
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/core.html">Core Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">treegraphduals</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">core.binary_tree</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for core.binary_tree</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Binary tree data structure with multi-library compatibility.</span>
+
+<span class="sd">Extends Tree with binary-specific constraints and operations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tree</span>
+
+
+<div class="viewcode-block" id="BinaryTree">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinaryTree</span><span class="p">(</span><span class="n">Tree</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Binary tree where each node has at most 2 children.</span>
+<span class="sd">    </span>
+<span class="sd">    Maintains explicit left/right child tracking for binary-specific operations.</span>
+<span class="sd">    Also stores whether the tree is &#39;planted&#39; (root has degree 1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="BinaryTree.__init__">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">planted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+        
+        <span class="c1"># Binary tree specific structures</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planted</span> <span class="o">=</span> <span class="n">planted</span>  <span class="c1"># Whether root has degree 1</span>
+        
+        <span class="c1"># Caches for binary tree metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_horton_order_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.add_edge">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.add_edge">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                 <span class="n">length</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add an edge from parent to child.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent : int</span>
+<span class="sd">            Parent node index</span>
+<span class="sd">        child : int</span>
+<span class="sd">            Child node index</span>
+<span class="sd">        side : str, optional</span>
+<span class="sd">            &#39;left&#39; or &#39;right&#39;. If None, will be determined automatically.</span>
+<span class="sd">        length : float</span>
+<span class="sd">            Edge length</span>
+<span class="sd">        **attrs</span>
+<span class="sd">            Additional edge attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Validate binary constraint</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">parent</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2"> already has 2 children. Binary tree constraint violated.&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Determine side if not specified</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">side</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">side</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2"> already has 2 children&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Update left/right tracking</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2"> already has a left child&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="k">elif</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2"> already has a right child&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;side must be &#39;left&#39; or &#39;right&#39;, got </span><span class="si">{</span><span class="n">side</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Call parent add_edge</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+        
+        <span class="c1"># Store side as edge attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">edge_attrs</span><span class="p">[(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">)][</span><span class="s1">&#39;side&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">side</span>
+        
+        <span class="c1"># Invalidate binary tree caches</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_horton_order_cache</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.get_left_child">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.get_left_child">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_left_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get left child of node. Returns -1 if no left child.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">node</span><span class="p">])</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.get_right_child">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.get_right_child">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_right_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get right child of node. Returns -1 if no right child.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">node</span><span class="p">])</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.is_left_child">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.is_left_child">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_left_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if node is a left child of its parent.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">==</span> <span class="n">node</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.is_right_child">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.is_right_child">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_right_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if node is a right child of its parent.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">==</span> <span class="n">node</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.get_sibling">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.get_sibling">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sibling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get sibling of node. Returns -1 if no sibling or node is root.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_left_child</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.depth_first_search_lr">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.depth_first_search_lr">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">depth_first_search_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Depth-first search with explicit left-right ordering.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns nodes in order: leftmost leaf → root → rightmost leaf</span>
+<span class="sd">        (standard DFS for binary trees).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        
+        <span class="n">order</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+            <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+        
+        <span class="n">dfs</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">order</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.get_leaves_lr">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.get_leaves_lr">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_leaves_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get leaves in left-to-right order.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_search_lr</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.horton_prune">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.horton_prune">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">horton_prune</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BinaryTree&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform one Horton pruning operation.</span>
+<span class="sd">        </span>
+<span class="sd">        Removes all leaves and performs series reduction (removes degree-2 nodes).</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BinaryTree</span>
+<span class="sd">            The pruned tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Identify leaves to remove</span>
+        <span class="n">leaves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_leaves</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">leaves</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">:</span>
+            <span class="c1"># Tree is all leaves, return empty tree</span>
+            <span class="k">return</span> <span class="n">BinaryTree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Build new tree without leaves</span>
+        <span class="n">old_to_new</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">new_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="c1"># First pass: assign new indices to non-leaf nodes</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                <span class="n">old_to_new</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_idx</span>
+                <span class="n">new_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="k">if</span> <span class="n">new_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BinaryTree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="n">new_tree</span> <span class="o">=</span> <span class="n">BinaryTree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="n">new_idx</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">old_to_new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        
+        <span class="c1"># Second pass: rebuild tree structure</span>
+        <span class="k">for</span> <span class="n">old_node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">old_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_to_new</span><span class="p">:</span>
+                <span class="k">continue</span>
+            
+            <span class="n">new_node</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">old_node</span><span class="p">]</span>
+            
+            <span class="c1"># Process children</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">old_node</span><span class="p">]</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">old_node</span><span class="p">]</span>
+            
+            <span class="c1"># Add non-leaf children or perform series reduction</span>
+            <span class="k">if</span> <span class="n">left</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">left</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">leaves</span><span class="p">:</span>
+                <span class="n">new_left</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+                <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_lengths</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">old_node</span><span class="p">,</span> <span class="n">left</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+                
+                <span class="c1"># Series reduction: if left child has only one child, merge edges</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">new_left</span> <span class="ow">in</span> <span class="n">old_to_new</span> <span class="ow">and</span> 
+                       <span class="nb">len</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">new_left</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span>
+                       <span class="ow">not</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">new_left</span><span class="p">)):</span>
+                    <span class="c1"># Find the single child</span>
+                    <span class="n">single_child</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_tree</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">new_left</span><span class="p">]</span> <span class="k">if</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">new_left</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> 
+                                  <span class="k">else</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">new_left</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">single_child</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">length</span> <span class="o">+=</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">edge_lengths</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">new_left</span><span class="p">,</span> <span class="n">single_child</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+                    <span class="n">new_left</span> <span class="o">=</span> <span class="n">single_child</span>
+                
+                <span class="k">if</span> <span class="n">new_left</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">new_tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">new_node</span><span class="p">,</span> <span class="n">new_left</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">right</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">right</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">leaves</span><span class="p">:</span>
+                <span class="n">new_right</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">right</span><span class="p">]</span>
+                <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_lengths</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">old_node</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+                
+                <span class="c1"># Series reduction for right child</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">new_right</span> <span class="ow">in</span> <span class="n">old_to_new</span> <span class="ow">and</span> 
+                       <span class="nb">len</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">new_right</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span>
+                       <span class="ow">not</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">new_right</span><span class="p">)):</span>
+                    <span class="n">single_child</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_tree</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">new_right</span><span class="p">]</span> <span class="k">if</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">new_right</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> 
+                                  <span class="k">else</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">new_right</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">single_child</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">length</span> <span class="o">+=</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">edge_lengths</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">new_right</span><span class="p">,</span> <span class="n">single_child</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+                    <span class="n">new_right</span> <span class="o">=</span> <span class="n">single_child</span>
+                
+                <span class="k">if</span> <span class="n">new_right</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">new_tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">new_node</span><span class="p">,</span> <span class="n">new_right</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">new_tree</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.horton_strahler_order">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.horton_strahler_order">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">horton_strahler_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute Horton-Strahler order of a node or the entire tree.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : int, optional</span>
+<span class="sd">            If provided, return order of this node.</span>
+<span class="sd">            If None, return order of the tree.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Horton-Strahler order</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horton_order_cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">orders</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            
+            <span class="c1"># Compute orders bottom-up</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth_first_search</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="n">orders</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+                    <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+                    
+                    <span class="n">left_order</span> <span class="o">=</span> <span class="n">orders</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="k">if</span> <span class="n">left</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+                    <span class="n">right_order</span> <span class="o">=</span> <span class="n">orders</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="k">if</span> <span class="n">right</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+                    
+                    <span class="k">if</span> <span class="n">left_order</span> <span class="o">==</span> <span class="n">right_order</span> <span class="ow">and</span> <span class="n">left_order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">orders</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_order</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">orders</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">left_order</span><span class="p">,</span> <span class="n">right_order</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">_horton_order_cache</span> <span class="o">=</span> <span class="n">orders</span>
+        
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_horton_order_cache</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_horton_order_cache</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">])</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.validate">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.validate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate binary tree structure.</span>
+<span class="sd">        </span>
+<span class="sd">        Checks Tree constraints plus:</span>
+<span class="sd">        - Each node has at most 2 children</span>
+<span class="sd">        - Left/right child arrays are consistent with children lists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check parent tree validation</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="c1"># Check binary constraint</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">node</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            
+            <span class="c1"># Check consistency of left/right with children list</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="n">children_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+            
+            <span class="n">expected_children</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">left</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">expected_children</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">right</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">expected_children</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">children_set</span> <span class="o">!=</span> <span class="n">expected_children</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.from_parent_array">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.from_parent_array">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_parent_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                         <span class="n">edge_lengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">left_right_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">planted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BinaryTree&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create binary tree from parent array.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent_array : np.ndarray</span>
+<span class="sd">            Parent array where parent_array[i] is parent of node i</span>
+<span class="sd">        edge_lengths : np.ndarray, optional</span>
+<span class="sd">            Edge lengths</span>
+<span class="sd">        left_right_order : List[Tuple[int, str]], optional</span>
+<span class="sd">            List of (node, side) tuples specifying whether each child is &#39;left&#39; or &#39;right&#39;.</span>
+<span class="sd">            If None, will assign left/right based on index order.</span>
+<span class="sd">        root : int, optional</span>
+<span class="sd">            Root node index</span>
+<span class="sd">        planted : bool</span>
+<span class="sd">            Whether the tree is planted (root has degree 1)</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BinaryTree instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent_array</span><span class="p">)</span>
+        
+        <span class="c1"># Find root if not specified</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">root_candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">parent_array</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span> 
+                                      <span class="p">(</span><span class="n">parent_array</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">root_candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No root found in parent array&quot;</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">root_candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="n">tree</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">planted</span><span class="o">=</span><span class="n">planted</span><span class="p">)</span>
+        
+        <span class="c1"># Build mapping of which children are left/right</span>
+        <span class="k">if</span> <span class="n">left_right_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Default: first child is left, second is right (by index)</span>
+            <span class="n">parent_children</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)}</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">child</span> <span class="o">!=</span> <span class="n">root</span> <span class="ow">and</span> <span class="n">parent_array</span><span class="p">[</span><span class="n">child</span><span class="p">]</span> <span class="o">!=</span> <span class="n">child</span><span class="p">:</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parent_array</span><span class="p">[</span><span class="n">child</span><span class="p">])</span>
+                    <span class="n">parent_children</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+            
+            <span class="c1"># Sort children by index for consistent left/right assignment</span>
+            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">parent_children</span><span class="p">:</span>
+                <span class="n">parent_children</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        
+        <span class="c1"># Add edges</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">child</span> <span class="o">!=</span> <span class="n">root</span> <span class="ow">and</span> <span class="n">parent_array</span><span class="p">[</span><span class="n">child</span><span class="p">]</span> <span class="o">!=</span> <span class="n">child</span><span class="p">:</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parent_array</span><span class="p">[</span><span class="n">child</span><span class="p">])</span>
+                <span class="n">length</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">edge_lengths</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">edge_lengths</span><span class="p">[</span><span class="n">child</span><span class="p">])</span>
+                
+                <span class="c1"># Determine side</span>
+                <span class="k">if</span> <span class="n">left_right_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># Use provided left/right info</span>
+                    <span class="n">side</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">s</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">left_right_order</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">child</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">side</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># Guess based on existing children</span>
+                        <span class="n">side</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span> <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">left_child</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;right&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Use index-based ordering</span>
+                    <span class="n">children_of_parent</span> <span class="o">=</span> <span class="n">parent_children</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">children_of_parent</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+                    <span class="n">side</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;right&#39;</span>
+                
+                <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="n">side</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">tree</span></div>
+
+    
+<div class="viewcode-block" id="BinaryTree.to_parent_array_with_sides">
+<a class="viewcode-back" href="../../api/core.html#core.BinaryTree.to_parent_array_with_sides">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_parent_array_with_sides</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export as parent array with left/right information.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        parent_array : np.ndarray</span>
+<span class="sd">        edge_lengths : np.ndarray</span>
+<span class="sd">        left_right_info : List[Tuple[int, str]]</span>
+<span class="sd">            List of (node, side) tuples</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent_arr</span><span class="p">,</span> <span class="n">lengths</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_parent_array</span><span class="p">()</span>
+        
+        <span class="n">left_right_info</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                <span class="n">side</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_left_child</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;right&#39;</span>
+                <span class="n">left_right_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node</span><span class="p">,</span> <span class="n">side</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="n">parent_arr</span><span class="p">,</span> <span class="n">lengths</span><span class="p">,</span> <span class="n">left_right_info</span></div>
+
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">leaves</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_leaves</span><span class="p">())</span>
+        <span class="n">max_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_depth</span><span class="p">())</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinaryTree(n_nodes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="si">}</span><span class="s2">, n_leaves=</span><span class="si">{</span><span class="n">leaves</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;max_depth=</span><span class="si">{</span><span class="n">max_depth</span><span class="si">}</span><span class="s2">, planted=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">planted</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ibraheem Khan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

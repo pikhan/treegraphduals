@@ -1,0 +1,15 @@
+[project]
+name = "treegraphduals"
+version = "0.1.0"
+description = "An extension of my Master's thesis: [The Horizontal Tunnelability Graph is Dual to Level Set Trees](https://scholarworks.unr.edu//handle/11714/10548). A package for working with trees, their duals, graphs, time series, and more."
+requires-python = ">=3.10"
+dependencies = [
+    "igraph>=1.0.0",
+    "myst-parser>=4.0.1",
+    "networkx>=3.4.2",
+    "numpy>=2.2.6",
+    "pytest>=9.0.1",
+    "pytest-cov>=7.0.0",
+    "sphinx>=8.1.3",
+    "sphinx-rtd-theme>=3.0.2",
+]

@@ -1,0 +1,7 @@
+BinaryTree API
+==============
+
+.. autoclass:: core.BinaryTree
+   :members:
+   :inherited-members:
+   :show-inheritance:

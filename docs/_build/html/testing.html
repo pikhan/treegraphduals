@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing &amp; Coverage &mdash; treegraphduals 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Contributing" href="contributing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            treegraphduals
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing &amp; Coverage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#test-results">Test Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage-report">Coverage Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests-yourself">Running Tests Yourself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rebuilding-documentation">Rebuilding Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">treegraphduals</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Testing &amp; Coverage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/testing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="testing-coverage">
+<h1>Testing &amp; Coverage<a class="headerlink" href="#testing-coverage" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is auto-generated from the latest test run.
+Last updated: Nov 17, 2025</p>
+</div>
+<section id="test-results">
+<h2>Test Results<a class="headerlink" href="#test-results" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>============================= test session starts ==============================
+platform linux -- Python 3.10.19, pytest-9.0.1, pluggy-1.6.0 -- /home/pikhan/PycharmProjects/treegraphduals/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/pikhan/PycharmProjects/treegraphduals
+configfile: pytest.ini
+plugins: cov-7.0.0
+collecting ... collected 35 items
+
+tests/test_tree.py::TestTreeConstruction::test_empty_tree FAILED         [  2%]
+tests/test_tree.py::TestTreeConstruction::test_basic_construction PASSED [  5%]
+tests/test_tree.py::TestTreeConstruction::test_from_parent_array PASSED  [  8%]
+tests/test_tree.py::TestTreeConstruction::test_parent_array_round_trip PASSED [ 11%]
+tests/test_tree.py::TestTreeOperations::test_get_parent PASSED           [ 14%]
+tests/test_tree.py::TestTreeOperations::test_get_children PASSED         [ 17%]
+tests/test_tree.py::TestTreeOperations::test_is_leaf PASSED              [ 20%]
+tests/test_tree.py::TestTreeOperations::test_get_leaves PASSED           [ 22%]
+tests/test_tree.py::TestTreeOperations::test_dfs PASSED                  [ 25%]
+tests/test_tree.py::TestTreeOperations::test_bfs PASSED                  [ 28%]
+tests/test_tree.py::TestTreeOperations::test_get_depth PASSED            [ 31%]
+tests/test_tree.py::TestTreeOperations::test_get_subtree_size PASSED     [ 34%]
+tests/test_tree.py::TestTreeOperations::test_get_path_to_root PASSED     [ 37%]
+tests/test_tree.py::TestTreeOperations::test_get_path_between PASSED     [ 40%]
+tests/test_tree.py::TestTreeOperations::test_get_distance_unweighted PASSED [ 42%]
+tests/test_tree.py::TestTreeOperations::test_get_distance_weighted PASSED [ 45%]
+tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_binary PASSED [ 48%]
+tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted FAILED [ 51%]
+tests/test_tree.py::TestTreeConversions::test_from_adjacency_matrix PASSED [ 54%]
+tests/test_tree.py::TestTreeConversions::test_to_networkx SKIPPED (N...) [ 57%]
+tests/test_tree.py::TestTreeConversions::test_from_networkx SKIPPED      [ 60%]
+tests/test_tree.py::TestTreeValidation::test_valid_tree PASSED           [ 62%]
+tests/test_tree.py::TestTreeValidation::test_disconnected_tree_invalid PASSED [ 65%]
+tests/test_tree.py::TestTreeValidation::test_multiple_roots_invalid PASSED [ 68%]
+tests/test_tree.py::TestTreeEdgeCases::test_single_node_tree PASSED      [ 71%]
+tests/test_tree.py::TestTreeEdgeCases::test_node_attributes PASSED       [ 74%]
+tests/test_tree.py::TestTreeEdgeCases::test_edge_attributes PASSED       [ 77%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[1-0] PASSED [ 80%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[2-1] PASSED [ 82%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[3-1] PASSED [ 85%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[7-2] PASSED [ 88%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[10] PASSED [ 91%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[50] PASSED [ 94%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[100] PASSED [ 97%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[500] PASSED [100%]
+
+=================================== FAILURES ===================================
+_____________________ TestTreeConstruction.test_empty_tree _____________________
+/home/pikhan/PycharmProjects/treegraphduals/treegraphduals/tests/test_tree.py:25: in test_empty_tree
+    ???
+E   assert False
+E    +  where False = validate()
+E    +    where validate = Tree(n_nodes=0, n_leaves=0, root=0).validate
+____________ TestTreeConversions.test_to_adjacency_matrix_weighted _____________
+/home/pikhan/PycharmProjects/treegraphduals/treegraphduals/tests/test_tree.py:218: in test_to_adjacency_matrix_weighted
+    ???
+E   assert np.float64(1.0) == 1.5
+=============================== warnings summary ===============================
+treegraphduals/tests/test_tree.py:343
+  /home/pikhan/PycharmProjects/treegraphduals/treegraphduals/tests/test_tree.py:343: PytestUnknownMarkWarning: Unknown pytest.mark.slow - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.10.19-final-0 _______________
+
+Name                  Stmts   Miss  Cover
+-----------------------------------------
+core/__init__.py          4      0   100%
+core/base_graph.py      162     79    51%
+core/binary_tree.py     184    164    11%
+core/tree.py            237     71    70%
+-----------------------------------------
+TOTAL                   587    314    47%
+Coverage HTML written to dir htmlcov
+Coverage JSON written to file coverage.json
+Coverage Markdown information written to file docs/coverage_report.md
+=========================== short test summary info ============================
+FAILED tests/test_tree.py::TestTreeConstruction::test_empty_tree - assert False
+FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted
+============== 2 failed, 31 passed, 2 skipped, 1 warning in 0.33s ==============
+</pre></div>
+</div>
+</section>
+<section id="coverage-report">
+<h2>Coverage Report<a class="headerlink" href="#coverage-report" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head text-right"><p>Stmts</p></th>
+<th class="head text-right"><p>Miss</p></th>
+<th class="head text-right"><p>Cover</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>core/__init__.py</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>core/base_graph.py</p></td>
+<td class="text-right"><p>162</p></td>
+<td class="text-right"><p>79</p></td>
+<td class="text-right"><p>51%</p></td>
+</tr>
+<tr class="row-even"><td><p>core/binary_tree.py</p></td>
+<td class="text-right"><p>184</p></td>
+<td class="text-right"><p>164</p></td>
+<td class="text-right"><p>11%</p></td>
+</tr>
+<tr class="row-odd"><td><p>core/tree.py</p></td>
+<td class="text-right"><p>237</p></td>
+<td class="text-right"><p>71</p></td>
+<td class="text-right"><p>70%</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>TOTAL</strong></p></td>
+<td class="text-right"><p><strong>587</strong></p></td>
+<td class="text-right"><p><strong>314</strong></p></td>
+<td class="text-right"><p><strong>47%</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="detailed-coverage">
+<h2>Detailed Coverage<a class="headerlink" href="#detailed-coverage" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="htmlcov/index.html">View interactive HTML coverage report</a></p>
+</section>
+<section id="running-tests-yourself">
+<h2>Running Tests Yourself<a class="headerlink" href="#running-tests-yourself" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run tests with coverage</span>
+pytest<span class="w"> </span>--cov<span class="o">=</span>core<span class="w"> </span>--cov-report<span class="o">=</span>html
+
+<span class="c1"># View coverage</span>
+python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--directory<span class="w"> </span>htmlcov
+</pre></div>
+</div>
+</section>
+<section id="rebuilding-documentation">
+<h2>Rebuilding Documentation<a class="headerlink" href="#rebuilding-documentation" title="Link to this heading"></a></h2>
+<p>To rebuild docs with fresh test results:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># From project root</span>
+<span class="nb">cd</span><span class="w"> </span>docs
+make<span class="w"> </span>docs-with-tests
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="contributing.html" class="btn btn-neutral float-left" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ibraheem Khan.
+      <span class="lastupdated">Last updated on 2025-11-16 20:51:57.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
