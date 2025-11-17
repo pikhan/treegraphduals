@@ -7,6 +7,30 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
+import json
+from datetime import datetime
+
+# Read coverage data if available
+coverage_data = {}
+coverage_file = os.path.join(os.path.dirname(__file__), '..', 'coverage.json')
+if os.path.exists(coverage_file):
+    with open(coverage_file, 'r') as f:
+        coverage_data = json.load(f)
+
+# Read test results
+test_results = "No test results available"
+test_file = os.path.join(os.path.dirname(__file__), 'test_results.txt')
+if os.path.exists(test_file):
+    with open(test_file, 'r') as f:
+        test_results = f.read()
+
+# Make data available to templates
+html_context = {
+    'coverage_percent': coverage_data.get('totals', {}).get('percent_covered', 0),
+    'test_results': test_results,
+    'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+}
+
 # -- Project information -----------------------------------------------------
 project = 'treegraphduals'
 copyright = '2025, Ibraheem Khan'
@@ -22,6 +46,7 @@ extensions = [
     'sphinx.ext.intersphinx',    # Link to other project docs
     'sphinx.ext.mathjax',        # Math support
     'sphinx.ext.coverage',       # Coverage of docstrings
+    'myst_parser',
 ]
 
 # Napoleon settings for NumPy-style docstrings

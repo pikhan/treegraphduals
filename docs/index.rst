@@ -51,8 +51,6 @@ Contents
    :caption: API Reference
 
    api/core
-   api/tree
-   api/binary_tree
 
 .. toctree::
    :maxdepth: 2
