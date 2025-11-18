@@ -1,21 +1,30 @@
 """
-Base graph classes with multi-library compatibility.
+Generic representation and base graph classes with multi-library compatibility.
 
-Supports NetworkX, igraph, numpy arrays, and scipy sparse matrices.
+Supports NetworkX, igraph, numpy arrays, scipy sparse matrices, and other representations.
+BaseGraph(ABC)
+├── DAG
+│   └── Polytree
+├── Tree
+│   └── BinaryTree
+│       ├── GaltonWatsonTree
+│   └── Forest
+├── GeneralGraph
+│   ├── Multigraph
+│   └── ErdosRenyi
+└── RealTree (separate - different math)
 """
 
 import numpy as np
 from typing import Optional, Union, Dict, List, Tuple, Any
 from abc import ABC, abstractmethod
-from functools import lru_cache
-
 
 class GraphRepresentation:
     """
     Lightweight internal representation of a graph.
     
     Stores graph data in an efficient format and provides conversions
-    to popular graph libraries.
+    to networkx, igraph, and scipy graph libraries and various graph representations.
     """
     
     def __init__(self, n_nodes: int):
@@ -58,7 +67,7 @@ class GraphRepresentation:
         try:
             import networkx as nx
         except ImportError:
-            raise ImportError("NetworkX is required for this conversion. Install with: pip install networkx")
+            raise ImportError("NetworkX is required for this conversion. Install with: pip install networkx or per your package manager's syntax")
         
         G = nx.DiGraph() if directed else nx.Graph()
         G.add_nodes_from(range(self.n_nodes))
@@ -85,8 +94,8 @@ class GraphRepresentation:
         try:
             import igraph as ig
         except ImportError:
-            raise ImportError("igraph is required for this conversion. Install with: pip install igraph")
-        
+            raise ImportError("igraph is required for this conversion. Install with: pip install igraph or per your package manager's syntax")
+
         g = ig.Graph(n=self.n_nodes, directed=directed)
         
         # Add edges
@@ -145,7 +154,7 @@ class GraphRepresentation:
         try:
             from scipy.sparse import csr_matrix
         except ImportError:
-            raise ImportError("scipy is required for sparse matrices. Install with: pip install scipy")
+            raise ImportError("scipy is required for sparse matrices. Install with: pip install scipy or per your package manager's syntax")
         
         adj = self.to_adjacency_matrix(weighted=weighted, weight_attr=weight_attr)
         return csr_matrix(adj)

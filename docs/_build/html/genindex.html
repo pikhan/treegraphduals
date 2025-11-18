@@ -89,12 +89,15 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
@@ -108,7 +111,23 @@
       <ul>
         <li><a href="api/core.html#core.BinaryTree.__init__">(core.BinaryTree method)</a>
 </li>
+        <li><a href="api/core.html#core.DAG.__init__">(core.DAG method)</a>
+</li>
+        <li><a href="api/core.html#core.ErdosRenyi.__init__">(core.ErdosRenyi method)</a>
+</li>
+        <li><a href="api/core.html#core.Forest.__init__">(core.Forest method)</a>
+</li>
+        <li><a href="api/core.html#core.GaltonWatsonTree.__init__">(core.GaltonWatsonTree method)</a>
+</li>
+        <li><a href="api/core.html#core.Graph.__init__">(core.Graph method)</a>
+</li>
         <li><a href="api/core.html#core.GraphRepresentation.__init__">(core.GraphRepresentation method)</a>
+</li>
+        <li><a href="api/core.html#core.Multigraph.__init__">(core.Multigraph method)</a>
+</li>
+        <li><a href="api/core.html#core.Polytree.__init__">(core.Polytree method)</a>
+</li>
+        <li><a href="api/core.html#core.RealTree.__init__">(core.RealTree method)</a>
 </li>
         <li><a href="api/core.html#core.Tree.__init__">(core.Tree method)</a>
 </li>
@@ -124,7 +143,15 @@
       <ul>
         <li><a href="api/core.html#core.BinaryTree.add_edge">(core.BinaryTree method)</a>
 </li>
+        <li><a href="api/core.html#core.DAG.add_edge">(core.DAG method)</a>
+</li>
+        <li><a href="api/core.html#core.Graph.add_edge">(core.Graph method)</a>
+</li>
         <li><a href="api/core.html#core.GraphRepresentation.add_edge">(core.GraphRepresentation method)</a>
+</li>
+        <li><a href="api/core.html#core.Multigraph.add_edge">(core.Multigraph method)</a>
+</li>
+        <li><a href="api/core.html#core.Polytree.add_edge">(core.Polytree method)</a>
 </li>
         <li><a href="api/core.html#core.Tree.add_edge">(core.Tree method)</a>
 </li>
@@ -170,11 +197,21 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#core.Tree.depth_first_search">depth_first_search() (core.Tree method)</a>
+      <li><a href="api/core.html#core.DAG">DAG (class in core)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.Tree.depth_first_search">depth_first_search() (core.Tree method)</a>
+</li>
       <li><a href="api/core.html#core.BinaryTree.depth_first_search_lr">depth_first_search_lr() (core.BinaryTree method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.ErdosRenyi">ErdosRenyi (class in core)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -182,6 +219,8 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.Forest">Forest (class in core)</a>
+</li>
       <li><a href="api/core.html#core.BaseGraph.from_adjacency_matrix">from_adjacency_matrix() (core.BaseGraph class method)</a>
 
       <ul>
@@ -218,7 +257,17 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.GaltonWatsonTree">GaltonWatsonTree (class in core)</a>
+</li>
+      <li><a href="api/core.html#core.ErdosRenyi.generate">generate() (core.ErdosRenyi class method)</a>
+
+      <ul>
+        <li><a href="api/core.html#core.GaltonWatsonTree.generate">(core.GaltonWatsonTree class method)</a>
+</li>
+      </ul></li>
       <li><a href="api/core.html#core.Tree.get_children">get_children() (core.Tree method)</a>
+</li>
+      <li><a href="api/core.html#core.Forest.get_connected_components">get_connected_components() (core.Forest method)</a>
 </li>
       <li><a href="api/core.html#core.Tree.get_depth">get_depth() (core.Tree method)</a>
 </li>
@@ -236,17 +285,25 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/core.html#core.BinaryTree.get_left_child">get_left_child() (core.BinaryTree method)</a>
 </li>
+      <li><a href="api/core.html#core.DAG.get_neighbors">get_neighbors() (core.DAG method)</a>
+</li>
       <li><a href="api/core.html#core.Tree.get_parent">get_parent() (core.Tree method)</a>
 </li>
       <li><a href="api/core.html#core.Tree.get_path_between">get_path_between() (core.Tree method)</a>
 </li>
       <li><a href="api/core.html#core.Tree.get_path_to_root">get_path_to_root() (core.Tree method)</a>
 </li>
+      <li><a href="api/core.html#core.DAG.get_predecessors">get_predecessors() (core.DAG method)</a>
+</li>
       <li><a href="api/core.html#core.BinaryTree.get_right_child">get_right_child() (core.BinaryTree method)</a>
 </li>
       <li><a href="api/core.html#core.BinaryTree.get_sibling">get_sibling() (core.BinaryTree method)</a>
 </li>
       <li><a href="api/core.html#core.Tree.get_subtree_size">get_subtree_size() (core.Tree method)</a>
+</li>
+      <li><a href="api/core.html#core.DAG.get_successors">get_successors() (core.DAG method)</a>
+</li>
+      <li><a href="api/core.html#core.Graph">Graph (class in core)</a>
 </li>
       <li><a href="api/core.html#core.GraphRepresentation">GraphRepresentation (class in core)</a>
 </li>
@@ -292,6 +349,10 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.Multigraph">Multigraph (class in core)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
@@ -302,6 +363,22 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/core.html#core.BaseGraph.n_nodes">n_nodes (core.BaseGraph property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.Polytree">Polytree (class in core)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#core.RealTree">RealTree (class in core)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -335,10 +412,10 @@
         <li><a href="api/core.html#core.GraphRepresentation.to_networkx">(core.GraphRepresentation method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/core.html#core.Tree.to_parent_array">to_parent_array() (core.Tree method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/core.html#core.BinaryTree.to_parent_array_with_sides">to_parent_array_with_sides() (core.BinaryTree method)</a>
 </li>
       <li><a href="api/core.html#core.BaseGraph.to_sparse_matrix">to_sparse_matrix() (core.BaseGraph method)</a>
@@ -347,6 +424,8 @@
         <li><a href="api/core.html#core.GraphRepresentation.to_sparse_matrix">(core.GraphRepresentation method)</a>
 </li>
       </ul></li>
+      <li><a href="api/core.html#core.DAG.topological_sort">topological_sort() (core.DAG method)</a>
+</li>
       <li><a href="api/core.html#core.Tree.total_length">total_length() (core.Tree method)</a>
 </li>
       <li><a href="api/core.html#core.Tree.traverse_edges">traverse_edges() (core.Tree method)</a>
@@ -364,6 +443,16 @@
       <ul>
         <li><a href="api/core.html#core.BinaryTree.validate">(core.BinaryTree method)</a>
 </li>
+        <li><a href="api/core.html#core.DAG.validate">(core.DAG method)</a>
+</li>
+        <li><a href="api/core.html#core.Forest.validate">(core.Forest method)</a>
+</li>
+        <li><a href="api/core.html#core.Graph.validate">(core.Graph method)</a>
+</li>
+        <li><a href="api/core.html#core.Polytree.validate">(core.Polytree method)</a>
+</li>
+        <li><a href="api/core.html#core.RealTree.validate">(core.RealTree method)</a>
+</li>
         <li><a href="api/core.html#core.Tree.validate">(core.Tree method)</a>
 </li>
       </ul></li>
@@ -380,7 +469,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-16 20:51:57.
+      <span class="lastupdated">Last updated on 2025-11-17 16:42:34.
       </span></p>
   </div>
 

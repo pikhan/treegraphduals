@@ -25,6 +25,9 @@ class Tree(BaseGraph):
     """
     
     def __init__(self, n_nodes: int = 0, root: Optional[int] = None):
+        """
+        Initialize a tree
+        """
         super().__init__(n_nodes)
         
         # Tree-specific data structures
@@ -78,34 +81,206 @@ class Tree(BaseGraph):
         self._dfs_order_cache = None
     
     def get_children(self, node: int) -> List[int]:
-        """Get list of children for a node."""
+        """
+        Get list of children for a node.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_children(2)
+        [4, 5]
+        >>> tree.get_children(1)
+        [3]
+        >>> tree.get_children(6)
+        []
+        """
         return self.children[node]
     
     def get_parent(self, node: int) -> int:
-        """Get parent of a node. Returns -1 if node is root."""
+        """
+        Get parent of a node. Returns -1 if node is root.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_parent(0)
+        -1
+        >>> tree.get_parent(6)
+        3
+        >>> tree.get_parent(3)
+        1
+        """
         return int(self.parent[node])
     
     def is_leaf(self, node: int) -> bool:
-        """Check if node is a leaf."""
+        """
+        Check if node is a leaf.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.is_leaf(2)
+        False
+        >>> tree.is_leaf(0)
+        False
+        >>> tree.is_leaf(4)
+        True
+        >>> tree.is_leaf(6)
+        True
+        """
         return len(self.children[node]) == 0
     
     def is_root(self, node: int) -> bool:
-        """Check if node is the root."""
-        return self.parent[node] == -1
+        """
+        Check if node is the root.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.is_root(0)
+        True
+        >>> tree.is_root(1)
+        False
+        >>> tree.is_root(6)
+        False
+        >>> tree.is_root(4)
+        False
+        """
+        return bool(self.parent[node] == -1)
     
     def get_leaves(self) -> List[int]:
-        """Get all leaf nodes."""
+        """
+        Get all leaf nodes.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_leaves()
+        [4, 5, 6]
+        """
         return [i for i in range(self.n_nodes) if self.is_leaf(i)]
     
     def get_internal_nodes(self) -> List[int]:
-        """Get all internal (non-leaf) nodes."""
-        return [i for i in range(self.n_nodes) if not self.is_leaf(i)]
+        """
+        Get all internal (non-leaf) nodes.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_internal_nodes()
+        [1, 2, 3]
+        """
+        return [i for i in range(self.n_nodes) if not self.is_leaf(i) and not self.is_root(i)]
     
     def depth_first_search(self, start: Optional[int] = None) -> List[int]:
         """
         Perform depth-first search traversal.
         
         Returns nodes in DFS order (leftmost to rightmost leaves).
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.depth_first_search()
+        [0, 1, 3, 6, 2, 4, 5]
         """
         if self._dfs_order_cache is not None:
             return self._dfs_order_cache.copy()
@@ -129,7 +304,29 @@ class Tree(BaseGraph):
         return order
     
     def breadth_first_search(self, start: Optional[int] = None) -> List[int]:
-        """Perform breadth-first search traversal."""
+        """
+        Perform breadth-first search traversal.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.breadth_first_search()
+        [0, 1, 2, 3, 4, 5, 6]
+        """
         if start is None:
             start = self.root
         
@@ -152,6 +349,30 @@ class Tree(BaseGraph):
         node : int, optional
             If provided, return depth of this node.
             If None, return array of all node depths.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_depth(0)
+        0
+        >>> tree.get_depth(6)
+        3
+        >>> [int(x) for x in tree.get_depth()]
+        [0, 1, 1, 2, 2, 2, 3]
         """
         if self._depth_cache is None:
             depths = np.zeros(self.n_nodes, dtype=np.int32)
@@ -173,6 +394,28 @@ class Tree(BaseGraph):
         node : int, optional
             If provided, return subtree size for this node.
             If None, return array of all subtree sizes.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_subtree_size(1)
+        3
+        >>> [int(x) for x in tree.get_subtree_size()]
+        [7, 3, 3, 2, 1, 1, 1]
         """
         if self._subtree_sizes_cache is None:
             sizes = np.ones(self.n_nodes, dtype=np.int32)
@@ -187,12 +430,34 @@ class Tree(BaseGraph):
         return self._subtree_sizes_cache.copy()
     
     def get_path_to_root(self, node: int) -> List[int]:
-        """Get path from node to root."""
+        """
+        Get path from node to root.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_path_to_root(4)
+        [4, 2, 0]
+        """
         path = []
         current = node
         while current != -1:
-            path.append(current)
-            current = self.parent[current]
+            path.append(int(current))
+            current = int(self.parent[current])
         return path
     
     def get_path_between(self, node1: int, node2: int) -> List[int]:
@@ -200,6 +465,26 @@ class Tree(BaseGraph):
         Get path between two nodes.
         
         Returns the unique path in the tree from node1 to node2.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_path_between(4, 1)
+        [4, 2, 0, 1]
         """
         path1 = self.get_path_to_root(node1)
         path2 = self.get_path_to_root(node2)
@@ -216,14 +501,14 @@ class Tree(BaseGraph):
         path_to_lca = []
         current = node1
         while current != lca:
-            path_to_lca.append(current)
+            path_to_lca.append(int(current))
             current = self.parent[current]
         path_to_lca.append(lca)
         
         path_from_lca = []
         current = node2
         while current != lca:
-            path_from_lca.append(current)
+            path_from_lca.append(int(current))
             current = self.parent[current]
         
         return path_to_lca + list(reversed(path_from_lca))
@@ -238,6 +523,26 @@ class Tree(BaseGraph):
             Node indices
         weighted : bool
             If True, use edge lengths. If False, count edges.
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree.get_distance(4, 1)
+        3.5
         """
         path = self.get_path_between(node1, node2)
         

@@ -39,9 +39,22 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/core.html">Core Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing &amp; Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -70,16 +83,25 @@
              
   <h1>Source code for core.base_graph</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Base graph classes with multi-library compatibility.</span>
+<span class="sd">Generic representation and base graph classes with multi-library compatibility.</span>
 
-<span class="sd">Supports NetworkX, igraph, numpy arrays, and scipy sparse matrices.</span>
+<span class="sd">Supports NetworkX, igraph, numpy arrays, scipy sparse matrices, and other representations.</span>
+<span class="sd">BaseGraph(ABC)</span>
+<span class="sd">├── DAG</span>
+<span class="sd">│   └── Polytree</span>
+<span class="sd">├── Tree</span>
+<span class="sd">│   └── BinaryTree</span>
+<span class="sd">│       ├── GaltonWatsonTree</span>
+<span class="sd">│   └── Forest</span>
+<span class="sd">├── GeneralGraph</span>
+<span class="sd">│   ├── Multigraph</span>
+<span class="sd">│   └── ErdosRenyi</span>
+<span class="sd">└── RealTree (separate - different math)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
-
 
 <div class="viewcode-block" id="GraphRepresentation">
 <a class="viewcode-back" href="../../api/core.html#core.GraphRepresentation">[docs]</a>
@@ -88,7 +110,7 @@
 <span class="sd">    Lightweight internal representation of a graph.</span>
 <span class="sd">    </span>
 <span class="sd">    Stores graph data in an efficient format and provides conversions</span>
-<span class="sd">    to popular graph libraries.</span>
+<span class="sd">    to networkx, igraph, and scipy graph libraries and various graph representations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
 <div class="viewcode-block" id="GraphRepresentation.__init__">
@@ -142,7 +164,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;NetworkX is required for this conversion. Install with: pip install networkx&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;NetworkX is required for this conversion. Install with: pip install networkx or per your package manager&#39;s syntax&quot;</span><span class="p">)</span>
         
         <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span> <span class="k">if</span> <span class="n">directed</span> <span class="k">else</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">))</span>
@@ -172,8 +194,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">igraph</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ig</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;igraph is required for this conversion. Install with: pip install igraph&quot;</span><span class="p">)</span>
-        
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;igraph is required for this conversion. Install with: pip install igraph or per your package manager&#39;s syntax&quot;</span><span class="p">)</span>
+
         <span class="n">g</span> <span class="o">=</span> <span class="n">ig</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">)</span>
         
         <span class="c1"># Add edges</span>
@@ -238,7 +260,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">csr_matrix</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;scipy is required for sparse matrices. Install with: pip install scipy&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;scipy is required for sparse matrices. Install with: pip install scipy or per your package manager&#39;s syntax&quot;</span><span class="p">)</span>
         
         <span class="n">adj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_adjacency_matrix</span><span class="p">(</span><span class="n">weighted</span><span class="o">=</span><span class="n">weighted</span><span class="p">,</span> <span class="n">weight_attr</span><span class="o">=</span><span class="n">weight_attr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">adj</span><span class="p">)</span></div>
@@ -427,7 +449,9 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ibraheem Khan.</p>
+    <p>&#169; Copyright 2025, Ibraheem Khan.
+      <span class="lastupdated">Last updated on 2025-11-17 16:18:19.
+      </span></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

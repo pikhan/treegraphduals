@@ -81,6 +81,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#core.GraphRepresentation.from_adjacency_matrix"><code class="docutils literal notranslate"><span class="pre">GraphRepresentation.from_adjacency_matrix()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#core.DAG"><code class="docutils literal notranslate"><span class="pre">DAG</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.__init__"><code class="docutils literal notranslate"><span class="pre">DAG.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.add_edge"><code class="docutils literal notranslate"><span class="pre">DAG.add_edge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.get_successors"><code class="docutils literal notranslate"><span class="pre">DAG.get_successors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.get_predecessors"><code class="docutils literal notranslate"><span class="pre">DAG.get_predecessors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.get_neighbors"><code class="docutils literal notranslate"><span class="pre">DAG.get_neighbors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.validate"><code class="docutils literal notranslate"><span class="pre">DAG.validate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.DAG.topological_sort"><code class="docutils literal notranslate"><span class="pre">DAG.topological_sort()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#core.Tree"><code class="docutils literal notranslate"><span class="pre">Tree</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.__init__"><code class="docutils literal notranslate"><span class="pre">Tree.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.add_edge"><code class="docutils literal notranslate"><span class="pre">Tree.add_edge()</span></code></a></li>
@@ -123,6 +133,44 @@
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.validate"><code class="docutils literal notranslate"><span class="pre">BinaryTree.validate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.from_parent_array"><code class="docutils literal notranslate"><span class="pre">BinaryTree.from_parent_array()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.to_parent_array_with_sides"><code class="docutils literal notranslate"><span class="pre">BinaryTree.to_parent_array_with_sides()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.GaltonWatsonTree"><code class="docutils literal notranslate"><span class="pre">GaltonWatsonTree</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.GaltonWatsonTree.__init__"><code class="docutils literal notranslate"><span class="pre">GaltonWatsonTree.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.GaltonWatsonTree.generate"><code class="docutils literal notranslate"><span class="pre">GaltonWatsonTree.generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.Forest"><code class="docutils literal notranslate"><span class="pre">Forest</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.Forest.__init__"><code class="docutils literal notranslate"><span class="pre">Forest.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Forest.get_connected_components"><code class="docutils literal notranslate"><span class="pre">Forest.get_connected_components()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Forest.validate"><code class="docutils literal notranslate"><span class="pre">Forest.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.Polytree"><code class="docutils literal notranslate"><span class="pre">Polytree</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.Polytree.__init__"><code class="docutils literal notranslate"><span class="pre">Polytree.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Polytree.add_edge"><code class="docutils literal notranslate"><span class="pre">Polytree.add_edge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Polytree.validate"><code class="docutils literal notranslate"><span class="pre">Polytree.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.Graph"><code class="docutils literal notranslate"><span class="pre">Graph</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.Graph.__init__"><code class="docutils literal notranslate"><span class="pre">Graph.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Graph.add_edge"><code class="docutils literal notranslate"><span class="pre">Graph.add_edge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Graph.validate"><code class="docutils literal notranslate"><span class="pre">Graph.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.Multigraph"><code class="docutils literal notranslate"><span class="pre">Multigraph</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.Multigraph.__init__"><code class="docutils literal notranslate"><span class="pre">Multigraph.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Multigraph.add_edge"><code class="docutils literal notranslate"><span class="pre">Multigraph.add_edge()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.ErdosRenyi"><code class="docutils literal notranslate"><span class="pre">ErdosRenyi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.ErdosRenyi.__init__"><code class="docutils literal notranslate"><span class="pre">ErdosRenyi.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.ErdosRenyi.generate"><code class="docutils literal notranslate"><span class="pre">ErdosRenyi.generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core.RealTree"><code class="docutils literal notranslate"><span class="pre">RealTree</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core.RealTree.__init__"><code class="docutils literal notranslate"><span class="pre">RealTree.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.RealTree.validate"><code class="docutils literal notranslate"><span class="pre">RealTree.validate()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -255,7 +303,7 @@ with multiple graph libraries.</p>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Lightweight internal representation of a graph.</p>
 <p>Stores graph data in an efficient format and provides conversions
-to popular graph libraries.</p>
+to networkx, igraph, and scipy graph libraries and various graph representations.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.GraphRepresentation.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/base_graph.html#GraphRepresentation.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GraphRepresentation.__init__" title="Link to this definition"></a></dt>
@@ -326,6 +374,56 @@ to popular graph libraries.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="core.DAG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">DAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/dag.html#DAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.BaseGraph" title="core.base_graph.BaseGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseGraph</span></code></a></p>
+<p>Directed Acyclic Graph.</p>
+<p>Uses adjacency list for general DAGs.
+Subclasses (like Tree) can override with more efficient structures.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/dag.html#DAG.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/dag.html#DAG.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.add_edge" title="Link to this definition"></a></dt>
+<dd><p>Add directed edge u -&gt; v.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.get_successors">
+<span class="sig-name descname"><span class="pre">get_successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/dag.html#DAG.get_successors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.get_successors" title="Link to this definition"></a></dt>
+<dd><p>Get nodes this node points to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.get_predecessors">
+<span class="sig-name descname"><span class="pre">get_predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/dag.html#DAG.get_predecessors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.get_predecessors" title="Link to this definition"></a></dt>
+<dd><p>Get nodes pointing to this node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.get_neighbors">
+<span class="sig-name descname"><span class="pre">get_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/dag.html#DAG.get_neighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.get_neighbors" title="Link to this definition"></a></dt>
+<dd><p>For DAGs, neighbors = successors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/dag.html#DAG.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.validate" title="Link to this definition"></a></dt>
+<dd><p>Check for no cycles using DFS.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.DAG.topological_sort">
+<span class="sig-name descname"><span class="pre">topological_sort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/dag.html#DAG.topological_sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.DAG.topological_sort" title="Link to this definition"></a></dt>
+<dd><p>Return nodes in topological order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="core.Tree">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">Tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/tree.html#Tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#core.BaseGraph" title="core.base_graph.BaseGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseGraph</span></code></a></p>
@@ -338,7 +436,8 @@ to popular graph libraries.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/tree.html#Tree.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.__init__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Initialize a tree</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.add_edge">
@@ -366,36 +465,212 @@ to popular graph libraries.</p>
 <dt class="sig sig-object py" id="core.Tree.get_children">
 <span class="sig-name descname"><span class="pre">get_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.get_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.get_children" title="Link to this definition"></a></dt>
 <dd><p>Get list of children for a node.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_children(2)
+[4, 5]
+&gt;&gt;&gt; tree.get_children(1)
+[3]
+&gt;&gt;&gt; tree.get_children(6)
+[]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.get_parent">
 <span class="sig-name descname"><span class="pre">get_parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.get_parent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.get_parent" title="Link to this definition"></a></dt>
 <dd><p>Get parent of a node. Returns -1 if node is root.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_parent(0)
+-1
+&gt;&gt;&gt; tree.get_parent(6)
+3
+&gt;&gt;&gt; tree.get_parent(3)
+1</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.is_leaf">
 <span class="sig-name descname"><span class="pre">is_leaf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.is_leaf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.is_leaf" title="Link to this definition"></a></dt>
 <dd><p>Check if node is a leaf.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.is_leaf(2)
+False
+&gt;&gt;&gt; tree.is_leaf(0)
+False
+&gt;&gt;&gt; tree.is_leaf(4)
+True
+&gt;&gt;&gt; tree.is_leaf(6)
+True</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.is_root">
 <span class="sig-name descname"><span class="pre">is_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.is_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.is_root" title="Link to this definition"></a></dt>
 <dd><p>Check if node is the root.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.is_root(0)
+True
+&gt;&gt;&gt; tree.is_root(1)
+False
+&gt;&gt;&gt; tree.is_root(6)
+False
+&gt;&gt;&gt; tree.is_root(4)
+False</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.get_leaves">
 <span class="sig-name descname"><span class="pre">get_leaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.get_leaves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.get_leaves" title="Link to this definition"></a></dt>
 <dd><p>Get all leaf nodes.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_leaves()
+[4, 5, 6]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.get_internal_nodes">
 <span class="sig-name descname"><span class="pre">get_internal_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.get_internal_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.get_internal_nodes" title="Link to this definition"></a></dt>
 <dd><p>Get all internal (non-leaf) nodes.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_internal_nodes()
+[1, 2, 3]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -403,12 +678,64 @@ to popular graph libraries.</p>
 <span class="sig-name descname"><span class="pre">depth_first_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.depth_first_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.depth_first_search" title="Link to this definition"></a></dt>
 <dd><p>Perform depth-first search traversal.</p>
 <p>Returns nodes in DFS order (leftmost to rightmost leaves).</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.depth_first_search()
+[0, 1, 3, 6, 2, 4, 5]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.breadth_first_search">
 <span class="sig-name descname"><span class="pre">breadth_first_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.breadth_first_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.breadth_first_search" title="Link to this definition"></a></dt>
 <dd><p>Perform breadth-first search traversal.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.breadth_first_search()
+[0, 1, 2, 3, 4, 5, 6]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -421,6 +748,36 @@ to popular graph libraries.</p>
 If None, return array of all node depths.</p>
 </dd>
 </dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_depth(0)
+0
+&gt;&gt;&gt; tree.get_depth(6)
+3
+&gt;&gt;&gt; [int(x) for x in tree.get_depth()]
+[0, 1, 1, 2, 2, 2, 3]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -433,12 +790,66 @@ If None, return array of all node depths.</p>
 If None, return array of all subtree sizes.</p>
 </dd>
 </dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_subtree_size(1)
+3
+&gt;&gt;&gt; [int(x) for x in tree.get_subtree_size()]
+[7, 3, 3, 2, 1, 1, 1]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.get_path_to_root">
 <span class="sig-name descname"><span class="pre">get_path_to_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.get_path_to_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.get_path_to_root" title="Link to this definition"></a></dt>
 <dd><p>Get path from node to root.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_path_to_root(4)
+[4, 2, 0]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -446,6 +857,32 @@ If None, return array of all subtree sizes.</p>
 <span class="sig-name descname"><span class="pre">get_path_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.get_path_between"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.get_path_between" title="Link to this definition"></a></dt>
 <dd><p>Get path between two nodes.</p>
 <p>Returns the unique path in the tree from node1 to node2.</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_path_between(4, 1)
+[4, 2, 0, 1]</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -461,6 +898,32 @@ If None, return array of all subtree sizes.</p>
 </ul>
 </dd>
 </dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; tree.get_distance(4, 1)
+3.5</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -561,7 +1024,8 @@ Also stores whether the tree is ‘planted’ (root has degree 1).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.BinaryTree.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/binary_tree.html#BinaryTree.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BinaryTree.__init__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Initialize a tree</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.BinaryTree.add_edge">
@@ -705,6 +1169,177 @@ If None, will assign left/right based on index order.</p></li>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="core.GaltonWatsonTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">GaltonWatsonTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offspring_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/galton_watson.html#GaltonWatsonTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GaltonWatsonTree" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.BinaryTree" title="core.binary_tree.BinaryTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryTree</span></code></a></p>
+<p>Galton-Watson tree from branching process.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.GaltonWatsonTree.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offspring_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/galton_watson.html#GaltonWatsonTree.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GaltonWatsonTree.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a tree</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.GaltonWatsonTree.generate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_generations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">offspring_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/galton_watson.html#GaltonWatsonTree.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GaltonWatsonTree.generate" title="Link to this definition"></a></dt>
+<dd><p>Generate random Galton-Watson tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_generations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Maximum depth</p></li>
+<li><p><strong>offspring_dist</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – {k: probability of k offspring}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.Forest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">Forest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trees</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/forest.html#Forest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Forest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.Tree" title="core.tree.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a></p>
+<p>Forest: collection of disconnected trees.</p>
+<p>Implemented as a Tree with virtual root connecting all tree roots.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Forest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trees</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/forest.html#Forest.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Forest.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a tree</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Forest.get_connected_components">
+<span class="sig-name descname"><span class="pre">get_connected_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/forest.html#Forest.get_connected_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Forest.get_connected_components" title="Link to this definition"></a></dt>
+<dd><p>Get individual trees in the forest.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Forest.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/forest.html#Forest.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Forest.validate" title="Link to this definition"></a></dt>
+<dd><p>Forest is valid if all component trees are valid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.Polytree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">Polytree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/polytree.html#Polytree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Polytree" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.Tree" title="core.tree.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a></p>
+<p>Polytree: DAG whose undirected version is a tree.</p>
+<p>Nodes can have multiple parents (unlike regular trees).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Polytree.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/polytree.html#Polytree.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Polytree.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a tree</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Polytree.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/polytree.html#Polytree.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Polytree.add_edge" title="Link to this definition"></a></dt>
+<dd><p>Add directed edge u -&gt; v.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Polytree.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/polytree.html#Polytree.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Polytree.validate" title="Link to this definition"></a></dt>
+<dd><p>Validate polytree structure.</p>
+<p>Must be:
+- A DAG
+- Undirected version forms a tree (no cycles when ignoring direction)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.Graph">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/graph.html#Graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Graph" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.BaseGraph" title="core.base_graph.BaseGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseGraph</span></code></a></p>
+<p>General graph with no constraints.</p>
+<p>Allows cycles, multiple components, etc.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Graph.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/graph.html#Graph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Graph.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Graph.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/graph.html#Graph.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Graph.add_edge" title="Link to this definition"></a></dt>
+<dd><p>Add edge.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Graph.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/graph.html#Graph.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Graph.validate" title="Link to this definition"></a></dt>
+<dd><p>General graphs are always valid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.Multigraph">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">Multigraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/multigraph.html#Multigraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Multigraph" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.Graph" title="core.graph.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<p>Multigraph: allows multiple edges between same vertices.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Multigraph.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/multigraph.html#Multigraph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Multigraph.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Multigraph.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/multigraph.html#Multigraph.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Multigraph.add_edge" title="Link to this definition"></a></dt>
+<dd><p>Add edge (parallel edges allowed).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.ErdosRenyi">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">ErdosRenyi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/erdos_renyi.html#ErdosRenyi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.ErdosRenyi" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.Graph" title="core.graph.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<p>Erdős–Rényi random graph G(n,p).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.ErdosRenyi.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/erdos_renyi.html#ErdosRenyi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.ErdosRenyi.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.ErdosRenyi.generate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/erdos_renyi.html#ErdosRenyi.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.ErdosRenyi.generate" title="Link to this definition"></a></dt>
+<dd><p>Generate Erdős–Rényi random graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_nodes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of nodes</p></li>
+<li><p><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Probability of edge between any two nodes</p></li>
+<li><p><strong>directed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Whether graph is directed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.RealTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.</span></span><span class="sig-name descname"><span class="pre">RealTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/real_tree.html#RealTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.RealTree" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.BaseGraph" title="core.base_graph.BaseGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseGraph</span></code></a></p>
+<p>Real tree (R-tree): continuous metric space satisfying 0-hyperbolicity.</p>
+<p>This is a fundamentally different mathematical object from combinatorial trees.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.RealTree.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/real_tree.html#RealTree.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.RealTree.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.RealTree.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/real_tree.html#RealTree.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.RealTree.validate" title="Link to this definition"></a></dt>
+<dd><p>Check 0-hyperbolicity condition.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -719,7 +1354,7 @@ If None, will assign left/right based on index order.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-16 20:51:57.
+      <span class="lastupdated">Last updated on 2025-11-17 16:42:34.
       </span></p>
   </div>
 

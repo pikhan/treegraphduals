@@ -96,7 +96,7 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This page is auto-generated from the latest test run.
-Last updated: Nov 17, 2025</p>
+Last updated: Nov 18, 2025</p>
 </div>
 <section id="test-results">
 <h2>Test Results<a class="headerlink" href="#test-results" title="Link to this heading"></a></h2>
@@ -106,41 +106,54 @@ cachedir: .pytest_cache
 rootdir: /home/pikhan/PycharmProjects/treegraphduals
 configfile: pytest.ini
 plugins: cov-7.0.0
-collecting ... collected 35 items
+collecting ... collected 48 items
 
-tests/test_tree.py::TestTreeConstruction::test_empty_tree FAILED         [  2%]
-tests/test_tree.py::TestTreeConstruction::test_basic_construction PASSED [  5%]
-tests/test_tree.py::TestTreeConstruction::test_from_parent_array PASSED  [  8%]
-tests/test_tree.py::TestTreeConstruction::test_parent_array_round_trip PASSED [ 11%]
-tests/test_tree.py::TestTreeOperations::test_get_parent PASSED           [ 14%]
-tests/test_tree.py::TestTreeOperations::test_get_children PASSED         [ 17%]
-tests/test_tree.py::TestTreeOperations::test_is_leaf PASSED              [ 20%]
-tests/test_tree.py::TestTreeOperations::test_get_leaves PASSED           [ 22%]
-tests/test_tree.py::TestTreeOperations::test_dfs PASSED                  [ 25%]
-tests/test_tree.py::TestTreeOperations::test_bfs PASSED                  [ 28%]
-tests/test_tree.py::TestTreeOperations::test_get_depth PASSED            [ 31%]
-tests/test_tree.py::TestTreeOperations::test_get_subtree_size PASSED     [ 34%]
-tests/test_tree.py::TestTreeOperations::test_get_path_to_root PASSED     [ 37%]
-tests/test_tree.py::TestTreeOperations::test_get_path_between PASSED     [ 40%]
-tests/test_tree.py::TestTreeOperations::test_get_distance_unweighted PASSED [ 42%]
-tests/test_tree.py::TestTreeOperations::test_get_distance_weighted PASSED [ 45%]
-tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_binary PASSED [ 48%]
-tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted FAILED [ 51%]
-tests/test_tree.py::TestTreeConversions::test_from_adjacency_matrix PASSED [ 54%]
-tests/test_tree.py::TestTreeConversions::test_to_networkx SKIPPED (N...) [ 57%]
-tests/test_tree.py::TestTreeConversions::test_from_networkx SKIPPED      [ 60%]
-tests/test_tree.py::TestTreeValidation::test_valid_tree PASSED           [ 62%]
-tests/test_tree.py::TestTreeValidation::test_disconnected_tree_invalid PASSED [ 65%]
-tests/test_tree.py::TestTreeValidation::test_multiple_roots_invalid PASSED [ 68%]
-tests/test_tree.py::TestTreeEdgeCases::test_single_node_tree PASSED      [ 71%]
-tests/test_tree.py::TestTreeEdgeCases::test_node_attributes PASSED       [ 74%]
-tests/test_tree.py::TestTreeEdgeCases::test_edge_attributes PASSED       [ 77%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[1-0] PASSED [ 80%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[2-1] PASSED [ 82%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[3-1] PASSED [ 85%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[7-2] PASSED [ 88%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[10] PASSED [ 91%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[50] PASSED [ 94%]
+core/tree.py::core.tree.Tree.breadth_first_search PASSED                 [  2%]
+core/tree.py::core.tree.Tree.depth_first_search PASSED                   [  4%]
+core/tree.py::core.tree.Tree.get_children PASSED                         [  6%]
+core/tree.py::core.tree.Tree.get_depth PASSED                            [  8%]
+core/tree.py::core.tree.Tree.get_distance PASSED                         [ 10%]
+core/tree.py::core.tree.Tree.get_internal_nodes PASSED                   [ 12%]
+core/tree.py::core.tree.Tree.get_leaves PASSED                           [ 14%]
+core/tree.py::core.tree.Tree.get_parent PASSED                           [ 16%]
+core/tree.py::core.tree.Tree.get_path_between PASSED                     [ 18%]
+core/tree.py::core.tree.Tree.get_path_to_root PASSED                     [ 20%]
+core/tree.py::core.tree.Tree.get_subtree_size PASSED                     [ 22%]
+core/tree.py::core.tree.Tree.is_leaf PASSED                              [ 25%]
+core/tree.py::core.tree.Tree.is_root PASSED                              [ 27%]
+tests/test_tree.py::TestTreeConstruction::test_empty_tree FAILED         [ 29%]
+tests/test_tree.py::TestTreeConstruction::test_basic_construction PASSED [ 31%]
+tests/test_tree.py::TestTreeConstruction::test_from_parent_array PASSED  [ 33%]
+tests/test_tree.py::TestTreeConstruction::test_parent_array_round_trip PASSED [ 35%]
+tests/test_tree.py::TestTreeOperations::test_get_parent PASSED           [ 37%]
+tests/test_tree.py::TestTreeOperations::test_get_children PASSED         [ 39%]
+tests/test_tree.py::TestTreeOperations::test_is_leaf PASSED              [ 41%]
+tests/test_tree.py::TestTreeOperations::test_get_leaves PASSED           [ 43%]
+tests/test_tree.py::TestTreeOperations::test_dfs PASSED                  [ 45%]
+tests/test_tree.py::TestTreeOperations::test_bfs PASSED                  [ 47%]
+tests/test_tree.py::TestTreeOperations::test_get_depth PASSED            [ 50%]
+tests/test_tree.py::TestTreeOperations::test_get_subtree_size PASSED     [ 52%]
+tests/test_tree.py::TestTreeOperations::test_get_path_to_root PASSED     [ 54%]
+tests/test_tree.py::TestTreeOperations::test_get_path_between PASSED     [ 56%]
+tests/test_tree.py::TestTreeOperations::test_get_distance_unweighted PASSED [ 58%]
+tests/test_tree.py::TestTreeOperations::test_get_distance_weighted PASSED [ 60%]
+tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_binary PASSED [ 62%]
+tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted FAILED [ 64%]
+tests/test_tree.py::TestTreeConversions::test_from_adjacency_matrix PASSED [ 66%]
+tests/test_tree.py::TestTreeConversions::test_to_networkx SKIPPED (N...) [ 68%]
+tests/test_tree.py::TestTreeConversions::test_from_networkx SKIPPED      [ 70%]
+tests/test_tree.py::TestTreeValidation::test_valid_tree PASSED           [ 72%]
+tests/test_tree.py::TestTreeValidation::test_disconnected_tree_invalid PASSED [ 75%]
+tests/test_tree.py::TestTreeValidation::test_multiple_roots_invalid PASSED [ 77%]
+tests/test_tree.py::TestTreeEdgeCases::test_single_node_tree PASSED      [ 79%]
+tests/test_tree.py::TestTreeEdgeCases::test_node_attributes PASSED       [ 81%]
+tests/test_tree.py::TestTreeEdgeCases::test_edge_attributes PASSED       [ 83%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[1-0] PASSED [ 85%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[2-1] PASSED [ 87%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[3-1] PASSED [ 89%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[7-2] PASSED [ 91%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[10] PASSED [ 93%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[50] PASSED [ 95%]
 tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[100] PASSED [ 97%]
 tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[500] PASSED [100%]
 
@@ -163,21 +176,29 @@ treegraphduals/tests/test_tree.py:343
 ================================ tests coverage ================================
 _______________ coverage: platform linux, python 3.10.19-final-0 _______________
 
-Name                  Stmts   Miss  Cover
------------------------------------------
-core/__init__.py          4      0   100%
-core/base_graph.py      162     79    51%
-core/binary_tree.py     184    164    11%
-core/tree.py            237     71    70%
------------------------------------------
-TOTAL                   587    314    47%
+Name                    Stmts   Miss  Cover
+-------------------------------------------
+core/__init__.py           12      0   100%
+core/base_graph.py        161     79    51%
+core/binary_tree.py       184    164    11%
+core/dag.py                54     42    22%
+core/erdos_renyi.py        14      8    43%
+core/forest.py             24     18    25%
+core/galton_watson.py      27     21    22%
+core/graph.py              14      9    36%
+core/multigraph.py         12      8    33%
+core/polytree.py           30     24    20%
+core/real_tree.py          19     14    26%
+core/tree.py              237     69    71%
+-------------------------------------------
+TOTAL                     788    456    42%
 Coverage HTML written to dir htmlcov
 Coverage JSON written to file coverage.json
 Coverage Markdown information written to file docs/coverage_report.md
 =========================== short test summary info ============================
 FAILED tests/test_tree.py::TestTreeConstruction::test_empty_tree - assert False
 FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted
-============== 2 failed, 31 passed, 2 skipped, 1 warning in 0.33s ==============
+============== 2 failed, 44 passed, 2 skipped, 1 warning in 0.44s ==============
 </pre></div>
 </div>
 </section>
@@ -193,12 +214,12 @@ FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighte
 </thead>
 <tbody>
 <tr class="row-even"><td><p>core/__init__.py</p></td>
-<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>12</p></td>
 <td class="text-right"><p>0</p></td>
 <td class="text-right"><p>100%</p></td>
 </tr>
 <tr class="row-odd"><td><p>core/base_graph.py</p></td>
-<td class="text-right"><p>162</p></td>
+<td class="text-right"><p>161</p></td>
 <td class="text-right"><p>79</p></td>
 <td class="text-right"><p>51%</p></td>
 </tr>
@@ -207,15 +228,55 @@ FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighte
 <td class="text-right"><p>164</p></td>
 <td class="text-right"><p>11%</p></td>
 </tr>
+<tr class="row-odd"><td><p>core/dag.py</p></td>
+<td class="text-right"><p>54</p></td>
+<td class="text-right"><p>42</p></td>
+<td class="text-right"><p>22%</p></td>
+</tr>
+<tr class="row-even"><td><p>core/erdos_renyi.py</p></td>
+<td class="text-right"><p>14</p></td>
+<td class="text-right"><p>8</p></td>
+<td class="text-right"><p>43%</p></td>
+</tr>
+<tr class="row-odd"><td><p>core/forest.py</p></td>
+<td class="text-right"><p>24</p></td>
+<td class="text-right"><p>18</p></td>
+<td class="text-right"><p>25%</p></td>
+</tr>
+<tr class="row-even"><td><p>core/galton_watson.py</p></td>
+<td class="text-right"><p>27</p></td>
+<td class="text-right"><p>21</p></td>
+<td class="text-right"><p>22%</p></td>
+</tr>
+<tr class="row-odd"><td><p>core/graph.py</p></td>
+<td class="text-right"><p>14</p></td>
+<td class="text-right"><p>9</p></td>
+<td class="text-right"><p>36%</p></td>
+</tr>
+<tr class="row-even"><td><p>core/multigraph.py</p></td>
+<td class="text-right"><p>12</p></td>
+<td class="text-right"><p>8</p></td>
+<td class="text-right"><p>33%</p></td>
+</tr>
+<tr class="row-odd"><td><p>core/polytree.py</p></td>
+<td class="text-right"><p>30</p></td>
+<td class="text-right"><p>24</p></td>
+<td class="text-right"><p>20%</p></td>
+</tr>
+<tr class="row-even"><td><p>core/real_tree.py</p></td>
+<td class="text-right"><p>19</p></td>
+<td class="text-right"><p>14</p></td>
+<td class="text-right"><p>26%</p></td>
+</tr>
 <tr class="row-odd"><td><p>core/tree.py</p></td>
 <td class="text-right"><p>237</p></td>
-<td class="text-right"><p>71</p></td>
-<td class="text-right"><p>70%</p></td>
+<td class="text-right"><p>69</p></td>
+<td class="text-right"><p>71%</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>TOTAL</strong></p></td>
-<td class="text-right"><p><strong>587</strong></p></td>
-<td class="text-right"><p><strong>314</strong></p></td>
-<td class="text-right"><p><strong>47%</strong></p></td>
+<td class="text-right"><p><strong>788</strong></p></td>
+<td class="text-right"><p><strong>456</strong></p></td>
+<td class="text-right"><p><strong>42%</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -257,7 +318,7 @@ make<span class="w"> </span>docs-with-tests
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-16 20:51:57.
+      <span class="lastupdated">Last updated on 2025-11-17 16:42:34.
       </span></p>
   </div>
 
