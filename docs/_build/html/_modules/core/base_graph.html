@@ -225,7 +225,7 @@
 <div class="viewcode-block" id="GraphRepresentation.to_adjacency_matrix">
 <a class="viewcode-back" href="../../api/core.html#core.GraphRepresentation.to_adjacency_matrix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_adjacency_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
-                           <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                           <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;length&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert to adjacency matrix (numpy array).</span>
 <span class="sd">        </span>
@@ -255,7 +255,7 @@
     
 <div class="viewcode-block" id="GraphRepresentation.to_sparse_matrix">
 <a class="viewcode-back" href="../../api/core.html#core.GraphRepresentation.to_sparse_matrix">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;length&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to scipy sparse matrix (CSR format).&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">csr_matrix</span>
@@ -387,14 +387,14 @@
 <div class="viewcode-block" id="BaseGraph.to_adjacency_matrix">
 <a class="viewcode-back" href="../../api/core.html#core.BaseGraph.to_adjacency_matrix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_adjacency_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
-                           <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                           <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;length&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Export to numpy adjacency matrix.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">to_adjacency_matrix</span><span class="p">(</span><span class="n">weighted</span><span class="o">=</span><span class="n">weighted</span><span class="p">,</span> <span class="n">weight_attr</span><span class="o">=</span><span class="n">weight_attr</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="BaseGraph.to_sparse_matrix">
 <a class="viewcode-back" href="../../api/core.html#core.BaseGraph.to_sparse_matrix">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">weight_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;length&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Export to scipy sparse matrix.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">to_sparse_matrix</span><span class="p">(</span><span class="n">weighted</span><span class="o">=</span><span class="n">weighted</span><span class="p">,</span> <span class="n">weight_attr</span><span class="o">=</span><span class="n">weight_attr</span><span class="p">)</span></div>
 
@@ -450,7 +450,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-17 16:18:19.
+      <span class="lastupdated">Last updated on 2025-11-27 14:44:51.
       </span></p>
   </div>
 

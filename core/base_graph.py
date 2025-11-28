@@ -122,7 +122,7 @@ class GraphRepresentation:
         return g
     
     def to_adjacency_matrix(self, weighted: bool = False, 
-                           weight_attr: str = 'weight') -> np.ndarray:
+                           weight_attr: str = 'length') -> np.ndarray:
         """
         Convert to adjacency matrix (numpy array).
         
@@ -149,7 +149,7 @@ class GraphRepresentation:
         
         return adj
     
-    def to_sparse_matrix(self, weighted: bool = False, weight_attr: str = 'weight'):
+    def to_sparse_matrix(self, weighted: bool = False, weight_attr: str = 'length'):
         """Convert to scipy sparse matrix (CSR format)."""
         try:
             from scipy.sparse import csr_matrix
@@ -251,11 +251,11 @@ class BaseGraph(ABC):
         return self._graph.to_igraph(directed=directed)
     
     def to_adjacency_matrix(self, weighted: bool = False, 
-                           weight_attr: str = 'weight') -> np.ndarray:
+                           weight_attr: str = 'length') -> np.ndarray:
         """Export to numpy adjacency matrix."""
         return self._graph.to_adjacency_matrix(weighted=weighted, weight_attr=weight_attr)
     
-    def to_sparse_matrix(self, weighted: bool = False, weight_attr: str = 'weight'):
+    def to_sparse_matrix(self, weighted: bool = False, weight_attr: str = 'length'):
         """Export to scipy sparse matrix."""
         return self._graph.to_sparse_matrix(weighted=weighted, weight_attr=weight_attr)
     

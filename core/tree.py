@@ -65,7 +65,7 @@ class Tree(BaseGraph):
         self.edge_lengths[(parent, child)] = length
         
         # Update underlying graph representation
-        super().add_edge(parent, child, length=length, **attrs)
+        super().add_edge(parent, child, **{'length': length, **attrs})
         
         # Invalidate caches
         self._invalidate_tree_caches()
@@ -571,6 +571,28 @@ class Tree(BaseGraph):
         Returns
         -------
         List of (parent, child, direction) tuples where direction is 'down' or 'up'
+
+        Examples
+        --------
+        Build tree structure:
+              0
+             / \
+            1   2
+           /   / \
+          3   4   5
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(2, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> [(int(start), int(stop), direction) for (start, stop, direction) in tree.traverse_edges()]
+        [(0, 1, 'down'), (1, 3, 'down'), (3, 6, 'down'), (0, 2, 'down'), (2, 4, 'down'), (2, 5, 'down')]
+        >>> [(int(start), int(stop), direction) for (start, stop, direction) in tree.traverse_edges(mode='contour')]
+        [(0, 1, 'down'), (1, 3, 'down'), (3, 6, 'down'), (6, 3, 'up'), (3, 1, 'up'), (1, 0, 'up'), (0, 2, 'down'), (2, 4, 'down'), (4, 2, 'up'), (2, 5, 'down'), (5, 2, 'up'), (2, 0, 'up')]
         """
         if mode == 'depth_first':
             edges = []
@@ -580,7 +602,7 @@ class Tree(BaseGraph):
             return edges
         
         elif mode == 'contour':
-            # Tree contour: traverse each edge twice (down and up)
+            # Tree contour: traverse each edge twice (down and up), the tree traversal function in Zoe Haskell's thesis
             edges = []
             
             def contour_dfs(node):
@@ -594,6 +616,279 @@ class Tree(BaseGraph):
         
         else:
             raise ValueError(f"Unknown mode: {mode}")
+
+    def horton_strahler_order(self) -> Dict[int, int]:
+        """
+        Compute Horton-Strahler order for all nodes.
+
+        The Horton-Strahler order is defined recursively:
+        - Leaves have order 1
+        - If a node has children with maximum order k, and exactly one child
+          has order k, then the node has order k
+        - If a node has children with maximum order k, and two or more children
+          have order k, then the node has order k+1
+
+        Works for general trees (not just binary), planted or unplanted.
+
+        Returns
+        -------
+        Dict[int, int]
+            Mapping from node to Horton-Strahler order
+
+        Examples
+        --------
+        Binary tree:
+              0
+             / \\
+            1   2
+           / \\   \\
+          3   4   5
+
+        >>> tree = Tree(n_nodes=6, root=0)
+        >>> tree.add_edge(0, 1)
+        >>> tree.add_edge(0, 2)
+        >>> tree.add_edge(1, 3)
+        >>> tree.add_edge(1, 4)
+        >>> tree.add_edge(2, 5)
+        >>> orders = tree.horton_strahler_order()
+        >>> orders[1] # Internal vertex
+        2
+        >>> orders[0]  # Root
+        2
+        >>> orders[3]  # Leaf
+        1
+
+        Non-binary tree:
+              0
+            / | \
+           1  2  3
+          /|
+         4 5
+
+        >>> tree2 = Tree(n_nodes=6, root=0)
+        >>> tree2.add_edge(0, 1)
+        >>> tree2.add_edge(0, 2)
+        >>> tree2.add_edge(0, 3)
+        >>> tree2.add_edge(1, 4)
+        >>> tree2.add_edge(1, 5)
+        >>> orders2 = tree2.horton_strahler_order()
+        >>> orders2[0]
+        2
+        >>> orders2 = [value for key, value in sorted(tree2.horton_strahler_order().items())]
+        >>> orders2
+        [2, 2, 1, 1, 1, 1]
+
+        Another binary tree example:
+             0
+            /\
+           1  2
+          /\\  /\
+         3 4  5 6
+           /\\
+          7  8
+        >>> tree3 = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)
+        >>> orders3 = [value for key, value in sorted(tree3.horton_strahler_order().items())]
+        >>> orders3
+        [3, 2, 2, 1, 2, 1, 1, 1, 1]
+        """
+        orders = {}
+
+        # Process nodes in post-order (children before parents)
+        def compute_order(node):
+            children = self.get_children(node)
+
+            # Base case: leaves have order 1
+            if not children:
+                orders[node] = 1
+                return 1
+
+            # Recursively compute orders for all children
+            child_orders = [compute_order(child) for child in children]
+
+            # Find maximum order among children
+            max_order = max(child_orders)
+
+            # Count how many children have the maximum order
+            count_max = sum(1 for order in child_orders if order == max_order)
+
+            # Horton-Strahler rule:
+            # - If only one child has max order: keep that order
+            # - If two or more children have max order: increment
+            if count_max == 1:
+                orders[node] = max_order
+            else:
+                orders[node] = max_order + 1
+
+            return orders[node]
+
+        compute_order(self.root)
+        return orders
+
+    def is_planted(self) -> bool:
+        """
+        Checks if a tree is planted (root has degree 1) or is otherwise stemless, this impacts how the overall Horton-Strahler order of the tree corresponds to the number of successive Horton prunings required to eliminate a tree
+        >>> tree = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)
+        >>> tree.is_planted()
+        False
+        >>> tree2 = Tree.from_parent_array([-1, 0, 1, 1])
+        >>> tree2.is_planted()
+        True
+        """
+        if len(self.get_children(self.root)) == 1:
+            return True
+        return False
+
+    def horton_strahler_order_tree(self) -> int:
+            return max(self.horton_strahler_order().values())
+
+    def max_horton_prunings(self) -> int:
+        if self.is_planted():
+            return self.horton_strahler_order_tree() + 1
+        return self.horton_strahler_order_tree()
+
+    def horton_prune(self) -> 'Tree':
+        """
+        Perform Horton pruning on the tree.
+
+        Horton pruning removes all branches that are not part of the main stem.
+        The main stem is the path from root to a leaf that follows the highest
+        Horton-Strahler orders at each node.
+
+        At each internal node, we keep only the child with the highest order.
+        If multiple children share the highest order, we pick the leftmost one.
+
+        Also performs series reduction: removes degree-2 nodes (nodes with
+        exactly one child) by connecting their parent directly to their child.
+
+        Works for general trees (not just binary), planted or unplanted.
+
+        Returns
+        -------
+        Tree
+            New pruned tree (original tree is not modified)
+
+        Examples
+        --------
+              0             0            0
+             /\\            /\\         /\\
+            1   2         1  2         1  2
+           /\\   /  ->    /\\    ->
+          3 4  5        3
+         /
+        6
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(1, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> pruned = tree.horton_prune()
+        >>> pruned.n_nodes
+        3
+        >>> tree2 = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)
+        >>> tree2.max_horton_prunings()
+        3
+        >>> tree2 = tree2.horton_prune()
+        >>> tree2.n_nodes
+        3
+        >>> tree2 = tree2.horton_prune()
+        >>> tree2.n_nodes
+        1
+        >>> tree2 = tree2.horton_prune()
+        >>> tree2.n_nodes
+        0
+        >>> tree2
+        Tree(n_nodes=0, n_leaves=0, root=-1)
+        """
+        # Find all non-leaf nodes
+        internal_nodes = [i for i in range(self.n_nodes) if not self.is_leaf(i)]
+
+        # Edge case: no internal nodes means tree is empty or just leaves
+        if len(internal_nodes) == 0:
+            return Tree(n_nodes=0, root=-1)  # Tree has been fully pruned, a -1 root should indicate an empty (pointless) tree
+
+        # Edge case: only root remains (single node)
+        if len(internal_nodes) == 1 and internal_nodes[0] == self.root:
+            return Tree(n_nodes=1, root=0)
+
+        # Map old to new IDs
+        old_to_new = {old_id: new_id for new_id, old_id in enumerate(internal_nodes)}
+
+        # Create new tree
+        pruned = Tree(n_nodes=len(internal_nodes), root=old_to_new[self.root])
+
+        # Add edges between internal nodes
+        for old_node in internal_nodes:
+            if old_node != self.root:
+                old_parent = int(self.parent[old_node])
+                # Parent must also be internal (otherwise disconnected)
+                if old_parent in internal_nodes:
+                    new_parent = old_to_new[old_parent]
+                    new_child = old_to_new[old_node]
+                    edge_length = self.get_edge_length(old_parent, old_node)
+                    pruned.add_edge(new_parent, new_child, length=edge_length)
+
+        # Series reduction
+        return pruned._series_reduction()
+
+    def _series_reduction(self) -> 'Tree':
+        """
+        Remove degree-2 nodes (series reduction).
+
+        A degree-2 node has exactly one parent and one child.
+        We remove it by connecting its parent directly to its child,
+        with edge length = sum of the two removed edges.
+
+        Returns
+        -------
+        Tree
+            New tree with degree-2 nodes removed
+
+        >>> tree = Tree(n_nodes=7, root=0)
+        >>> tree.add_edge(0, 1, length=1.0)
+        >>> tree.add_edge(0, 2, length=1.5)
+        >>> tree.add_edge(1, 3, length=2.0)
+        >>> tree.add_edge(1, 4, length=1.0)
+        >>> tree.add_edge(2, 5, length=1.0)
+        >>> tree.add_edge(3, 6, length=0.5)
+        >>> tree = tree._series_reduction()
+        >>> tree.n_nodes
+        5
+        """
+        # Find degree-2 nodes (not root, exactly 1 child)
+        degree_2_nodes = set()
+        for node in range(self.n_nodes):
+            if not self.is_root(node) and len(self.children[node]) == 1:
+                degree_2_nodes.add(node)
+
+        if not degree_2_nodes:
+            return self  # No reduction needed
+
+        # Build new tree without degree-2 nodes
+        nodes_to_keep = [i for i in range(self.n_nodes) if i not in degree_2_nodes]
+        old_to_new = {old_id: new_id for new_id, old_id in enumerate(nodes_to_keep)}
+
+        reduced = Tree(n_nodes=len(nodes_to_keep), root=old_to_new[self.root])
+
+        # Add edges, skipping over degree-2 nodes
+        for old_node in nodes_to_keep:
+            if old_node != self.root:
+                # Trace back to first non-degree-2 ancestor
+                ancestor = int(self.parent[old_node])
+                total_length = self.get_edge_length(ancestor, old_node)
+
+                while ancestor in degree_2_nodes:
+                    grandparent = int(self.parent[ancestor])
+                    total_length += self.get_edge_length(grandparent, ancestor)
+                    ancestor = grandparent
+
+                # Add edge from ancestor to current node
+                new_parent = old_to_new[ancestor]
+                new_child = old_to_new[old_node]
+                reduced.add_edge(new_parent, new_child, length=total_length)
+
+        return reduced
     
     def validate(self) -> bool:
         """
@@ -631,9 +926,80 @@ class Tree(BaseGraph):
             return False
         
         return True
-    
+
     @classmethod
-    def from_parent_array(cls, parent_array: np.ndarray, 
+    def from_adjacency_matrix(cls, adj: np.ndarray, weighted: bool = False,
+                              root: Optional[int] = None) -> 'Tree':
+        """
+        Create tree from adjacency matrix.
+
+        Parameters
+        ----------
+        adj : np.ndarray
+            Adjacency matrix (n x n)
+        weighted : bool
+            If True, matrix values are edge weights
+        root : int, optional
+            Root node. If None, inferred as node with no incoming edges.
+
+        Returns
+        -------
+        Tree
+            Reconstructed tree
+
+        Examples
+        --------
+        >>> tree = Tree(n_nodes=3, root=0)
+        >>> tree.add_edge(0, 1, length=2.0)
+        >>> tree.add_edge(0, 2, length=3.0)
+        >>> adj = tree.to_adjacency_matrix(weighted=True, weight_attr='length')
+        >>> tree2 = Tree.from_adjacency_matrix(adj, weighted=True)
+        >>> tree2.n_nodes
+        3
+        >>> tree2.get_edge_length(0, 1)
+        2.0
+        """
+        n_nodes = adj.shape[0]
+
+        # Find root (node with no incoming edges)
+        if root is None:
+            in_degree = np.sum(adj > 0, axis=0)  # Count incoming edges
+            root_candidates = np.where(in_degree == 0)[0]
+            if len(root_candidates) == 0:
+                root = 0  # Default to node 0
+            else:
+                root = int(root_candidates[0])
+
+        # Create tree
+        tree = cls(n_nodes=n_nodes, root=root)
+
+        # Build tree structure using BFS from root
+        from collections import deque
+        visited = set([root])
+        queue = deque([root])
+
+        while queue:
+            parent = queue.popleft()
+            # Find children (outgoing edges from parent)
+            children = np.where(adj[parent, :] > 0)[0]
+
+            for child in children:
+                if child not in visited:
+                    visited.add(child)
+                    queue.append(child)
+
+                    # Get edge weight
+                    if weighted:
+                        length = float(adj[parent, child])
+                    else:
+                        length = 1.0
+
+                    tree.add_edge(parent, int(child), length=length)
+
+        return tree
+
+    @classmethod
+    def from_parent_array(cls, parent_array: np.ndarray | list[int],
                          edge_lengths: Optional[np.ndarray] = None,
                          root: Optional[int] = None) -> 'Tree':
         """
@@ -653,6 +1019,12 @@ class Tree(BaseGraph):
         -------
         Tree instance
         """
+        if isinstance(parent_array, list):
+            try:
+                parent_array = np.array(parent_array)
+            except TypeError:
+                raise TypeError(f"Cannot convert parent_array type '{type(parent_array).__name__}' to a NumPy array.")
+
         n_nodes = len(parent_array)
         
         # Find root if not specified

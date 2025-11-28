@@ -9,7 +9,7 @@ Run with:
 
 import pytest
 import numpy as np
-import sys
+import importlib.util
 
 from core.tree import Tree
 
@@ -22,7 +22,7 @@ class TestTreeConstruction:
         tree = Tree(n_nodes=0)
         assert tree.n_nodes == 0
         assert tree.n_edges == 0
-        assert tree.validate()
+        assert tree.validate() == False # null graph is an empty forest but not an empty tree for convention's sake, union of zero-trees let's say
     
     def test_basic_construction(self):
         """Test basic tree construction with edges."""
@@ -46,6 +46,9 @@ class TestTreeConstruction:
         
         assert tree.n_nodes == 5
         assert tree.n_edges == 4
+        assert tree.get_parent(2) == 0
+        assert tree.get_parent(0) == -1
+        assert tree.get_parent(4) == 1 # 0-indexed
         assert tree.validate()
     
     def test_parent_array_round_trip(self):
@@ -195,13 +198,25 @@ class TestTreeConversions:
         tree.add_edge(0, 1, length=1.0)
         tree.add_edge(0, 2, length=1.5)
         tree.add_edge(1, 3, length=2.0)
-        tree.add_edge(1, 4, length=1.0)
+        tree.add_edge(1, 4, length=3.0)
         return tree
     
     def test_to_adjacency_matrix_binary(self, sample_tree):
-        """Test conversion to binary adjacency matrix."""
+        """Test conversion to binary adjacency matrix.
+
+        Structure:
+              0
+         1.0 / \1.5
+            1   2
+        2.0/ \3.0
+          3   4
+        [[0., 1., 1.5, 0., 0.],
+        [0., 0., 0., 2., 1.],
+        [0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0.]]
+        """
         adj = sample_tree.to_adjacency_matrix(weighted=False)
-        
         assert adj.shape == (5, 5)
         assert adj[0, 1] == 1
         assert adj[0, 2] == 1
@@ -217,7 +232,7 @@ class TestTreeConversions:
         assert adj[0, 1] == 1.0
         assert adj[0, 2] == 1.5
         assert adj[1, 3] == 2.0
-        assert adj[1, 4] == 1.0
+        assert adj[1, 4] == 3.0
     
     def test_from_adjacency_matrix(self, sample_tree):
         """Test round-trip through adjacency matrix."""
@@ -228,7 +243,7 @@ class TestTreeConversions:
         assert tree_back.n_edges == sample_tree.n_edges
     
     @pytest.mark.skipif(
-        'networkx' not in sys.modules,
+        importlib.util.find_spec('networkx') is None,
         reason="NetworkX not installed"
     )
     def test_to_networkx(self, sample_tree):
@@ -242,7 +257,7 @@ class TestTreeConversions:
         assert nx_graph.number_of_edges() == 4
     
     @pytest.mark.skipif(
-        'networkx' not in sys.modules,
+        importlib.util.find_spec('networkx') is None,
         reason="NetworkX not installed"
     )
     def test_from_networkx(self, sample_tree):

@@ -96,109 +96,101 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This page is auto-generated from the latest test run.
-Last updated: Nov 18, 2025</p>
+Last updated: Nov 28, 2025</p>
 </div>
 <section id="test-results">
 <h2>Test Results<a class="headerlink" href="#test-results" title="Link to this heading"></a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>============================= test session starts ==============================
-platform linux -- Python 3.10.19, pytest-9.0.1, pluggy-1.6.0 -- /home/pikhan/PycharmProjects/treegraphduals/.venv/bin/python3
-cachedir: .pytest_cache
-rootdir: /home/pikhan/PycharmProjects/treegraphduals
-configfile: pytest.ini
-plugins: cov-7.0.0
-collecting ... collected 48 items
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">=============================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">==============================</span>
+<span class="n">platform</span> <span class="n">linux</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.10.19</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">9.0.1</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">1.6.0</span> <span class="o">--</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pikhan</span><span class="o">/</span><span class="n">PycharmProjects</span><span class="o">/</span><span class="n">treegraphduals</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span>
+<span class="n">cachedir</span><span class="p">:</span> <span class="o">.</span><span class="n">pytest_cache</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pikhan</span><span class="o">/</span><span class="n">PycharmProjects</span><span class="o">/</span><span class="n">treegraphduals</span>
+<span class="n">configfile</span><span class="p">:</span> <span class="n">pytest</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">plugins</span><span class="p">:</span> <span class="n">cov</span><span class="o">-</span><span class="mf">7.0.0</span>
+<span class="n">collecting</span> <span class="o">...</span> <span class="n">collected</span> <span class="mi">59</span> <span class="n">items</span>
 
-core/tree.py::core.tree.Tree.breadth_first_search PASSED                 [  2%]
-core/tree.py::core.tree.Tree.depth_first_search PASSED                   [  4%]
-core/tree.py::core.tree.Tree.get_children PASSED                         [  6%]
-core/tree.py::core.tree.Tree.get_depth PASSED                            [  8%]
-core/tree.py::core.tree.Tree.get_distance PASSED                         [ 10%]
-core/tree.py::core.tree.Tree.get_internal_nodes PASSED                   [ 12%]
-core/tree.py::core.tree.Tree.get_leaves PASSED                           [ 14%]
-core/tree.py::core.tree.Tree.get_parent PASSED                           [ 16%]
-core/tree.py::core.tree.Tree.get_path_between PASSED                     [ 18%]
-core/tree.py::core.tree.Tree.get_path_to_root PASSED                     [ 20%]
-core/tree.py::core.tree.Tree.get_subtree_size PASSED                     [ 22%]
-core/tree.py::core.tree.Tree.is_leaf PASSED                              [ 25%]
-core/tree.py::core.tree.Tree.is_root PASSED                              [ 27%]
-tests/test_tree.py::TestTreeConstruction::test_empty_tree FAILED         [ 29%]
-tests/test_tree.py::TestTreeConstruction::test_basic_construction PASSED [ 31%]
-tests/test_tree.py::TestTreeConstruction::test_from_parent_array PASSED  [ 33%]
-tests/test_tree.py::TestTreeConstruction::test_parent_array_round_trip PASSED [ 35%]
-tests/test_tree.py::TestTreeOperations::test_get_parent PASSED           [ 37%]
-tests/test_tree.py::TestTreeOperations::test_get_children PASSED         [ 39%]
-tests/test_tree.py::TestTreeOperations::test_is_leaf PASSED              [ 41%]
-tests/test_tree.py::TestTreeOperations::test_get_leaves PASSED           [ 43%]
-tests/test_tree.py::TestTreeOperations::test_dfs PASSED                  [ 45%]
-tests/test_tree.py::TestTreeOperations::test_bfs PASSED                  [ 47%]
-tests/test_tree.py::TestTreeOperations::test_get_depth PASSED            [ 50%]
-tests/test_tree.py::TestTreeOperations::test_get_subtree_size PASSED     [ 52%]
-tests/test_tree.py::TestTreeOperations::test_get_path_to_root PASSED     [ 54%]
-tests/test_tree.py::TestTreeOperations::test_get_path_between PASSED     [ 56%]
-tests/test_tree.py::TestTreeOperations::test_get_distance_unweighted PASSED [ 58%]
-tests/test_tree.py::TestTreeOperations::test_get_distance_weighted PASSED [ 60%]
-tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_binary PASSED [ 62%]
-tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted FAILED [ 64%]
-tests/test_tree.py::TestTreeConversions::test_from_adjacency_matrix PASSED [ 66%]
-tests/test_tree.py::TestTreeConversions::test_to_networkx SKIPPED (N...) [ 68%]
-tests/test_tree.py::TestTreeConversions::test_from_networkx SKIPPED      [ 70%]
-tests/test_tree.py::TestTreeValidation::test_valid_tree PASSED           [ 72%]
-tests/test_tree.py::TestTreeValidation::test_disconnected_tree_invalid PASSED [ 75%]
-tests/test_tree.py::TestTreeValidation::test_multiple_roots_invalid PASSED [ 77%]
-tests/test_tree.py::TestTreeEdgeCases::test_single_node_tree PASSED      [ 79%]
-tests/test_tree.py::TestTreeEdgeCases::test_node_attributes PASSED       [ 81%]
-tests/test_tree.py::TestTreeEdgeCases::test_edge_attributes PASSED       [ 83%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[1-0] PASSED [ 85%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[2-1] PASSED [ 87%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[3-1] PASSED [ 89%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[7-2] PASSED [ 91%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[10] PASSED [ 93%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[50] PASSED [ 95%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[100] PASSED [ 97%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[500] PASSED [100%]
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">_series_reduction</span> <span class="n">PASSED</span>                    <span class="p">[</span>  <span class="mi">1</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">breadth_first_search</span> <span class="n">PASSED</span>                 <span class="p">[</span>  <span class="mi">3</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">depth_first_search</span> <span class="n">PASSED</span>                   <span class="p">[</span>  <span class="mi">5</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">from_adjacency_matrix</span> <span class="n">PASSED</span>                <span class="p">[</span>  <span class="mi">6</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_children</span> <span class="n">PASSED</span>                         <span class="p">[</span>  <span class="mi">8</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_depth</span> <span class="n">PASSED</span>                            <span class="p">[</span> <span class="mi">10</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_distance</span> <span class="n">PASSED</span>                         <span class="p">[</span> <span class="mi">11</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_internal_nodes</span> <span class="n">PASSED</span>                   <span class="p">[</span> <span class="mi">13</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_leaves</span> <span class="n">PASSED</span>                           <span class="p">[</span> <span class="mi">15</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_parent</span> <span class="n">PASSED</span>                           <span class="p">[</span> <span class="mi">16</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_path_between</span> <span class="n">PASSED</span>                     <span class="p">[</span> <span class="mi">18</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_path_to_root</span> <span class="n">PASSED</span>                     <span class="p">[</span> <span class="mi">20</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">get_subtree_size</span> <span class="n">PASSED</span>                     <span class="p">[</span> <span class="mi">22</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">horton_prune</span> <span class="n">PASSED</span>                         <span class="p">[</span> <span class="mi">23</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">horton_strahler_order</span> <span class="n">PASSED</span>                <span class="p">[</span> <span class="mi">25</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">is_leaf</span> <span class="n">PASSED</span>                              <span class="p">[</span> <span class="mi">27</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">is_planted</span> <span class="n">PASSED</span>                           <span class="p">[</span> <span class="mi">28</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">is_root</span> <span class="n">PASSED</span>                              <span class="p">[</span> <span class="mi">30</span><span class="o">%</span><span class="p">]</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">core</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">traverse_edges</span> <span class="n">PASSED</span>                       <span class="p">[</span> <span class="mi">32</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_binary_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestBasicBinaryTree</span><span class="p">::</span><span class="n">test_demo_binary_tree</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">33</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_binary_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestBasicBinaryTree</span><span class="p">::</span><span class="n">test_parent_array_conversion</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">35</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_binary_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestBasicBinaryTree</span><span class="p">::</span><span class="n">test_networkx_conversion</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">37</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_binary_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestBasicBinaryTree</span><span class="p">::</span><span class="n">test_igraph_conversion</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">38</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_binary_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestBasicBinaryTree</span><span class="p">::</span><span class="n">test_adjacency_matrix</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">40</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConstruction</span><span class="p">::</span><span class="n">test_empty_tree</span> <span class="n">PASSED</span>         <span class="p">[</span> <span class="mi">42</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConstruction</span><span class="p">::</span><span class="n">test_basic_construction</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">44</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConstruction</span><span class="p">::</span><span class="n">test_from_parent_array</span> <span class="n">PASSED</span>  <span class="p">[</span> <span class="mi">45</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConstruction</span><span class="p">::</span><span class="n">test_parent_array_round_trip</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">47</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_parent</span> <span class="n">PASSED</span>           <span class="p">[</span> <span class="mi">49</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_children</span> <span class="n">PASSED</span>         <span class="p">[</span> <span class="mi">50</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_is_leaf</span> <span class="n">PASSED</span>              <span class="p">[</span> <span class="mi">52</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_leaves</span> <span class="n">PASSED</span>           <span class="p">[</span> <span class="mi">54</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_dfs</span> <span class="n">PASSED</span>                  <span class="p">[</span> <span class="mi">55</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_bfs</span> <span class="n">PASSED</span>                  <span class="p">[</span> <span class="mi">57</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_depth</span> <span class="n">PASSED</span>            <span class="p">[</span> <span class="mi">59</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_subtree_size</span> <span class="n">PASSED</span>     <span class="p">[</span> <span class="mi">61</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_path_to_root</span> <span class="n">PASSED</span>     <span class="p">[</span> <span class="mi">62</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_path_between</span> <span class="n">PASSED</span>     <span class="p">[</span> <span class="mi">64</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_distance_unweighted</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">66</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeOperations</span><span class="p">::</span><span class="n">test_get_distance_weighted</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">67</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConversions</span><span class="p">::</span><span class="n">test_to_adjacency_matrix_binary</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">69</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConversions</span><span class="p">::</span><span class="n">test_to_adjacency_matrix_weighted</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">71</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConversions</span><span class="p">::</span><span class="n">test_from_adjacency_matrix</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">72</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConversions</span><span class="p">::</span><span class="n">test_to_networkx</span> <span class="n">PASSED</span>         <span class="p">[</span> <span class="mi">74</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeConversions</span><span class="p">::</span><span class="n">test_from_networkx</span> <span class="n">PASSED</span>       <span class="p">[</span> <span class="mi">76</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeValidation</span><span class="p">::</span><span class="n">test_valid_tree</span> <span class="n">PASSED</span>           <span class="p">[</span> <span class="mi">77</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeValidation</span><span class="p">::</span><span class="n">test_disconnected_tree_invalid</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">79</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeValidation</span><span class="p">::</span><span class="n">test_multiple_roots_invalid</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">81</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeEdgeCases</span><span class="p">::</span><span class="n">test_single_node_tree</span> <span class="n">PASSED</span>      <span class="p">[</span> <span class="mi">83</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeEdgeCases</span><span class="p">::</span><span class="n">test_node_attributes</span> <span class="n">PASSED</span>       <span class="p">[</span> <span class="mi">84</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeEdgeCases</span><span class="p">::</span><span class="n">test_edge_attributes</span> <span class="n">PASSED</span>       <span class="p">[</span> <span class="mi">86</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_balanced_tree_depth</span><span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="mi">0</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">88</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_balanced_tree_depth</span><span class="p">[</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">89</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_balanced_tree_depth</span><span class="p">[</span><span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">91</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_balanced_tree_depth</span><span class="p">[</span><span class="mi">7</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">93</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_large_tree_operations</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">94</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_large_tree_operations</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">96</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_large_tree_operations</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span> <span class="mi">98</span><span class="o">%</span><span class="p">]</span>
+<span class="n">tests</span><span class="o">/</span><span class="n">test_tree</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestTreeParametrized</span><span class="p">::</span><span class="n">test_large_tree_operations</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span> <span class="n">PASSED</span> <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-=================================== FAILURES ===================================
-_____________________ TestTreeConstruction.test_empty_tree _____________________
-/home/pikhan/PycharmProjects/treegraphduals/treegraphduals/tests/test_tree.py:25: in test_empty_tree
-    ???
-E   assert False
-E    +  where False = validate()
-E    +    where validate = Tree(n_nodes=0, n_leaves=0, root=0).validate
-____________ TestTreeConversions.test_to_adjacency_matrix_weighted _____________
-/home/pikhan/PycharmProjects/treegraphduals/treegraphduals/tests/test_tree.py:218: in test_to_adjacency_matrix_weighted
-    ???
-E   assert np.float64(1.0) == 1.5
-=============================== warnings summary ===============================
-treegraphduals/tests/test_tree.py:343
-  /home/pikhan/PycharmProjects/treegraphduals/treegraphduals/tests/test_tree.py:343: PytestUnknownMarkWarning: Unknown pytest.mark.slow - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+<span class="o">================================</span> <span class="n">tests</span> <span class="n">coverage</span> <span class="o">================================</span>
+<span class="n">_______________</span> <span class="n">coverage</span><span class="p">:</span> <span class="n">platform</span> <span class="n">linux</span><span class="p">,</span> <span class="n">python</span> <span class="mf">3.10.19</span><span class="o">-</span><span class="n">final</span><span class="o">-</span><span class="mi">0</span> <span class="n">_______________</span>
 
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.10.19-final-0 _______________
-
-Name                    Stmts   Miss  Cover
--------------------------------------------
-core/__init__.py           12      0   100%
-core/base_graph.py        161     79    51%
-core/binary_tree.py       184    164    11%
-core/dag.py                54     42    22%
-core/erdos_renyi.py        14      8    43%
-core/forest.py             24     18    25%
-core/galton_watson.py      27     21    22%
-core/graph.py              14      9    36%
-core/multigraph.py         12      8    33%
-core/polytree.py           30     24    20%
-core/real_tree.py          19     14    26%
-core/tree.py              237     69    71%
--------------------------------------------
-TOTAL                     788    456    42%
-Coverage HTML written to dir htmlcov
-Coverage JSON written to file coverage.json
-Coverage Markdown information written to file docs/coverage_report.md
-=========================== short test summary info ============================
-FAILED tests/test_tree.py::TestTreeConstruction::test_empty_tree - assert False
-FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted
-============== 2 failed, 44 passed, 2 skipped, 1 warning in 0.44s ==============
+<span class="n">Name</span>                    <span class="n">Stmts</span>   <span class="n">Miss</span>  <span class="n">Cover</span>
+<span class="o">-------------------------------------------</span>
+<span class="n">core</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>           <span class="mi">12</span>      <span class="mi">0</span>   <span class="mi">100</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">base_graph</span><span class="o">.</span><span class="n">py</span>        <span class="mi">161</span>     <span class="mi">56</span>    <span class="mi">65</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">binary_tree</span><span class="o">.</span><span class="n">py</span>       <span class="mi">123</span>     <span class="mi">25</span>    <span class="mi">80</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">dag</span><span class="o">.</span><span class="n">py</span>                <span class="mi">54</span>     <span class="mi">42</span>    <span class="mi">22</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">erdos_renyi</span><span class="o">.</span><span class="n">py</span>        <span class="mi">14</span>      <span class="mi">8</span>    <span class="mi">43</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">forest</span><span class="o">.</span><span class="n">py</span>             <span class="mi">24</span>     <span class="mi">18</span>    <span class="mi">25</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">galton_watson</span><span class="o">.</span><span class="n">py</span>      <span class="mi">27</span>     <span class="mi">21</span>    <span class="mi">22</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">graph</span><span class="o">.</span><span class="n">py</span>              <span class="mi">14</span>      <span class="mi">9</span>    <span class="mi">36</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">multigraph</span><span class="o">.</span><span class="n">py</span>         <span class="mi">12</span>      <span class="mi">8</span>    <span class="mi">33</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">polytree</span><span class="o">.</span><span class="n">py</span>           <span class="mi">30</span>     <span class="mi">24</span>    <span class="mi">20</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">real_tree</span><span class="o">.</span><span class="n">py</span>          <span class="mi">19</span>     <span class="mi">14</span>    <span class="mi">26</span><span class="o">%</span>
+<span class="n">core</span><span class="o">/</span><span class="n">tree</span><span class="o">.</span><span class="n">py</span>              <span class="mi">332</span>     <span class="mi">18</span>    <span class="mi">95</span><span class="o">%</span>
+<span class="o">-------------------------------------------</span>
+<span class="n">TOTAL</span>                     <span class="mi">822</span>    <span class="mi">243</span>    <span class="mi">70</span><span class="o">%</span>
+<span class="n">Coverage</span> <span class="n">HTML</span> <span class="n">written</span> <span class="n">to</span> <span class="nb">dir</span> <span class="n">htmlcov</span>
+<span class="n">Coverage</span> <span class="n">JSON</span> <span class="n">written</span> <span class="n">to</span> <span class="n">file</span> <span class="n">coverage</span><span class="o">.</span><span class="n">json</span>
+<span class="n">Coverage</span> <span class="n">Markdown</span> <span class="n">information</span> <span class="n">written</span> <span class="n">to</span> <span class="n">file</span> <span class="n">docs</span><span class="o">/</span><span class="n">coverage_report</span><span class="o">.</span><span class="n">md</span>
+<span class="o">==============================</span> <span class="mi">59</span> <span class="n">passed</span> <span class="ow">in</span> <span class="mf">0.62</span><span class="n">s</span> <span class="o">==============================</span>
 </pre></div>
 </div>
 </section>
@@ -220,13 +212,13 @@ FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighte
 </tr>
 <tr class="row-odd"><td><p>core/base_graph.py</p></td>
 <td class="text-right"><p>161</p></td>
-<td class="text-right"><p>79</p></td>
-<td class="text-right"><p>51%</p></td>
+<td class="text-right"><p>56</p></td>
+<td class="text-right"><p>65%</p></td>
 </tr>
 <tr class="row-even"><td><p>core/binary_tree.py</p></td>
-<td class="text-right"><p>184</p></td>
-<td class="text-right"><p>164</p></td>
-<td class="text-right"><p>11%</p></td>
+<td class="text-right"><p>123</p></td>
+<td class="text-right"><p>25</p></td>
+<td class="text-right"><p>80%</p></td>
 </tr>
 <tr class="row-odd"><td><p>core/dag.py</p></td>
 <td class="text-right"><p>54</p></td>
@@ -269,14 +261,14 @@ FAILED tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighte
 <td class="text-right"><p>26%</p></td>
 </tr>
 <tr class="row-odd"><td><p>core/tree.py</p></td>
-<td class="text-right"><p>237</p></td>
-<td class="text-right"><p>69</p></td>
-<td class="text-right"><p>71%</p></td>
+<td class="text-right"><p>332</p></td>
+<td class="text-right"><p>18</p></td>
+<td class="text-right"><p>95%</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>TOTAL</strong></p></td>
-<td class="text-right"><p><strong>788</strong></p></td>
-<td class="text-right"><p><strong>456</strong></p></td>
-<td class="text-right"><p><strong>42%</strong></p></td>
+<td class="text-right"><p><strong>822</strong></p></td>
+<td class="text-right"><p><strong>243</strong></p></td>
+<td class="text-right"><p><strong>70%</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -318,7 +310,7 @@ make<span class="w"> </span>docs-with-tests
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-17 16:42:34.
+      <span class="lastupdated">Last updated on 2025-11-27 22:52:58.
       </span></p>
   </div>
 

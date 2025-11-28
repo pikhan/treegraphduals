@@ -156,7 +156,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">[(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">)]</span> <span class="o">=</span> <span class="n">length</span>
         
         <span class="c1"># Update underlying graph representation</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="n">length</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">})</span>
         
         <span class="c1"># Invalidate caches</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_invalidate_tree_caches</span><span class="p">()</span></div>
@@ -707,6 +707,28 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        List of (parent, child, direction) tuples where direction is &#39;down&#39; or &#39;up&#39;</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Build tree structure:</span>
+<span class="sd">              0</span>
+<span class="sd">             / \</span>
+<span class="sd">            1   2</span>
+<span class="sd">           /   / \</span>
+<span class="sd">          3   4   5</span>
+<span class="sd">         /</span>
+<span class="sd">        6</span>
+<span class="sd">        &gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)</span>
+<span class="sd">        &gt;&gt;&gt; [(int(start), int(stop), direction) for (start, stop, direction) in tree.traverse_edges()]</span>
+<span class="sd">        [(0, 1, &#39;down&#39;), (1, 3, &#39;down&#39;), (3, 6, &#39;down&#39;), (0, 2, &#39;down&#39;), (2, 4, &#39;down&#39;), (2, 5, &#39;down&#39;)]</span>
+<span class="sd">        &gt;&gt;&gt; [(int(start), int(stop), direction) for (start, stop, direction) in tree.traverse_edges(mode=&#39;contour&#39;)]</span>
+<span class="sd">        [(0, 1, &#39;down&#39;), (1, 3, &#39;down&#39;), (3, 6, &#39;down&#39;), (6, 3, &#39;up&#39;), (3, 1, &#39;up&#39;), (1, 0, &#39;up&#39;), (0, 2, &#39;down&#39;), (2, 4, &#39;down&#39;), (4, 2, &#39;up&#39;), (2, 5, &#39;down&#39;), (5, 2, &#39;up&#39;), (2, 0, &#39;up&#39;)]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;depth_first&#39;</span><span class="p">:</span>
             <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
@@ -716,7 +738,7 @@
             <span class="k">return</span> <span class="n">edges</span>
         
         <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;contour&#39;</span><span class="p">:</span>
-            <span class="c1"># Tree contour: traverse each edge twice (down and up)</span>
+            <span class="c1"># Tree contour: traverse each edge twice (down and up), the tree traversal function in Zoe Haskell&#39;s thesis</span>
             <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
             
             <span class="k">def</span><span class="w"> </span><span class="nf">contour_dfs</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
@@ -731,6 +753,294 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mode: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Tree.horton_strahler_order">
+<a class="viewcode-back" href="../../api/core.html#core.Tree.horton_strahler_order">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">horton_strahler_order</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute Horton-Strahler order for all nodes.</span>
+
+<span class="sd">        The Horton-Strahler order is defined recursively:</span>
+<span class="sd">        - Leaves have order 1</span>
+<span class="sd">        - If a node has children with maximum order k, and exactly one child</span>
+<span class="sd">          has order k, then the node has order k</span>
+<span class="sd">        - If a node has children with maximum order k, and two or more children</span>
+<span class="sd">          have order k, then the node has order k+1</span>
+
+<span class="sd">        Works for general trees (not just binary), planted or unplanted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[int, int]</span>
+<span class="sd">            Mapping from node to Horton-Strahler order</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Binary tree:</span>
+<span class="sd">              0</span>
+<span class="sd">             / \\</span>
+<span class="sd">            1   2</span>
+<span class="sd">           / \\   \\</span>
+<span class="sd">          3   4   5</span>
+
+<span class="sd">        &gt;&gt;&gt; tree = Tree(n_nodes=6, root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 1)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 2)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 3)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 4)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(2, 5)</span>
+<span class="sd">        &gt;&gt;&gt; orders = tree.horton_strahler_order()</span>
+<span class="sd">        &gt;&gt;&gt; orders[1] # Internal vertex</span>
+<span class="sd">        2</span>
+<span class="sd">        &gt;&gt;&gt; orders[0]  # Root</span>
+<span class="sd">        2</span>
+<span class="sd">        &gt;&gt;&gt; orders[3]  # Leaf</span>
+<span class="sd">        1</span>
+
+<span class="sd">        Non-binary tree:</span>
+<span class="sd">              0</span>
+<span class="sd">            / | \</span>
+<span class="sd">           1  2  3</span>
+<span class="sd">          /|</span>
+<span class="sd">         4 5</span>
+
+<span class="sd">        &gt;&gt;&gt; tree2 = Tree(n_nodes=6, root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.add_edge(0, 1)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.add_edge(0, 2)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.add_edge(0, 3)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.add_edge(1, 4)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.add_edge(1, 5)</span>
+<span class="sd">        &gt;&gt;&gt; orders2 = tree2.horton_strahler_order()</span>
+<span class="sd">        &gt;&gt;&gt; orders2[0]</span>
+<span class="sd">        2</span>
+<span class="sd">        &gt;&gt;&gt; orders2 = [value for key, value in sorted(tree2.horton_strahler_order().items())]</span>
+<span class="sd">        &gt;&gt;&gt; orders2</span>
+<span class="sd">        [2, 2, 1, 1, 1, 1]</span>
+
+<span class="sd">        Another binary tree example:</span>
+<span class="sd">             0</span>
+<span class="sd">            /\</span>
+<span class="sd">           1  2</span>
+<span class="sd">          /\\  /\</span>
+<span class="sd">         3 4  5 6</span>
+<span class="sd">           /\\</span>
+<span class="sd">          7  8</span>
+<span class="sd">        &gt;&gt;&gt; tree3 = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)</span>
+<span class="sd">        &gt;&gt;&gt; orders3 = [value for key, value in sorted(tree3.horton_strahler_order().items())]</span>
+<span class="sd">        &gt;&gt;&gt; orders3</span>
+<span class="sd">        [3, 2, 2, 1, 2, 1, 1, 1, 1]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Process nodes in post-order (children before parents)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">compute_order</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+            <span class="c1"># Base case: leaves have order 1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">children</span><span class="p">:</span>
+                <span class="n">orders</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="mi">1</span>
+
+            <span class="c1"># Recursively compute orders for all children</span>
+            <span class="n">child_orders</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_order</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">]</span>
+
+            <span class="c1"># Find maximum order among children</span>
+            <span class="n">max_order</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">child_orders</span><span class="p">)</span>
+
+            <span class="c1"># Count how many children have the maximum order</span>
+            <span class="n">count_max</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">child_orders</span> <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="n">max_order</span><span class="p">)</span>
+
+            <span class="c1"># Horton-Strahler rule:</span>
+            <span class="c1"># - If only one child has max order: keep that order</span>
+            <span class="c1"># - If two or more children have max order: increment</span>
+            <span class="k">if</span> <span class="n">count_max</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">orders</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_order</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">orders</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="k">return</span> <span class="n">orders</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+        <span class="n">compute_order</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">orders</span></div>
+
+
+<div class="viewcode-block" id="Tree.is_planted">
+<a class="viewcode-back" href="../../api/core.html#core.Tree.is_planted">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_planted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a tree is planted (root has degree 1) or is otherwise stemless, this impacts how the overall Horton-Strahler order of the tree corresponds to the number of successive Horton prunings required to eliminate a tree</span>
+<span class="sd">        &gt;&gt;&gt; tree = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.is_planted()</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; tree2 = Tree.from_parent_array([-1, 0, 1, 1])</span>
+<span class="sd">        &gt;&gt;&gt; tree2.is_planted()</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Tree.horton_strahler_order_tree">
+<a class="viewcode-back" href="../../api/core.html#core.Tree.horton_strahler_order_tree">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">horton_strahler_order_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horton_strahler_order</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Tree.max_horton_prunings">
+<a class="viewcode-back" href="../../api/core.html#core.Tree.max_horton_prunings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">max_horton_prunings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_planted</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">horton_strahler_order_tree</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">horton_strahler_order_tree</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Tree.horton_prune">
+<a class="viewcode-back" href="../../api/core.html#core.Tree.horton_prune">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">horton_prune</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Tree&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform Horton pruning on the tree.</span>
+
+<span class="sd">        Horton pruning removes all branches that are not part of the main stem.</span>
+<span class="sd">        The main stem is the path from root to a leaf that follows the highest</span>
+<span class="sd">        Horton-Strahler orders at each node.</span>
+
+<span class="sd">        At each internal node, we keep only the child with the highest order.</span>
+<span class="sd">        If multiple children share the highest order, we pick the leftmost one.</span>
+
+<span class="sd">        Also performs series reduction: removes degree-2 nodes (nodes with</span>
+<span class="sd">        exactly one child) by connecting their parent directly to their child.</span>
+
+<span class="sd">        Works for general trees (not just binary), planted or unplanted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tree</span>
+<span class="sd">            New pruned tree (original tree is not modified)</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">              0             0            0</span>
+<span class="sd">             /\\            /\\         /\\</span>
+<span class="sd">            1   2         1  2         1  2</span>
+<span class="sd">           /\\   /  -&gt;    /\\    -&gt;</span>
+<span class="sd">          3 4  5        3</span>
+<span class="sd">         /</span>
+<span class="sd">        6</span>
+<span class="sd">        &gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 4, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)</span>
+<span class="sd">        &gt;&gt;&gt; pruned = tree.horton_prune()</span>
+<span class="sd">        &gt;&gt;&gt; pruned.n_nodes</span>
+<span class="sd">        3</span>
+<span class="sd">        &gt;&gt;&gt; tree2 = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.max_horton_prunings()</span>
+<span class="sd">        3</span>
+<span class="sd">        &gt;&gt;&gt; tree2 = tree2.horton_prune()</span>
+<span class="sd">        &gt;&gt;&gt; tree2.n_nodes</span>
+<span class="sd">        3</span>
+<span class="sd">        &gt;&gt;&gt; tree2 = tree2.horton_prune()</span>
+<span class="sd">        &gt;&gt;&gt; tree2.n_nodes</span>
+<span class="sd">        1</span>
+<span class="sd">        &gt;&gt;&gt; tree2 = tree2.horton_prune()</span>
+<span class="sd">        &gt;&gt;&gt; tree2.n_nodes</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; tree2</span>
+<span class="sd">        Tree(n_nodes=0, n_leaves=0, root=-1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Find all non-leaf nodes</span>
+        <span class="n">internal_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+
+        <span class="c1"># Edge case: no internal nodes means tree is empty or just leaves</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">internal_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Tree has been fully pruned, a -1 root should indicate an empty (pointless) tree</span>
+
+        <span class="c1"># Edge case: only root remains (single node)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">internal_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">internal_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Map old to new IDs</span>
+        <span class="n">old_to_new</span> <span class="o">=</span> <span class="p">{</span><span class="n">old_id</span><span class="p">:</span> <span class="n">new_id</span> <span class="k">for</span> <span class="n">new_id</span><span class="p">,</span> <span class="n">old_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">internal_nodes</span><span class="p">)}</span>
+
+        <span class="c1"># Create new tree</span>
+        <span class="n">pruned</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">internal_nodes</span><span class="p">),</span> <span class="n">root</span><span class="o">=</span><span class="n">old_to_new</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">])</span>
+
+        <span class="c1"># Add edges between internal nodes</span>
+        <span class="k">for</span> <span class="n">old_node</span> <span class="ow">in</span> <span class="n">internal_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">old_node</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+                <span class="n">old_parent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">old_node</span><span class="p">])</span>
+                <span class="c1"># Parent must also be internal (otherwise disconnected)</span>
+                <span class="k">if</span> <span class="n">old_parent</span> <span class="ow">in</span> <span class="n">internal_nodes</span><span class="p">:</span>
+                    <span class="n">new_parent</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">old_parent</span><span class="p">]</span>
+                    <span class="n">new_child</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">old_node</span><span class="p">]</span>
+                    <span class="n">edge_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_length</span><span class="p">(</span><span class="n">old_parent</span><span class="p">,</span> <span class="n">old_node</span><span class="p">)</span>
+                    <span class="n">pruned</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">new_parent</span><span class="p">,</span> <span class="n">new_child</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
+
+        <span class="c1"># Series reduction</span>
+        <span class="k">return</span> <span class="n">pruned</span><span class="o">.</span><span class="n">_series_reduction</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_series_reduction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Tree&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove degree-2 nodes (series reduction).</span>
+
+<span class="sd">        A degree-2 node has exactly one parent and one child.</span>
+<span class="sd">        We remove it by connecting its parent directly to its child,</span>
+<span class="sd">        with edge length = sum of the two removed edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tree</span>
+<span class="sd">            New tree with degree-2 nodes removed</span>
+
+<span class="sd">        &gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(1, 4, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)</span>
+<span class="sd">        &gt;&gt;&gt; tree = tree._series_reduction()</span>
+<span class="sd">        &gt;&gt;&gt; tree.n_nodes</span>
+<span class="sd">        5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Find degree-2 nodes (not root, exactly 1 child)</span>
+        <span class="n">degree_2_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">node</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">degree_2_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">degree_2_nodes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>  <span class="c1"># No reduction needed</span>
+
+        <span class="c1"># Build new tree without degree-2 nodes</span>
+        <span class="n">nodes_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">degree_2_nodes</span><span class="p">]</span>
+        <span class="n">old_to_new</span> <span class="o">=</span> <span class="p">{</span><span class="n">old_id</span><span class="p">:</span> <span class="n">new_id</span> <span class="k">for</span> <span class="n">new_id</span><span class="p">,</span> <span class="n">old_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes_to_keep</span><span class="p">)}</span>
+
+        <span class="n">reduced</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes_to_keep</span><span class="p">),</span> <span class="n">root</span><span class="o">=</span><span class="n">old_to_new</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">])</span>
+
+        <span class="c1"># Add edges, skipping over degree-2 nodes</span>
+        <span class="k">for</span> <span class="n">old_node</span> <span class="ow">in</span> <span class="n">nodes_to_keep</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">old_node</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+                <span class="c1"># Trace back to first non-degree-2 ancestor</span>
+                <span class="n">ancestor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">old_node</span><span class="p">])</span>
+                <span class="n">total_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_length</span><span class="p">(</span><span class="n">ancestor</span><span class="p">,</span> <span class="n">old_node</span><span class="p">)</span>
+
+                <span class="k">while</span> <span class="n">ancestor</span> <span class="ow">in</span> <span class="n">degree_2_nodes</span><span class="p">:</span>
+                    <span class="n">grandparent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">ancestor</span><span class="p">])</span>
+                    <span class="n">total_length</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_length</span><span class="p">(</span><span class="n">grandparent</span><span class="p">,</span> <span class="n">ancestor</span><span class="p">)</span>
+                    <span class="n">ancestor</span> <span class="o">=</span> <span class="n">grandparent</span>
+
+                <span class="c1"># Add edge from ancestor to current node</span>
+                <span class="n">new_parent</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">ancestor</span><span class="p">]</span>
+                <span class="n">new_child</span> <span class="o">=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">old_node</span><span class="p">]</span>
+                <span class="n">reduced</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">new_parent</span><span class="p">,</span> <span class="n">new_child</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">total_length</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">reduced</span>
     
 <div class="viewcode-block" id="Tree.validate">
 <a class="viewcode-back" href="../../api/core.html#core.Tree.validate">[docs]</a>
@@ -771,11 +1081,85 @@
         
         <span class="k">return</span> <span class="kc">True</span></div>
 
-    
+
+<div class="viewcode-block" id="Tree.from_adjacency_matrix">
+<a class="viewcode-back" href="../../api/core.html#core.Tree.from_adjacency_matrix">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_adjacency_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">adj</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weighted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                              <span class="n">root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Tree&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create tree from adjacency matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adj : np.ndarray</span>
+<span class="sd">            Adjacency matrix (n x n)</span>
+<span class="sd">        weighted : bool</span>
+<span class="sd">            If True, matrix values are edge weights</span>
+<span class="sd">        root : int, optional</span>
+<span class="sd">            Root node. If None, inferred as node with no incoming edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tree</span>
+<span class="sd">            Reconstructed tree</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; tree = Tree(n_nodes=3, root=0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 1, length=2.0)</span>
+<span class="sd">        &gt;&gt;&gt; tree.add_edge(0, 2, length=3.0)</span>
+<span class="sd">        &gt;&gt;&gt; adj = tree.to_adjacency_matrix(weighted=True, weight_attr=&#39;length&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; tree2 = Tree.from_adjacency_matrix(adj, weighted=True)</span>
+<span class="sd">        &gt;&gt;&gt; tree2.n_nodes</span>
+<span class="sd">        3</span>
+<span class="sd">        &gt;&gt;&gt; tree2.get_edge_length(0, 1)</span>
+<span class="sd">        2.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Find root (node with no incoming edges)</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">in_degree</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">adj</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Count incoming edges</span>
+            <span class="n">root_candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">in_degree</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">root_candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Default to node 0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">root_candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Create tree</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="c1"># Build tree structure using BFS from root</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+
+        <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="c1"># Find children (outgoing edges from parent)</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">adj</span><span class="p">[</span><span class="n">parent</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">child</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+                    <span class="c1"># Get edge weight</span>
+                    <span class="k">if</span> <span class="n">weighted</span><span class="p">:</span>
+                        <span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">adj</span><span class="p">[</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">length</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+                    <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">child</span><span class="p">),</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tree</span></div>
+
+
 <div class="viewcode-block" id="Tree.from_parent_array">
 <a class="viewcode-back" href="../../api/core.html#core.Tree.from_parent_array">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_parent_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_parent_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
                          <span class="n">edge_lengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                          <span class="n">root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Tree&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -795,6 +1179,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        Tree instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent_array</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">parent_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parent_array</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot convert parent_array type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">parent_array</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; to a NumPy array.&quot;</span><span class="p">)</span>
+
         <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent_array</span><span class="p">)</span>
         
         <span class="c1"># Find root if not specified</span>
@@ -960,7 +1350,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-17 16:42:34.
+      <span class="lastupdated">Last updated on 2025-11-27 22:52:58.
       </span></p>
   </div>
 

@@ -109,7 +109,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.get_path_between"><code class="docutils literal notranslate"><span class="pre">Tree.get_path_between()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.get_distance"><code class="docutils literal notranslate"><span class="pre">Tree.get_distance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.traverse_edges"><code class="docutils literal notranslate"><span class="pre">Tree.traverse_edges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Tree.horton_strahler_order"><code class="docutils literal notranslate"><span class="pre">Tree.horton_strahler_order()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Tree.is_planted"><code class="docutils literal notranslate"><span class="pre">Tree.is_planted()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Tree.horton_strahler_order_tree"><code class="docutils literal notranslate"><span class="pre">Tree.horton_strahler_order_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Tree.max_horton_prunings"><code class="docutils literal notranslate"><span class="pre">Tree.max_horton_prunings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Tree.horton_prune"><code class="docutils literal notranslate"><span class="pre">Tree.horton_prune()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.validate"><code class="docutils literal notranslate"><span class="pre">Tree.validate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core.Tree.from_adjacency_matrix"><code class="docutils literal notranslate"><span class="pre">Tree.from_adjacency_matrix()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.from_parent_array"><code class="docutils literal notranslate"><span class="pre">Tree.from_parent_array()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.to_parent_array"><code class="docutils literal notranslate"><span class="pre">Tree.to_parent_array()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.Tree.get_edge_length"><code class="docutils literal notranslate"><span class="pre">Tree.get_edge_length()</span></code></a></li>
@@ -128,8 +134,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.get_sibling"><code class="docutils literal notranslate"><span class="pre">BinaryTree.get_sibling()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.depth_first_search_lr"><code class="docutils literal notranslate"><span class="pre">BinaryTree.depth_first_search_lr()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.get_leaves_lr"><code class="docutils literal notranslate"><span class="pre">BinaryTree.get_leaves_lr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.horton_prune"><code class="docutils literal notranslate"><span class="pre">BinaryTree.horton_prune()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.horton_strahler_order"><code class="docutils literal notranslate"><span class="pre">BinaryTree.horton_strahler_order()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.validate"><code class="docutils literal notranslate"><span class="pre">BinaryTree.validate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.from_parent_array"><code class="docutils literal notranslate"><span class="pre">BinaryTree.from_parent_array()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#core.BinaryTree.to_parent_array_with_sides"><code class="docutils literal notranslate"><span class="pre">BinaryTree.to_parent_array_with_sides()</span></code></a></li>
@@ -261,13 +265,13 @@ with multiple graph libraries.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.BaseGraph.to_adjacency_matrix">
-<span class="sig-name descname"><span class="pre">to_adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'weight'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/core/base_graph.html#BaseGraph.to_adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BaseGraph.to_adjacency_matrix" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'length'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/core/base_graph.html#BaseGraph.to_adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BaseGraph.to_adjacency_matrix" title="Link to this definition"></a></dt>
 <dd><p>Export to numpy adjacency matrix.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.BaseGraph.to_sparse_matrix">
-<span class="sig-name descname"><span class="pre">to_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'weight'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/base_graph.html#BaseGraph.to_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BaseGraph.to_sparse_matrix" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'length'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/base_graph.html#BaseGraph.to_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BaseGraph.to_sparse_matrix" title="Link to this definition"></a></dt>
 <dd><p>Export to scipy sparse matrix.</p>
 </dd></dl>
 
@@ -335,7 +339,7 @@ to networkx, igraph, and scipy graph libraries and various graph representations
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.GraphRepresentation.to_adjacency_matrix">
-<span class="sig-name descname"><span class="pre">to_adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'weight'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/core/base_graph.html#GraphRepresentation.to_adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GraphRepresentation.to_adjacency_matrix" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'length'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/core/base_graph.html#GraphRepresentation.to_adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GraphRepresentation.to_adjacency_matrix" title="Link to this definition"></a></dt>
 <dd><p>Convert to adjacency matrix (numpy array).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -349,7 +353,7 @@ to networkx, igraph, and scipy graph libraries and various graph representations
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.GraphRepresentation.to_sparse_matrix">
-<span class="sig-name descname"><span class="pre">to_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'weight'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/base_graph.html#GraphRepresentation.to_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GraphRepresentation.to_sparse_matrix" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'length'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/core/base_graph.html#GraphRepresentation.to_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.GraphRepresentation.to_sparse_matrix" title="Link to this definition"></a></dt>
 <dd><p>Convert to scipy sparse matrix (CSR format).</p>
 </dd></dl>
 
@@ -939,6 +943,226 @@ If None, return array of all subtree sizes.</p>
 <dd class="field-even"><p>List of (parent, child, direction) tuples where direction is ‘down’ or ‘up’</p>
 </dd>
 </dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Build tree structure:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/             1   2</p>
+</div></blockquote>
+<p>/   /           3   4   5</p>
+</div></blockquote>
+<p>/</p>
+</dd>
+</dl>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(2, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; [(int(start), int(stop), direction) for (start, stop, direction) in tree.traverse_edges()]
+[(0, 1, ‘down’), (1, 3, ‘down’), (3, 6, ‘down’), (0, 2, ‘down’), (2, 4, ‘down’), (2, 5, ‘down’)]
+&gt;&gt;&gt; [(int(start), int(stop), direction) for (start, stop, direction) in tree.traverse_edges(mode=’contour’)]
+[(0, 1, ‘down’), (1, 3, ‘down’), (3, 6, ‘down’), (6, 3, ‘up’), (3, 1, ‘up’), (1, 0, ‘up’), (0, 2, ‘down’), (2, 4, ‘down’), (4, 2, ‘up’), (2, 5, ‘down’), (5, 2, ‘up’), (2, 0, ‘up’)]</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Tree.horton_strahler_order">
+<span class="sig-name descname"><span class="pre">horton_strahler_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.horton_strahler_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.horton_strahler_order" title="Link to this definition"></a></dt>
+<dd><p>Compute Horton-Strahler order for all nodes.</p>
+<p>The Horton-Strahler order is defined recursively:
+- Leaves have order 1
+- If a node has children with maximum order k, and exactly one child</p>
+<blockquote>
+<div><p>has order k, then the node has order k</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>If a node has children with maximum order k, and two or more children
+have order k, then the node has order k+1</p></li>
+</ul>
+<p>Works for general trees (not just binary), planted or unplanted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mapping from node to Horton-Strahler order</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<dl>
+<dt>Binary tree:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/ </p>
+</div></blockquote>
+<p>1   2</p>
+</div></blockquote>
+<p>/   </p>
+</div></blockquote>
+<p>3   4   5</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">horton_strahler_order</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Internal vertex</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Root</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># Leaf</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<dl>
+<dt>Non-binary tree:</dt><dd><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/ |            1  2  3</p>
+</div></blockquote>
+<p>/|</p>
+</div></blockquote>
+<p>4 5</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders2</span> <span class="o">=</span> <span class="n">tree2</span><span class="o">.</span><span class="n">horton_strahler_order</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders2</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tree2</span><span class="o">.</span><span class="n">horton_strahler_order</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">())]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders2</span>
+<span class="go">[2, 2, 1, 1, 1, 1]</span>
+</pre></div>
+</div>
+<dl>
+<dt>Another binary tree example:</dt><dd><blockquote>
+<div><blockquote>
+<div><p>0</p>
+</div></blockquote>
+<p>/           1  2</p>
+</div></blockquote>
+<dl class="simple">
+<dt>/ /         3 4  5 6</dt><dd><p>/</p>
+</dd>
+</dl>
+<p>7  8</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree3</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">from_parent_array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders3</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tree3</span><span class="o">.</span><span class="n">horton_strahler_order</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">())]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders3</span>
+<span class="go">[3, 2, 2, 1, 2, 1, 1, 1, 1]</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Tree.is_planted">
+<span class="sig-name descname"><span class="pre">is_planted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.is_planted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.is_planted" title="Link to this definition"></a></dt>
+<dd><p>Checks if a tree is planted (root has degree 1) or is otherwise stemless, this impacts how the overall Horton-Strahler order of the tree corresponds to the number of successive Horton prunings required to eliminate a tree
+&gt;&gt;&gt; tree = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)
+&gt;&gt;&gt; tree.is_planted()
+False
+&gt;&gt;&gt; tree2 = Tree.from_parent_array([-1, 0, 1, 1])
+&gt;&gt;&gt; tree2.is_planted()
+True</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Tree.horton_strahler_order_tree">
+<span class="sig-name descname"><span class="pre">horton_strahler_order_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.horton_strahler_order_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.horton_strahler_order_tree" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Tree.max_horton_prunings">
+<span class="sig-name descname"><span class="pre">max_horton_prunings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.max_horton_prunings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.max_horton_prunings" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.Tree.horton_prune">
+<span class="sig-name descname"><span class="pre">horton_prune</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.horton_prune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.horton_prune" title="Link to this definition"></a></dt>
+<dd><p>Perform Horton pruning on the tree.</p>
+<p>Horton pruning removes all branches that are not part of the main stem.
+The main stem is the path from root to a leaf that follows the highest
+Horton-Strahler orders at each node.</p>
+<p>At each internal node, we keep only the child with the highest order.
+If multiple children share the highest order, we pick the leftmost one.</p>
+<p>Also performs series reduction: removes degree-2 nodes (nodes with
+exactly one child) by connecting their parent directly to their child.</p>
+<p>Works for general trees (not just binary), planted or unplanted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>New pruned tree (original tree is not modified)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#core.Tree" title="core.Tree">Tree</a></p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<blockquote>
+<div><blockquote>
+<div><p>0             0            0</p>
+<blockquote>
+<div><blockquote>
+<div><p>/           /        /</p>
+</div></blockquote>
+<p>1   2         1  2         1  2</p>
+</div></blockquote>
+<p>/  /  -&gt;    /   -&gt;</p>
+</div></blockquote>
+<p>3 4  5        3</p>
+</div></blockquote>
+<p>/</p>
+</div>
+<p>6
+&gt;&gt;&gt; tree = Tree(n_nodes=7, root=0)
+&gt;&gt;&gt; tree.add_edge(0, 1, length=1.0)
+&gt;&gt;&gt; tree.add_edge(0, 2, length=1.5)
+&gt;&gt;&gt; tree.add_edge(1, 3, length=2.0)
+&gt;&gt;&gt; tree.add_edge(1, 4, length=1.0)
+&gt;&gt;&gt; tree.add_edge(2, 5, length=1.0)
+&gt;&gt;&gt; tree.add_edge(3, 6, length=0.5)
+&gt;&gt;&gt; pruned = tree.horton_prune()
+&gt;&gt;&gt; pruned.n_nodes
+3
+&gt;&gt;&gt; tree2 = Tree.from_parent_array([-1, 0, 0, 1, 1, 2, 2, 4, 4], root=0)
+&gt;&gt;&gt; tree2.max_horton_prunings()
+3
+&gt;&gt;&gt; tree2 = tree2.horton_prune()
+&gt;&gt;&gt; tree2.n_nodes
+3
+&gt;&gt;&gt; tree2 = tree2.horton_prune()
+&gt;&gt;&gt; tree2.n_nodes
+1
+&gt;&gt;&gt; tree2 = tree2.horton_prune()
+&gt;&gt;&gt; tree2.n_nodes
+0
+&gt;&gt;&gt; tree2
+Tree(n_nodes=0, n_leaves=0, root=-1)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -953,8 +1177,43 @@ If None, return array of all subtree sizes.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="core.Tree.from_adjacency_matrix">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.from_adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.from_adjacency_matrix" title="Link to this definition"></a></dt>
+<dd><p>Create tree from adjacency matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adj</strong> (<em>np.ndarray</em>) – Adjacency matrix (n x n)</p></li>
+<li><p><strong>weighted</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, matrix values are edge weights</p></li>
+<li><p><strong>root</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Root node. If None, inferred as node with no incoming edges.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reconstructed tree</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#core.Tree" title="core.Tree">Tree</a></p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">to_adjacency_matrix</span><span class="p">(</span><span class="n">weighted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">weight_attr</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">from_adjacency_matrix</span><span class="p">(</span><span class="n">adj</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">n_nodes</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree2</span><span class="o">.</span><span class="n">get_edge_length</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">2.0</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="core.Tree.from_parent_array">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_parent_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_lengths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.from_parent_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.from_parent_array" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_parent_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_lengths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></span><a class="reference internal" href="../_modules/core/tree.html#Tree.from_parent_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.Tree.from_parent_array" title="Link to this definition"></a></dt>
 <dd><p>Create tree from parent array (MATLAB-style).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1086,39 +1345,6 @@ Also stores whether the tree is ‘planted’ (root has degree 1).</p>
 <dt class="sig sig-object py" id="core.BinaryTree.get_leaves_lr">
 <span class="sig-name descname"><span class="pre">get_leaves_lr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/core/binary_tree.html#BinaryTree.get_leaves_lr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BinaryTree.get_leaves_lr" title="Link to this definition"></a></dt>
 <dd><p>Get leaves in left-to-right order.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="core.BinaryTree.horton_prune">
-<span class="sig-name descname"><span class="pre">horton_prune</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#core.BinaryTree" title="core.binary_tree.BinaryTree"><span class="pre">BinaryTree</span></a></span></span><a class="reference internal" href="../_modules/core/binary_tree.html#BinaryTree.horton_prune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BinaryTree.horton_prune" title="Link to this definition"></a></dt>
-<dd><p>Perform one Horton pruning operation.</p>
-<p>Removes all leaves and performs series reduction (removes degree-2 nodes).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The pruned tree</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#core.BinaryTree" title="core.BinaryTree">BinaryTree</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="core.BinaryTree.horton_strahler_order">
-<span class="sig-name descname"><span class="pre">horton_strahler_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/core/binary_tree.html#BinaryTree.horton_strahler_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.BinaryTree.horton_strahler_order" title="Link to this definition"></a></dt>
-<dd><p>Compute Horton-Strahler order of a node or the entire tree.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>node</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – If provided, return order of this node.
-If None, return order of the tree.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Horton-Strahler order</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1354,7 +1580,7 @@ If None, will assign left/right based on index order.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-11-17 16:42:34.
+      <span class="lastupdated">Last updated on 2025-11-27 22:52:58.
       </span></p>
   </div>
 
