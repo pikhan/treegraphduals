@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Series Module &mdash; treegraphduals 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Visualizations Module" href="visualizations.html" />
+    <link rel="prev" title="Core Module" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            treegraphduals
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Time Series Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#timeseries.TimeSeries"><code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.times"><code class="docutils literal notranslate"><span class="pre">TimeSeries.times</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.values"><code class="docutils literal notranslate"><span class="pre">TimeSeries.values</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.is_excursion"><code class="docutils literal notranslate"><span class="pre">TimeSeries.is_excursion</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.__init__"><code class="docutils literal notranslate"><span class="pre">TimeSeries.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.from_array"><code class="docutils literal notranslate"><span class="pre">TimeSeries.from_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.from_pandas"><code class="docutils literal notranslate"><span class="pre">TimeSeries.from_pandas()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.from_function"><code class="docutils literal notranslate"><span class="pre">TimeSeries.from_function()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.find_local_extrema"><code class="docutils literal notranslate"><span class="pre">TimeSeries.find_local_extrema()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.to_unit_slope_excursion"><code class="docutils literal notranslate"><span class="pre">TimeSeries.to_unit_slope_excursion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.to_minimal_excursion"><code class="docutils literal notranslate"><span class="pre">TimeSeries.to_minimal_excursion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.to_level_set_tree"><code class="docutils literal notranslate"><span class="pre">TimeSeries.to_level_set_tree()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.timeseries_to_tree"><code class="docutils literal notranslate"><span class="pre">timeseries_to_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.tree_to_timeseries"><code class="docutils literal notranslate"><span class="pre">tree_to_timeseries()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.tree_to_harris_path"><code class="docutils literal notranslate"><span class="pre">tree_to_harris_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.detect_local_extrema"><code class="docutils literal notranslate"><span class="pre">detect_local_extrema()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualizations.html">Visualizations Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing &amp; Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">treegraphduals</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Time Series Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/timeseries.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="time-series-module">
+<h1>Time Series Module<a class="headerlink" href="#time-series-module" title="Link to this heading"></a></h1>
+<p>The time series module provides the fundamental time series data structures and tools for manipulation/analysis.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="timeseries.TimeSeries">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Time series representation for level-set tree construction.</p>
+<p>Handles conversion between time series and trees via level-set trees
+and Harris path correspondences (Haskell 2020, Kovchegov &amp; Zaliapin 2020).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.times">
+<span class="sig-name descname"><span class="pre">times</span></span><a class="headerlink" href="#timeseries.TimeSeries.times" title="Link to this definition"></a></dt>
+<dd><p>Time points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.values">
+<span class="sig-name descname"><span class="pre">values</span></span><a class="headerlink" href="#timeseries.TimeSeries.values" title="Link to this definition"></a></dt>
+<dd><p>Function values at time points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.is_excursion">
+<span class="sig-name descname"><span class="pre">is_excursion</span></span><a class="headerlink" href="#timeseries.TimeSeries.is_excursion" title="Link to this definition"></a></dt>
+<dd><p>Whether series starts and ends at same value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Time points. If None, uses indices.</p></li>
+<li><p><strong>values</strong> (<em>array-like</em>) – Function values</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.from_array">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_array" title="Link to this definition"></a></dt>
+<dd><p>Create from numpy array or list (values only).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.from_pandas">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series_or_df</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_pandas" title="Link to this definition"></a></dt>
+<dd><p>Create from pandas Series or DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>series_or_df</strong> (<em>pd.Series</em><em> or </em><em>pd.DataFrame</em>) – If DataFrame, uses first column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.from_function">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_extrema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_function" title="Link to this definition"></a></dt>
+<dd><p>Create from continuous function (sympy or callable).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>callable</em><em> or </em><em>sympy expression</em>) – Function to evaluate</p></li>
+<li><p><strong>t_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Time interval</p></li>
+<li><p><strong>t_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Time interval</p></li>
+<li><p><strong>n_points</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of sample points</p></li>
+<li><p><strong>preserve_extrema</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, adds extra points at detected extrema</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.find_local_extrema">
+<span class="sig-name descname"><span class="pre">find_local_extrema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.find_local_extrema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.find_local_extrema" title="Link to this definition"></a></dt>
+<dd><p>Find indices of local minima and maxima.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>minima_indices</strong> (<em>np.ndarray</em>) – Indices of local minima</p></li>
+<li><p><strong>maxima_indices</strong> (<em>np.ndarray</em>) – Indices of local maxima</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.to_unit_slope_excursion">
+<span class="sig-name descname"><span class="pre">to_unit_slope_excursion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.to_unit_slope_excursion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.to_unit_slope_excursion" title="Link to this definition"></a></dt>
+<dd><p>Convert to piecewise linear excursion with alternating ±1 slopes.</p>
+<p>Preserves all local extrema, creates proper excursion starting
+and ending at 0 with slopes of exactly ±1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Excursion with unit slopes</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.to_minimal_excursion">
+<span class="sig-name descname"><span class="pre">to_minimal_excursion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.to_minimal_excursion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.to_minimal_excursion" title="Link to this definition"></a></dt>
+<dd><p>Convert to minimal excursion (Haskell 2020, Definition 3.2.3).</p>
+<p>Extends endpoints downward with slope ±1 until they meet at
+min(values), creating smallest excursion containing the series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Minimal excursion</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.to_level_set_tree">
+<span class="sig-name descname"><span class="pre">to_level_set_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_slopes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_excursion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_partial</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="core.html#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="core.html#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.to_level_set_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.to_level_set_tree" title="Link to this definition"></a></dt>
+<dd><p>Convert time series to level-set tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Edge length computation:
+- ‘euclidean’: sqrt((Δt)² + (Δy)²) [DEFAULT]
+- ‘vertical’: <a href="#id1"><span class="problematic" id="id2">|Δy|</span></a> (vertical distance only)
+- ‘manhattan’: <a href="#id3"><span class="problematic" id="id4">|Δt|</span></a> + <a href="#id5"><span class="problematic" id="id6">|Δy|</span></a>
+- ‘temporal’: <a href="#id7"><span class="problematic" id="id8">|Δt|</span></a> (temporal distance only)</p></li>
+<li><p><strong>unit_slopes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, converts to unit slope (±1) excursion first</p></li>
+<li><p><strong>force_excursion</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True and not an excursion, creates minimal excursion</p></li>
+<li><p><strong>return_partial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, returns (tree, start_idx, end_idx) marking partial tree bounds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>tree</strong> (<em>Tree</em>) – Level-set tree with edge lengths</p></li>
+<li><p><strong>start_idx, end_idx</strong> (<em>int (if return_partial=True)</em>) – Indices marking the partial tree region</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add doctests here</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<section id="conversion-functions">
+<h2>Conversion Functions<a class="headerlink" href="#conversion-functions" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="timeseries.timeseries_to_tree">
+<span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">timeseries_to_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="core.html#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#timeseries_to_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.timeseries_to_tree" title="Link to this definition"></a></dt>
+<dd><p>Convert any time series format to level-set tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>array-like</em><em>, </em><em>pd.Series</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>callable</em>) – Time series data in any supported format</p></li>
+<li><p><strong>**kwargs</strong> – Passed to TimeSeries.to_level_set_tree()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Level-set tree</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="core.html#core.Tree" title="core.Tree">Tree</a></p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add doctests here</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="timeseries.tree_to_timeseries">
+<span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">tree_to_timeseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="core.html#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#tree_to_timeseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.tree_to_timeseries" title="Link to this definition"></a></dt>
+<dd><p>Convert tree to Harris path time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> (<a class="reference internal" href="core.html#core.Tree" title="core.Tree"><em>Tree</em></a>) – Input tree</p></li>
+<li><p><strong>**kwargs</strong> – Passed to tree_to_harris_path()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Harris path</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add doctests here</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="timeseries.tree_to_harris_path">
+<span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">tree_to_harris_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="core.html#core.Tree" title="core.tree.Tree"><span class="pre">Tree</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#tree_to_harris_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.tree_to_harris_path" title="Link to this definition"></a></dt>
+<dd><p>Construct Harris path from tree (tree → time series).</p>
+<p>Creates piecewise linear function with slopes determined by edge lengths.
+For weighted trees, slopes = edge_length / unit_time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> (<a class="reference internal" href="core.html#core.Tree" title="core.Tree"><em>Tree</em></a>) – Input tree (can be partial tree)</p></li>
+<li><p><strong>start_node</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Starting node for partial Harris path. If None, uses root.</p></li>
+<li><p><strong>end_node</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Ending node for partial Harris path. If None, uses full tree.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Harris path (excursion if full tree, partial path otherwise)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add doctests here</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="timeseries.detect_local_extrema">
+<span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">detect_local_extrema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#detect_local_extrema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.detect_local_extrema" title="Link to this definition"></a></dt>
+<dd><p>Detect local extrema (both minima and maxima).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>values</strong> (<em>np.ndarray</em>) – Array of values</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean mask of extrema locations</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="core.html" class="btn btn-neutral float-left" title="Core Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="visualizations.html" class="btn btn-neutral float-right" title="Visualizations Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ibraheem Khan.
+      <span class="lastupdated">Last updated on 2025-12-02 16:16:32.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
