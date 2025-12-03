@@ -3,9 +3,9 @@ Time Series Module
 
 The time series module provides the fundamental time series data structures and tools for manipulation/analysis.
 
-.. automodule:: timeseries
+.. autoclass:: timeseries.TimeSeries
    :members:
-   :undoc-members:
+   :inherited-members:
    :show-inheritance:
 
 Conversion Functions

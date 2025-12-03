@@ -76,4 +76,4 @@ TOTAL                                1296    780    40%
 Coverage HTML written to dir htmlcov
 Coverage JSON written to file coverage.json
 Coverage Markdown information written to file docs/coverage_report.md
-============================== 40 passed in 1.32s ==============================
+============================== 40 passed in 1.21s ==============================
