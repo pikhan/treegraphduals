@@ -51,6 +51,8 @@ Contents
    :caption: API Reference
 
    api/core
+   api/timeseries
+   api/visualizations
 
 .. toctree::
    :maxdepth: 2

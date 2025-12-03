@@ -1,7 +1,7 @@
 Core Module
 ===========
 
-The core module provides the fundamental tree data structures.
+The core module provides the fundamental graph data structures.
 
 .. automodule:: core
    :members:

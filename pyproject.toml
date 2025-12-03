@@ -5,6 +5,7 @@ description = "An extension of my Master's thesis: [The Horizontal Tunnelability
 requires-python = ">=3.10"
 dependencies = [
     "igraph>=1.0.0",
+    "matplotlib>=3.10.7",
     "myst-parser>=4.0.1",
     "networkx>=3.4.2",
     "numpy>=2.2.6",

@@ -1,91 +1,79 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.10.19, pytest-9.0.1, pluggy-1.6.0 -- /home/pikhan/PycharmProjects/treegraphduals/.venv/bin/python3
+platform linux -- Python 3.12.3, pytest-9.0.1, pluggy-1.6.0 -- /home/enc-nvm/PycharmProjects/treegraphduals/.venv/bin/python3
 cachedir: .pytest_cache
-rootdir: /home/pikhan/PycharmProjects/treegraphduals
+rootdir: /home/enc-nvm/PycharmProjects/treegraphduals
 configfile: pytest.ini
+testpaths: tests
 plugins: cov-7.0.0
-collecting ... collected 59 items
+collecting ... collected 40 items
 
-core/tree.py::core.tree.Tree._series_reduction PASSED                    [  1%]
-core/tree.py::core.tree.Tree.breadth_first_search PASSED                 [  3%]
-core/tree.py::core.tree.Tree.depth_first_search PASSED                   [  5%]
-core/tree.py::core.tree.Tree.from_adjacency_matrix PASSED                [  6%]
-core/tree.py::core.tree.Tree.get_children PASSED                         [  8%]
-core/tree.py::core.tree.Tree.get_depth PASSED                            [ 10%]
-core/tree.py::core.tree.Tree.get_distance PASSED                         [ 11%]
-core/tree.py::core.tree.Tree.get_internal_nodes PASSED                   [ 13%]
-core/tree.py::core.tree.Tree.get_leaves PASSED                           [ 15%]
-core/tree.py::core.tree.Tree.get_parent PASSED                           [ 16%]
-core/tree.py::core.tree.Tree.get_path_between PASSED                     [ 18%]
-core/tree.py::core.tree.Tree.get_path_to_root PASSED                     [ 20%]
-core/tree.py::core.tree.Tree.get_subtree_size PASSED                     [ 22%]
-core/tree.py::core.tree.Tree.horton_prune PASSED                         [ 23%]
-core/tree.py::core.tree.Tree.horton_strahler_order PASSED                [ 25%]
-core/tree.py::core.tree.Tree.is_leaf PASSED                              [ 27%]
-core/tree.py::core.tree.Tree.is_planted PASSED                           [ 28%]
-core/tree.py::core.tree.Tree.is_root PASSED                              [ 30%]
-core/tree.py::core.tree.Tree.traverse_edges PASSED                       [ 32%]
-tests/test_binary_tree.py::TestBasicBinaryTree::test_demo_binary_tree PASSED [ 33%]
-tests/test_binary_tree.py::TestBasicBinaryTree::test_parent_array_conversion PASSED [ 35%]
-tests/test_binary_tree.py::TestBasicBinaryTree::test_networkx_conversion PASSED [ 37%]
-tests/test_binary_tree.py::TestBasicBinaryTree::test_igraph_conversion PASSED [ 38%]
-tests/test_binary_tree.py::TestBasicBinaryTree::test_adjacency_matrix PASSED [ 40%]
-tests/test_tree.py::TestTreeConstruction::test_empty_tree PASSED         [ 42%]
-tests/test_tree.py::TestTreeConstruction::test_basic_construction PASSED [ 44%]
-tests/test_tree.py::TestTreeConstruction::test_from_parent_array PASSED  [ 45%]
-tests/test_tree.py::TestTreeConstruction::test_parent_array_round_trip PASSED [ 47%]
-tests/test_tree.py::TestTreeOperations::test_get_parent PASSED           [ 49%]
-tests/test_tree.py::TestTreeOperations::test_get_children PASSED         [ 50%]
-tests/test_tree.py::TestTreeOperations::test_is_leaf PASSED              [ 52%]
-tests/test_tree.py::TestTreeOperations::test_get_leaves PASSED           [ 54%]
-tests/test_tree.py::TestTreeOperations::test_dfs PASSED                  [ 55%]
-tests/test_tree.py::TestTreeOperations::test_bfs PASSED                  [ 57%]
-tests/test_tree.py::TestTreeOperations::test_get_depth PASSED            [ 59%]
-tests/test_tree.py::TestTreeOperations::test_get_subtree_size PASSED     [ 61%]
-tests/test_tree.py::TestTreeOperations::test_get_path_to_root PASSED     [ 62%]
-tests/test_tree.py::TestTreeOperations::test_get_path_between PASSED     [ 64%]
-tests/test_tree.py::TestTreeOperations::test_get_distance_unweighted PASSED [ 66%]
-tests/test_tree.py::TestTreeOperations::test_get_distance_weighted PASSED [ 67%]
-tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_binary PASSED [ 69%]
-tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted PASSED [ 71%]
-tests/test_tree.py::TestTreeConversions::test_from_adjacency_matrix PASSED [ 72%]
-tests/test_tree.py::TestTreeConversions::test_to_networkx PASSED         [ 74%]
-tests/test_tree.py::TestTreeConversions::test_from_networkx PASSED       [ 76%]
-tests/test_tree.py::TestTreeValidation::test_valid_tree PASSED           [ 77%]
-tests/test_tree.py::TestTreeValidation::test_disconnected_tree_invalid PASSED [ 79%]
-tests/test_tree.py::TestTreeValidation::test_multiple_roots_invalid PASSED [ 81%]
-tests/test_tree.py::TestTreeEdgeCases::test_single_node_tree PASSED      [ 83%]
-tests/test_tree.py::TestTreeEdgeCases::test_node_attributes PASSED       [ 84%]
-tests/test_tree.py::TestTreeEdgeCases::test_edge_attributes PASSED       [ 86%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[1-0] PASSED [ 88%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[2-1] PASSED [ 89%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[3-1] PASSED [ 91%]
-tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[7-2] PASSED [ 93%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[10] PASSED [ 94%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[50] PASSED [ 96%]
-tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[100] PASSED [ 98%]
+tests/test_binary_tree.py::TestBasicBinaryTree::test_demo_binary_tree PASSED [  2%]
+tests/test_binary_tree.py::TestBasicBinaryTree::test_parent_array_conversion PASSED [  5%]
+tests/test_binary_tree.py::TestBasicBinaryTree::test_networkx_conversion PASSED [  7%]
+tests/test_binary_tree.py::TestBasicBinaryTree::test_igraph_conversion PASSED [ 10%]
+tests/test_binary_tree.py::TestBasicBinaryTree::test_adjacency_matrix PASSED [ 12%]
+tests/test_tree.py::TestTreeConstruction::test_empty_tree PASSED         [ 15%]
+tests/test_tree.py::TestTreeConstruction::test_basic_construction PASSED [ 17%]
+tests/test_tree.py::TestTreeConstruction::test_from_parent_array PASSED  [ 20%]
+tests/test_tree.py::TestTreeConstruction::test_parent_array_round_trip PASSED [ 22%]
+tests/test_tree.py::TestTreeOperations::test_get_parent PASSED           [ 25%]
+tests/test_tree.py::TestTreeOperations::test_get_children PASSED         [ 27%]
+tests/test_tree.py::TestTreeOperations::test_is_leaf PASSED              [ 30%]
+tests/test_tree.py::TestTreeOperations::test_get_leaves PASSED           [ 32%]
+tests/test_tree.py::TestTreeOperations::test_dfs PASSED                  [ 35%]
+tests/test_tree.py::TestTreeOperations::test_bfs PASSED                  [ 37%]
+tests/test_tree.py::TestTreeOperations::test_get_depth PASSED            [ 40%]
+tests/test_tree.py::TestTreeOperations::test_get_subtree_size PASSED     [ 42%]
+tests/test_tree.py::TestTreeOperations::test_get_path_to_root PASSED     [ 45%]
+tests/test_tree.py::TestTreeOperations::test_get_path_between PASSED     [ 47%]
+tests/test_tree.py::TestTreeOperations::test_get_distance_unweighted PASSED [ 50%]
+tests/test_tree.py::TestTreeOperations::test_get_distance_weighted PASSED [ 52%]
+tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_binary PASSED [ 55%]
+tests/test_tree.py::TestTreeConversions::test_to_adjacency_matrix_weighted PASSED [ 57%]
+tests/test_tree.py::TestTreeConversions::test_from_adjacency_matrix PASSED [ 60%]
+tests/test_tree.py::TestTreeConversions::test_to_networkx PASSED         [ 62%]
+tests/test_tree.py::TestTreeConversions::test_from_networkx PASSED       [ 65%]
+tests/test_tree.py::TestTreeValidation::test_valid_tree PASSED           [ 67%]
+tests/test_tree.py::TestTreeValidation::test_disconnected_tree_invalid PASSED [ 70%]
+tests/test_tree.py::TestTreeValidation::test_multiple_roots_invalid PASSED [ 72%]
+tests/test_tree.py::TestTreeEdgeCases::test_single_node_tree PASSED      [ 75%]
+tests/test_tree.py::TestTreeEdgeCases::test_node_attributes PASSED       [ 77%]
+tests/test_tree.py::TestTreeEdgeCases::test_edge_attributes PASSED       [ 80%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[1-0] PASSED [ 82%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[2-1] PASSED [ 85%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[3-1] PASSED [ 87%]
+tests/test_tree.py::TestTreeParametrized::test_balanced_tree_depth[7-2] PASSED [ 90%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[10] PASSED [ 92%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[50] PASSED [ 95%]
+tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[100] PASSED [ 97%]
 tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[500] PASSED [100%]
 
 ================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.10.19-final-0 _______________
+_______________ coverage: platform linux, python 3.12.3-final-0 ________________
 
-Name                    Stmts   Miss  Cover
--------------------------------------------
-core/__init__.py           12      0   100%
-core/base_graph.py        161     56    65%
-core/binary_tree.py       123     25    80%
-core/dag.py                54     42    22%
-core/erdos_renyi.py        14      8    43%
-core/forest.py             24     18    25%
-core/galton_watson.py      27     21    22%
-core/graph.py              14      9    36%
-core/multigraph.py         12      8    33%
-core/polytree.py           30     24    20%
-core/real_tree.py          19     14    26%
-core/tree.py              332     18    95%
--------------------------------------------
-TOTAL                     822    243    70%
+Name                                Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------
+core/__init__.py                       12      0   100%
+core/base_graph.py                    161     56    65%   65, 69-70, 78, 92, 96-97, 116-118, 137, 154-160, 165-177, 182-197, 202-212, 260, 265-267, 272-274, 279-281, 286, 289
+core/binary_tree.py                   123     25    80%   49, 58, 63, 67, 70, 90, 97, 108, 148, 153, 167, 205, 232-235, 257-265, 268-270
+core/dag.py                            54     42    22%   16-18, 22-26, 30, 34, 38, 42-67, 71-84
+core/erdos_renyi.py                    14      8    43%   11, 27-35
+core/forest.py                         24     18    25%   13-34, 38, 42
+core/galton_watson.py                  27     21    22%   11-12, 26-53
+core/graph.py                          14      9    36%   12-14, 18-22, 26
+core/multigraph.py                     12      8    33%   10-12, 16-23
+core/polytree.py                       30     24    20%   14-16, 20-23, 33-56
+core/real_tree.py                      19     14    26%   13-14, 20-36
+core/tree.py                          332     81    76%   75, 257, 286, 430, 597-618, 737-739, 742, 745-747, 805-833, 860-891, 911, 920, 922, 926, 969, 995, 1023-1026, 1035, 1045, 1078, 1096, 1136, 1163-1164
+timeseries/__init__.py                  2      2     0%   23-31
+timeseries/timeseries.py              222    222     0%   10-607
+visualizations/__init__.py              4      4     0%   17-36
+visualizations/plot_combined.py        36     36     0%   8-161
+visualizations/plot_timeseries.py      43     43     0%   6-180
+visualizations/plot_trees.py          167    167     0%   9-489
+-----------------------------------------------------------------
+TOTAL                                1296    780    40%
 Coverage HTML written to dir htmlcov
 Coverage JSON written to file coverage.json
 Coverage Markdown information written to file docs/coverage_report.md
-============================== 59 passed in 0.62s ==============================
+============================== 40 passed in 1.32s ==============================
