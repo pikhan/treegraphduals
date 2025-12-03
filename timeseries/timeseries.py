@@ -4,7 +4,7 @@ Time series to tree conversions using level-set trees and Harris paths.
 Implements constructions from:
 - Haskell (2020): Partial trees and partial Harris paths
 - Kovchegov & Zaliapin (2020): Random self-similar trees
-- Ibraheem Khan (2023): The Horizontal Tunnelability Graph is Dual to Level Set Trees.
+- Khan (2023): The Horizontal Tunnelability Graph is Dual to Level Set Trees.
 """
 
 import numpy as np
