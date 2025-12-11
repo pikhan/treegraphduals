@@ -119,22 +119,34 @@ class TimeSeries:
 
         Examples
         --------
-        >>> from visualizations import plot_timeseries
-        >>> from sympy import symbols
-        >>> from matplotlib import pyplot as plt
-        >>> t = symbols('t')
-        >>> myPolynomial = (t-1)*(t-3)*(t-5)*(t-7)
-        >>> myTS = TimeSeries.from_function(myPolynomial, 1, 7, preserve_extrema=False)
-        >>> fig, ax = plot_timeseries(myTS.times, myTS.values, title="original")
-        >>> plt.show()
+        .. plot::
+           :include-source:
+           :context: close-figs
 
-        >>> # With extrema only (piecewise linear)
-        >>> myTS_extrema = TimeSeries.from_function(myPolynomial, 1, 7, preserve_extrema=True)
-        >>> fig, ax = plot_timeseries(myTS_extrema.times, myTS_extrema.values, title="extrema")
-        >>> plt.show()
-        >>> myTS_extrema_minimal = myTS_extrema.to_minimal_excursion()
-        >>> fig, ax = plot_timeseries(myTS_extrema_minimal.times, myTS_extrema_minimal.values, title="minimal")
-        >>> plt.show()
+           from timeseries import TimeSeries
+           from visualizations import plot_timeseries
+           from sympy import symbols
+           import matplotlib.pyplot as plt
+           t = symbols('t')
+           myPolynomial = (t-1)*(t-3)*(t-5)*(t-7)
+           myTS = TimeSeries.from_function(myPolynomial, 1, 7, preserve_extrema=False)
+           fig, ax = plot_timeseries(myTS.times, myTS.values, title="Original Function")
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           # With extrema only (piecewise linear)
+           myTS_extrema = TimeSeries.from_function(myPolynomial, 1, 7, preserve_extrema=True)
+           fig, ax = plot_timeseries(myTS_extrema.times, myTS_extrema.values, title="extrema")
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           myTS_extrema_minimal = myTS_extrema.to_minimal_excursion()
+           fig, ax = plot_timeseries(myTS_extrema_minimal.times, myTS_extrema_minimal.values, title="minimal")
+           plt.show()
         """
         # Handle sympy functions
         try:
@@ -275,14 +287,18 @@ class TimeSeries:
 
         Examples
         --------
-        >>> from matplotlib import pyplot as plt
-        >>> from visualizations import plot_timeseries
-        >>> from sympy import symbols
-        >>> t = symbols('t')
-        >>> poly = (t-1)*(t-3)*(t-5)*(t-7)
-        >>> harris = TimeSeries.harris_path_from_function(poly, 1, 7)
-        >>> ax, fig = plot_timeseries(harris.times, harris.values)
-        >>> plt.show()
+        .. plot::
+           :include-source:
+           :context: close-figs
+
+           from matplotlib import pyplot as plt
+           from visualizations import plot_timeseries
+           from sympy import symbols
+           t = symbols('t')
+           poly = (t-1)*(t-3)*(t-5)*(t-7)
+           harris = TimeSeries.harris_path_from_function(poly, 1, 7)
+           ax, fig = plot_timeseries(harris.times, harris.values)
+           plt.show()
         """
         # Step 1: Sample function to get extrema
         ts_sampled = cls.from_function(func, t_start, t_end,
@@ -460,34 +476,57 @@ class TimeSeries:
 
         Examples
         --------
-        >>> from matplotlib import pyplot as plt
-        >>> from visualizations import plot_timeseries, plot_tree
-        >>> from sympy import symbols
-        >>> t = symbols('t')
-        >>> poly = (t-1)*(t-3)*(t-5)*(t-7)
-        >>> harris = TimeSeries.harris_path_from_function(poly, 1, 7)
-        >>> fig, ax = plot_timeseries(harris.times, harris.values)
-        >>> plt.show()
-        >>> myTree = harris.to_level_set_tree()
-        >>> ax, fig = plot_tree(myTree, layout='disk')
-        >>> plt.show()
-        >>> times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0])
-        >>> values = np.array([0.0, 6.0, 1.0, 3.0, 2.0, 4.0, 1.5, 5.0, 0.0])
-        >>> ts_nested = TimeSeries(times=times, values=values)
-        >>> tree_nested = ts_nested.to_level_set_tree(edge_metric='vertical')
-        >>> fig, ax = plot_timeseries(times, values, title="A Few Nested Peaks")
-        >>> plt.show()
-        >>> fig, ax = plot_tree(tree_nested, layout='disk', show_node_labels=True)
-        >>> plt.show()
-        >>> times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
-        >>> values = np.array([0.0, 2.0, 1.0, 3.0, 1.0, 2.0, 0.0])
-        >>> ts_triangle = TimeSeries(times=times, values=values)
-        >>> tree_triangle = ts_triangle.to_level_set_tree(edge_metric='vertical')
-        >>> fig, ax = plot_timeseries(times, values, title="Triangle Wave")
-        >>> plt.show()
-        >>> fig, ax = plot_tree(tree_triangle, layout='disk', show_node_labels=True)
-        >>> plt.show()
+        .. plot::
+           :include-source:
+           :context: close-figs
 
+           from matplotlib import pyplot as plt
+           from visualizations import plot_timeseries, plot_tree
+           from sympy import symbols
+           t = symbols('t')
+           poly = (t-1)*(t-3)*(t-5)*(t-7)
+           harris = TimeSeries.harris_path_from_function(poly, 1, 7)
+           fig, ax = plot_timeseries(harris.times, harris.values)
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           myTree = harris.to_level_set_tree()
+           ax, fig = plot_tree(myTree, layout='disk')
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0])
+           values = np.array([0.0, 6.0, 1.0, 3.0, 2.0, 4.0, 1.5, 5.0, 0.0])
+           ts_nested = TimeSeries(times=times, values=values)
+           tree_nested = ts_nested.to_level_set_tree(edge_metric='vertical')
+           fig, ax = plot_timeseries(times, values, title="A Few Nested Peaks")
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           fig, ax = plot_tree(tree_nested, layout='disk', show_node_labels=True)
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+           values = np.array([0.0, 2.0, 1.0, 3.0, 1.0, 2.0, 0.0])
+           ts_triangle = TimeSeries(times=times, values=values)
+           tree_triangle = ts_triangle.to_level_set_tree(edge_metric='vertical')
+           fig, ax = plot_timeseries(times, values, title="Triangle Wave")
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           fig, ax = plot_tree(tree_triangle, layout='disk', show_node_labels=True)
+           plt.show()
         """
         # Preprocess if needed
         ts = self

@@ -8,6 +8,7 @@
   <title>timeseries.timeseries &mdash; treegraphduals 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -90,7 +91,7 @@
 <span class="sd">Implements constructions from:</span>
 <span class="sd">- Haskell (2020): Partial trees and partial Harris paths</span>
 <span class="sd">- Kovchegov &amp; Zaliapin (2020): Random self-similar trees</span>
-<span class="sd">- Ibraheem Khan (2023): The Horizontal Tunnelability Graph is Dual to Level Set Trees.</span>
+<span class="sd">- Khan (2023): The Horizontal Tunnelability Graph is Dual to Level Set Trees.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -196,6 +197,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create from continuous function (sympy or callable).</span>
 
+<span class="sd">        If preserve_extrema=True, only includes t_start, t_end, and local extrema points.</span>
+<span class="sd">        Otherwise, uses n_points uniform sampling.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        func : callable or sympy expression</span>
@@ -203,9 +207,46 @@
 <span class="sd">        t_start, t_end : float</span>
 <span class="sd">            Time interval</span>
 <span class="sd">        n_points : int</span>
-<span class="sd">            Number of sample points</span>
+<span class="sd">            Number of sample points (only used if preserve_extrema=False or for initial detection)</span>
 <span class="sd">        preserve_extrema : bool</span>
-<span class="sd">            If True, adds extra points at detected extrema</span>
+<span class="sd">            If True, returns time series with only extrema points (piecewise linear)</span>
+<span class="sd">            If False, returns uniformly sampled time series</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TimeSeries</span>
+<span class="sd">            Time series with specified points</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. plot::</span>
+<span class="sd">           :include-source:</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           from timeseries import TimeSeries</span>
+<span class="sd">           from visualizations import plot_timeseries</span>
+<span class="sd">           from sympy import symbols</span>
+<span class="sd">           import matplotlib.pyplot as plt</span>
+<span class="sd">           t = symbols(&#39;t&#39;)</span>
+<span class="sd">           myPolynomial = (t-1)*(t-3)*(t-5)*(t-7)</span>
+<span class="sd">           myTS = TimeSeries.from_function(myPolynomial, 1, 7, preserve_extrema=False)</span>
+<span class="sd">           fig, ax = plot_timeseries(myTS.times, myTS.values, title=&quot;Original Function&quot;)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           # With extrema only (piecewise linear)</span>
+<span class="sd">           myTS_extrema = TimeSeries.from_function(myPolynomial, 1, 7, preserve_extrema=True)</span>
+<span class="sd">           fig, ax = plot_timeseries(myTS_extrema.times, myTS_extrema.values, title=&quot;extrema&quot;)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           myTS_extrema_minimal = myTS_extrema.to_minimal_excursion()</span>
+<span class="sd">           fig, ax = plot_timeseries(myTS_extrema_minimal.times, myTS_extrema_minimal.values, title=&quot;minimal&quot;)</span>
+<span class="sd">           plt.show()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Handle sympy functions</span>
         <span class="k">try</span><span class="p">:</span>
@@ -214,21 +255,165 @@
                 <span class="c1"># Convert sympy to lambda</span>
                 <span class="n">t</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
                 <span class="n">func_lambda</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="s1">&#39;numpy&#39;</span><span class="p">)</span>
+                <span class="n">is_sympy</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">func_lambda</span> <span class="o">=</span> <span class="n">func</span>
+                <span class="n">is_sympy</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="n">func_lambda</span> <span class="o">=</span> <span class="n">func</span>
+            <span class="n">is_sympy</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="c1"># Sample function</span>
-        <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">func_lambda</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">preserve_extrema</span><span class="p">:</span>
+            <span class="c1"># Simple uniform sampling</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">func_lambda</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">])</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">preserve_extrema</span><span class="p">:</span>
-            <span class="c1"># Detect extrema and add points</span>
-            <span class="n">extrema_mask</span> <span class="o">=</span> <span class="n">detect_local_extrema</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-            <span class="c1"># Could add more points around extrema, but for now just use base sampling</span>
+        <span class="c1"># preserve_extrema=True: only keep t_start, t_end, and local extrema</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span></div>
+        <span class="c1"># For sympy functions, use exact symbolic differentiation</span>
+        <span class="k">if</span> <span class="n">is_sympy</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+                <span class="n">t_sym</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+
+                <span class="c1"># Compute derivative</span>
+                <span class="n">func_derivative</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">t_sym</span><span class="p">)</span>
+
+                <span class="c1"># Find critical points</span>
+                <span class="n">critical_points</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">func_derivative</span><span class="p">,</span> <span class="n">t_sym</span><span class="p">)</span>
+
+                <span class="c1"># Filter to real numbers in interval</span>
+                <span class="n">extrema_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">t_start</span><span class="p">]</span>
+
+                <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">critical_points</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">cp_float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">evalf</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="n">t_start</span> <span class="o">&lt;</span> <span class="n">cp_float</span> <span class="o">&lt;</span> <span class="n">t_end</span><span class="p">:</span>  <span class="c1"># Strictly interior</span>
+                            <span class="n">extrema_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cp_float</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                <span class="n">extrema_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t_end</span><span class="p">)</span>
+                <span class="n">extrema_times</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">extrema_times</span><span class="p">)</span>
+
+                <span class="c1"># Evaluate function at extrema</span>
+                <span class="n">extrema_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">func_lambda</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">extrema_times</span><span class="p">])</span>
+
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">extrema_times</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">extrema_values</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># Fall back to numerical method if symbolic fails</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Symbolic differentiation failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">, using numerical method&quot;</span><span class="p">)</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># Numerical method for non-sympy or if symbolic failed</span>
+        <span class="c1"># Use fine sampling with better extrema detection</span>
+        <span class="n">times_dense</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+        <span class="n">values_dense</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">func_lambda</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times_dense</span><span class="p">])</span>
+
+        <span class="c1"># Use scipy to find peaks (more robust than manual detection)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_peaks</span>
+
+            <span class="c1"># Find maxima</span>
+            <span class="n">maxima_idx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="n">values_dense</span><span class="p">)</span>
+
+            <span class="c1"># Find minima (peaks of negative function)</span>
+            <span class="n">minima_idx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="o">-</span><span class="n">values_dense</span><span class="p">)</span>
+
+            <span class="c1"># Combine</span>
+            <span class="n">extrema_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">maxima_idx</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">minima_idx</span><span class="p">))</span>
+
+            <span class="c1"># Add endpoints</span>
+            <span class="n">extrema_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">extrema_indices</span> <span class="o">+</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">times_dense</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">extrema_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extrema_indices</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="c1"># Fallback: Manual detection with tolerance</span>
+            <span class="n">extrema_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Start</span>
+
+            <span class="c1"># Use a wider window for comparison to handle flat regions</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">times_dense</span><span class="p">)</span> <span class="o">//</span> <span class="mi">100</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values_dense</span><span class="p">)</span> <span class="o">-</span> <span class="n">window</span><span class="p">):</span>
+                <span class="c1"># Check if local maximum (within window)</span>
+                <span class="n">is_max</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">values_dense</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">is_max</span> <span class="o">=</span> <span class="n">is_max</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">values_dense</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+                <span class="c1"># Check if local minimum (within window)</span>
+                <span class="n">is_min</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">values_dense</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">is_min</span> <span class="o">=</span> <span class="n">is_min</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">values_dense</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+                <span class="c1"># Check if it&#39;s actually an extremum (not flat everywhere)</span>
+                <span class="n">left_change</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">values_dense</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">window</span><span class="p">])</span>
+                <span class="n">right_change</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">values_dense</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">window</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">is_max</span> <span class="ow">or</span> <span class="n">is_min</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">left_change</span> <span class="o">&gt;</span> <span class="mf">1e-10</span> <span class="ow">or</span> <span class="n">right_change</span> <span class="o">&gt;</span> <span class="mf">1e-10</span><span class="p">):</span>
+                    <span class="c1"># Avoid duplicates (don&#39;t add if very close to previous extremum)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">extrema_indices</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">-</span> <span class="n">extrema_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">window</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">extrema_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="n">extrema_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times_dense</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># End</span>
+
+        <span class="c1"># Extract extrema points</span>
+        <span class="n">times_extrema</span> <span class="o">=</span> <span class="n">times_dense</span><span class="p">[</span><span class="n">extrema_indices</span><span class="p">]</span>
+        <span class="n">values_extrema</span> <span class="o">=</span> <span class="n">values_dense</span><span class="p">[</span><span class="n">extrema_indices</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times_extrema</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values_extrema</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TimeSeries.harris_path_from_function">
+<a class="viewcode-back" href="../../api/timeseries.html#timeseries.TimeSeries.harris_path_from_function">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">harris_path_from_function</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">t_start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">t_end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                                  <span class="n">n_sample</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;TimeSeries&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create Harris path directly from function.</span>
+
+<span class="sd">        Builds level-set tree from function, then constructs Harris path</span>
+<span class="sd">        with alternating ±1 slopes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func : callable or sympy expression</span>
+<span class="sd">            Function to convert</span>
+<span class="sd">        t_start, t_end : float</span>
+<span class="sd">            Time interval</span>
+<span class="sd">        n_sample : int</span>
+<span class="sd">            Sampling density for extrema detection</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TimeSeries</span>
+<span class="sd">            Harris path with ±1 slopes</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. plot::</span>
+<span class="sd">           :include-source:</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           from matplotlib import pyplot as plt</span>
+<span class="sd">           from visualizations import plot_timeseries</span>
+<span class="sd">           from sympy import symbols</span>
+<span class="sd">           t = symbols(&#39;t&#39;)</span>
+<span class="sd">           poly = (t-1)*(t-3)*(t-5)*(t-7)</span>
+<span class="sd">           harris = TimeSeries.harris_path_from_function(poly, 1, 7)</span>
+<span class="sd">           ax, fig = plot_timeseries(harris.times, harris.values)</span>
+<span class="sd">           plt.show()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Step 1: Sample function to get extrema</span>
+        <span class="n">ts_sampled</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span>
+                                       <span class="n">n_points</span><span class="o">=</span><span class="n">n_sample</span><span class="p">,</span> <span class="n">preserve_extrema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Step 2: Build level-set tree</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ts_sampled</span><span class="o">.</span><span class="n">to_level_set_tree</span><span class="p">(</span><span class="n">edge_metric</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">unit_slopes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Step 3: Construct Harris path from tree</span>
+        <span class="n">harris_path</span> <span class="o">=</span> <span class="n">tree_to_harris_path</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">harris_path</span></div>
 
 
 <div class="viewcode-block" id="TimeSeries.find_local_extrema">
@@ -406,7 +591,57 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; # Add doctests here</span>
+<span class="sd">        .. plot::</span>
+<span class="sd">           :include-source:</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           from matplotlib import pyplot as plt</span>
+<span class="sd">           from visualizations import plot_timeseries, plot_tree</span>
+<span class="sd">           from sympy import symbols</span>
+<span class="sd">           t = symbols(&#39;t&#39;)</span>
+<span class="sd">           poly = (t-1)*(t-3)*(t-5)*(t-7)</span>
+<span class="sd">           harris = TimeSeries.harris_path_from_function(poly, 1, 7)</span>
+<span class="sd">           fig, ax = plot_timeseries(harris.times, harris.values)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           myTree = harris.to_level_set_tree()</span>
+<span class="sd">           ax, fig = plot_tree(myTree, layout=&#39;disk&#39;)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0])</span>
+<span class="sd">           values = np.array([0.0, 6.0, 1.0, 3.0, 2.0, 4.0, 1.5, 5.0, 0.0])</span>
+<span class="sd">           ts_nested = TimeSeries(times=times, values=values)</span>
+<span class="sd">           tree_nested = ts_nested.to_level_set_tree(edge_metric=&#39;vertical&#39;)</span>
+<span class="sd">           fig, ax = plot_timeseries(times, values, title=&quot;A Few Nested Peaks&quot;)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           fig, ax = plot_tree(tree_nested, layout=&#39;disk&#39;, show_node_labels=True)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0])</span>
+<span class="sd">           values = np.array([0.0, 2.0, 1.0, 3.0, 1.0, 2.0, 0.0])</span>
+<span class="sd">           ts_triangle = TimeSeries(times=times, values=values)</span>
+<span class="sd">           tree_triangle = ts_triangle.to_level_set_tree(edge_metric=&#39;vertical&#39;)</span>
+<span class="sd">           fig, ax = plot_timeseries(times, values, title=&quot;Triangle Wave&quot;)</span>
+<span class="sd">           plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           fig, ax = plot_tree(tree_triangle, layout=&#39;disk&#39;, show_node_labels=True)</span>
+<span class="sd">           plt.show()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Preprocess if needed</span>
         <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span>
@@ -450,86 +685,102 @@
                                     <span class="n">maxima_idx</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                                     <span class="n">edge_metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tree</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Build level-set tree from extrema.</span>
+<span class="sd">    Build level-set tree from excursion using left-to-right connection.</span>
 
-<span class="sd">    Algorithm:</span>
-<span class="sd">    - Maxima become leaves</span>
-<span class="sd">    - Minima become internal nodes</span>
-<span class="sd">    - Parent-child relationships determined by nesting structure</span>
+<span class="sd">    Algorithm from level-set tree definition:</span>
+<span class="sd">    - Leaves at local maxima</span>
+<span class="sd">    - Internal nodes at local minima</span>
+<span class="sd">    - Root at baseline (value=0)</span>
+<span class="sd">    - Connect vertices left-to-right</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Combine extrema with type labels</span>
-    <span class="n">extrema</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">minima_idx</span><span class="p">:</span>
-        <span class="n">extrema</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;min&#39;</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">maxima_idx</span><span class="p">:</span>
-        <span class="n">extrema</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;max&#39;</span><span class="p">))</span>
 
-    <span class="c1"># Sort by index (temporal order)</span>
-    <span class="n">extrema</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># Verify excursion</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must be an excursion (start and end at same value)&quot;</span><span class="p">)</span>
 
-    <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">extrema</span><span class="p">)</span>
+    <span class="c1"># Get interior extrema (exclude endpoints)</span>
+    <span class="n">interior_minima</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">minima_idx</span> <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">interior_maxima</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">maxima_idx</span> <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Build list of all nodes</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;root&#39;</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">interior_minima</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;min&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">interior_maxima</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;max&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Sort by time (left-to-right)</span>
+    <span class="n">nodes</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">n_nodes</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="c1"># Map extrema index to node ID</span>
-    <span class="n">extrema_to_node</span> <span class="o">=</span> <span class="p">{</span><span class="n">extrema</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)}</span>
+    <span class="c1"># Map time index to node id</span>
+    <span class="n">idx_to_node</span> <span class="o">=</span> <span class="p">{</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)}</span>
 
-    <span class="c1"># Build tree structure using stack-based algorithm</span>
-    <span class="c1"># This implements the nesting structure of level sets</span>
-    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Stack of (node_id, value, type)</span>
+    <span class="c1"># Separate valleys and peaks in order</span>
+    <span class="n">valleys</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span> <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">]</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span> <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">]</span>
 
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">etype</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">extrema</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">etype</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
-            <span class="c1"># Leaf node - find its parent (most recent lower minimum)</span>
-            <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
-                <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="c1"># Connect root to first valley</span>
+    <span class="k">if</span> <span class="n">valleys</span><span class="p">:</span>
+        <span class="n">first_valley_node</span> <span class="o">=</span> <span class="n">valleys</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">first_valley_idx</span> <span class="o">=</span> <span class="n">valleys</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">stack</span><span class="p">:</span>
-                <span class="n">parent_id</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="c1"># Compute edge length</span>
-                <span class="n">parent_idx</span> <span class="o">=</span> <span class="n">extrema</span><span class="p">[</span><span class="n">parent_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">edge_length</span> <span class="o">=</span> <span class="n">_compute_edge_length</span><span class="p">(</span>
+            <span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">times</span><span class="p">[</span><span class="n">first_valley_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">first_valley_idx</span><span class="p">],</span>
+            <span class="n">edge_metric</span>
+        <span class="p">)</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">first_valley_node</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
+
+    <span class="c1"># Connect each valley to its left and right children</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">valley_node</span><span class="p">,</span> <span class="n">valley_idx</span><span class="p">,</span> <span class="n">valley_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">valleys</span><span class="p">):</span>
+        <span class="c1"># LEFT child: peak immediately before this valley</span>
+        <span class="n">left_peak</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">peak_node</span><span class="p">,</span> <span class="n">peak_idx</span><span class="p">,</span> <span class="n">peak_val</span> <span class="ow">in</span> <span class="n">peaks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">peak_idx</span> <span class="o">&lt;</span> <span class="n">valley_idx</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">left_peak</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">peak_idx</span> <span class="o">&gt;</span> <span class="n">left_peak</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">left_peak</span> <span class="o">=</span> <span class="p">(</span><span class="n">peak_node</span><span class="p">,</span> <span class="n">peak_idx</span><span class="p">,</span> <span class="n">peak_val</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">left_peak</span><span class="p">:</span>
+            <span class="n">peak_node</span><span class="p">,</span> <span class="n">peak_idx</span><span class="p">,</span> <span class="n">peak_val</span> <span class="o">=</span> <span class="n">left_peak</span>
+            <span class="n">edge_length</span> <span class="o">=</span> <span class="n">_compute_edge_length</span><span class="p">(</span>
+                <span class="n">times</span><span class="p">[</span><span class="n">valley_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">valley_idx</span><span class="p">],</span>
+                <span class="n">times</span><span class="p">[</span><span class="n">peak_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">peak_idx</span><span class="p">],</span>
+                <span class="n">edge_metric</span>
+            <span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">valley_node</span><span class="p">,</span> <span class="n">peak_node</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
+            <span class="c1"># Remove this peak so it&#39;s not used again</span>
+            <span class="n">peaks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">peaks</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="n">peak_idx</span><span class="p">]</span>
+
+        <span class="c1"># RIGHT child: next valley OR next peak (if last valley)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">valleys</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Not last valley → RIGHT child is next valley</span>
+            <span class="n">next_valley_node</span><span class="p">,</span> <span class="n">next_valley_idx</span><span class="p">,</span> <span class="n">next_valley_val</span> <span class="o">=</span> <span class="n">valleys</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">edge_length</span> <span class="o">=</span> <span class="n">_compute_edge_length</span><span class="p">(</span>
+                <span class="n">times</span><span class="p">[</span><span class="n">valley_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">valley_idx</span><span class="p">],</span>
+                <span class="n">times</span><span class="p">[</span><span class="n">next_valley_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">next_valley_idx</span><span class="p">],</span>
+                <span class="n">edge_metric</span>
+            <span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">valley_node</span><span class="p">,</span> <span class="n">next_valley_node</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Last valley → RIGHT child is next peak (if any)</span>
+            <span class="n">right_peak</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">peak_node</span><span class="p">,</span> <span class="n">peak_idx</span><span class="p">,</span> <span class="n">peak_val</span> <span class="ow">in</span> <span class="n">peaks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">peak_idx</span> <span class="o">&gt;</span> <span class="n">valley_idx</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">right_peak</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">peak_idx</span> <span class="o">&lt;</span> <span class="n">right_peak</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">right_peak</span> <span class="o">=</span> <span class="p">(</span><span class="n">peak_node</span><span class="p">,</span> <span class="n">peak_idx</span><span class="p">,</span> <span class="n">peak_val</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">right_peak</span><span class="p">:</span>
+                <span class="n">peak_node</span><span class="p">,</span> <span class="n">peak_idx</span><span class="p">,</span> <span class="n">peak_val</span> <span class="o">=</span> <span class="n">right_peak</span>
                 <span class="n">edge_length</span> <span class="o">=</span> <span class="n">_compute_edge_length</span><span class="p">(</span>
-                    <span class="n">times</span><span class="p">[</span><span class="n">parent_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">parent_idx</span><span class="p">],</span>
-                    <span class="n">times</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                    <span class="n">times</span><span class="p">[</span><span class="n">valley_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">valley_idx</span><span class="p">],</span>
+                    <span class="n">times</span><span class="p">[</span><span class="n">peak_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">peak_idx</span><span class="p">],</span>
                     <span class="n">edge_metric</span>
                 <span class="p">)</span>
-                <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent_id</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># This maxima is at top level (shouldn&#39;t happen in proper excursion)</span>
-                <span class="n">tree</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">i</span>
-
-            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">etype</span><span class="p">))</span>
-
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># minimum</span>
-            <span class="c1"># Internal node - may be parent to previous maxima</span>
-            <span class="c1"># Pop maxima that are higher than this minimum</span>
-            <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">val</span><span class="p">:</span>
-                <span class="n">child_id</span><span class="p">,</span> <span class="n">child_val</span><span class="p">,</span> <span class="n">child_type</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">child_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
-                    <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child_id</span><span class="p">)</span>
-
-            <span class="c1"># Add this minimum to stack</span>
-            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">etype</span><span class="p">))</span>
-
-            <span class="c1"># Connect children to this minimum</span>
-            <span class="k">for</span> <span class="n">child_id</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
-                <span class="n">child_idx</span> <span class="o">=</span> <span class="n">extrema</span><span class="p">[</span><span class="n">child_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">edge_length</span> <span class="o">=</span> <span class="n">_compute_edge_length</span><span class="p">(</span>
-                    <span class="n">times</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="n">times</span><span class="p">[</span><span class="n">child_idx</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">child_idx</span><span class="p">],</span>
-                    <span class="n">edge_metric</span>
-                <span class="p">)</span>
-                <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child_id</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
-
-    <span class="c1"># Find root (lowest minimum or highest point)</span>
-    <span class="n">min_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">minima_idx</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">minima_idx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">root_candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">etype</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">extrema</span><span class="p">)</span>
-                       <span class="k">if</span> <span class="n">etype</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">==</span> <span class="n">min_val</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">root_candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">tree</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root_candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">tree</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">valley_node</span><span class="p">,</span> <span class="n">peak_node</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">edge_length</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">tree</span>
 
@@ -596,6 +847,8 @@
 <span class="sd">    &gt;&gt;&gt; # Add doctests here</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">start_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">start_node</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">root</span>
 
     <span class="c1"># Perform tree traversal (DFS contour)</span>
@@ -740,7 +993,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-12-02 16:08:51.
+      <span class="lastupdated">Last updated on 2025-12-10 23:24:16.
       </span></p>
   </div>
 

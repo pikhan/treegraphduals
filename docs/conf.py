@@ -47,7 +47,15 @@ extensions = [
     'sphinx.ext.mathjax',        # Math support
     'sphinx.ext.coverage',       # Coverage of docstrings
     'myst_parser',
+    'matplotlib.sphinxext.plot_directive',
 ]
+
+# Plot directive configuration
+plot_include_source = True  # Show the code
+plot_html_show_source_link = False  # Hide "Source code" link
+plot_formats = [('png', 100)]  # Output format and DPI
+plot_html_show_formats = False  # Don't show format links
+
 
 # Napoleon settings for NumPy-style docstrings
 napoleon_google_docstring = True

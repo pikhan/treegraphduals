@@ -1,7 +1,7 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.12.3, pytest-9.0.1, pluggy-1.6.0 -- /home/enc-nvm/PycharmProjects/treegraphduals/.venv/bin/python3
+platform linux -- Python 3.10.19, pytest-9.0.1, pluggy-1.6.0 -- /home/pikhan/PycharmProjects/treegraphduals/.venv/bin/python3
 cachedir: .pytest_cache
-rootdir: /home/enc-nvm/PycharmProjects/treegraphduals
+rootdir: /home/pikhan/PycharmProjects/treegraphduals
 configfile: pytest.ini
 testpaths: tests
 plugins: cov-7.0.0
@@ -49,7 +49,7 @@ tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[100] PASSED
 tests/test_tree.py::TestTreeParametrized::test_large_tree_operations[500] PASSED [100%]
 
 ================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.12.3-final-0 ________________
+_______________ coverage: platform linux, python 3.10.19-final-0 _______________
 
 Name                                Stmts   Miss  Cover   Missing
 -----------------------------------------------------------------
@@ -66,14 +66,14 @@ core/polytree.py                       30     24    20%   14-16, 20-23, 33-56
 core/real_tree.py                      19     14    26%   13-14, 20-36
 core/tree.py                          332     81    76%   75, 257, 286, 430, 597-618, 737-739, 742, 745-747, 805-833, 860-891, 911, 920, 922, 926, 969, 995, 1023-1026, 1035, 1045, 1078, 1096, 1136, 1163-1164
 timeseries/__init__.py                  2      2     0%   23-31
-timeseries/timeseries.py              222    222     0%   10-607
+timeseries/timeseries.py              288    288     0%   10-856
 visualizations/__init__.py              4      4     0%   17-36
-visualizations/plot_combined.py        36     36     0%   8-161
-visualizations/plot_timeseries.py      43     43     0%   6-180
-visualizations/plot_trees.py          167    167     0%   9-489
+visualizations/plot_combined.py        35     35     0%   8-160
+visualizations/plot_timeseries.py      42     42     0%   6-178
+visualizations/plot_trees.py          210    210     0%   9-628
 -----------------------------------------------------------------
-TOTAL                                1296    780    40%
+TOTAL                                1403    887    37%
 Coverage HTML written to dir htmlcov
 Coverage JSON written to file coverage.json
 Coverage Markdown information written to file docs/coverage_report.md
-============================== 40 passed in 1.21s ==============================
+============================== 40 passed in 1.29s ==============================

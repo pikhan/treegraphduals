@@ -9,6 +9,7 @@
   <title>Time Series Module &mdash; treegraphduals 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -61,6 +62,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.from_array"><code class="docutils literal notranslate"><span class="pre">TimeSeries.from_array()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.from_pandas"><code class="docutils literal notranslate"><span class="pre">TimeSeries.from_pandas()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.from_function"><code class="docutils literal notranslate"><span class="pre">TimeSeries.from_function()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.harris_path_from_function"><code class="docutils literal notranslate"><span class="pre">TimeSeries.harris_path_from_function()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.find_local_extrema"><code class="docutils literal notranslate"><span class="pre">TimeSeries.find_local_extrema()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.to_unit_slope_excursion"><code class="docutils literal notranslate"><span class="pre">TimeSeries.to_unit_slope_excursion()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timeseries.TimeSeries.to_minimal_excursion"><code class="docutils literal notranslate"><span class="pre">TimeSeries.to_minimal_excursion()</span></code></a></li>
@@ -117,7 +119,7 @@
 <p>The time series module provides the fundamental time series data structures and tools for manipulation/analysis.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="timeseries.TimeSeries">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Time series representation for level-set tree construction.</p>
 <p>Handles conversion between time series and trees via level-set trees
@@ -171,13 +173,13 @@ and Harris path correspondences (Haskell 2020, Kovchegov &amp; Zaliapin 2020).</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="timeseries.TimeSeries.from_array">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_array" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_array" title="Link to this definition"></a></dt>
 <dd><p>Create from numpy array or list (values only).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="timeseries.TimeSeries.from_pandas">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series_or_df</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_pandas" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series_or_df</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_pandas" title="Link to this definition"></a></dt>
 <dd><p>Create from pandas Series or DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -188,19 +190,102 @@ and Harris path correspondences (Haskell 2020, Kovchegov &amp; Zaliapin 2020).</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="timeseries.TimeSeries.from_function">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_extrema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_function" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_extrema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.from_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.from_function" title="Link to this definition"></a></dt>
 <dd><p>Create from continuous function (sympy or callable).</p>
+<p>If preserve_extrema=True, only includes t_start, t_end, and local extrema points.
+Otherwise, uses n_points uniform sampling.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>callable</em><em> or </em><em>sympy expression</em>) – Function to evaluate</p></li>
 <li><p><strong>t_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Time interval</p></li>
 <li><p><strong>t_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Time interval</p></li>
-<li><p><strong>n_points</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of sample points</p></li>
-<li><p><strong>preserve_extrema</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, adds extra points at detected extrema</p></li>
+<li><p><strong>n_points</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of sample points (only used if preserve_extrema=False or for initial detection)</p></li>
+<li><p><strong>preserve_extrema</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, returns time series with only extrema points (piecewise linear)
+If False, returns uniformly sampled time series</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Time series with specified points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.TimeSeries">TimeSeries</a></p>
+</dd>
 </dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">timeseries</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">visualizations</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_timeseries</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">symbols</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">myPolynomial</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">myTS</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">myPolynomial</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">preserve_extrema</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">myTS</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">myTS</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original Function&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-1.png" class="plot-directive" src="../_images/timeseries-1.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># With extrema only (piecewise linear)</span>
+<span class="n">myTS_extrema</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">myPolynomial</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">preserve_extrema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">myTS_extrema</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">myTS_extrema</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;extrema&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-2.png" class="plot-directive" src="../_images/timeseries-2.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">myTS_extrema_minimal</span> <span class="o">=</span> <span class="n">myTS_extrema</span><span class="o">.</span><span class="n">to_minimal_excursion</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">myTS_extrema_minimal</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">myTS_extrema_minimal</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;minimal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-3.png" class="plot-directive" src="../_images/timeseries-3.png" />
+</figure>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timeseries.TimeSeries.harris_path_from_function">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">harris_path_from_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.timeseries.TimeSeries"><span class="pre">TimeSeries</span></a></span></span><a class="reference internal" href="../_modules/timeseries/timeseries.html#TimeSeries.harris_path_from_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timeseries.TimeSeries.harris_path_from_function" title="Link to this definition"></a></dt>
+<dd><p>Create Harris path directly from function.</p>
+<p>Builds level-set tree from function, then constructs Harris path
+with alternating ±1 slopes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>callable</em><em> or </em><em>sympy expression</em>) – Function to convert</p></li>
+<li><p><strong>t_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Time interval</p></li>
+<li><p><strong>t_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Time interval</p></li>
+<li><p><strong>n_sample</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Sampling density for extrema detection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Harris path with ±1 slopes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#timeseries.TimeSeries" title="timeseries.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">visualizations</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_timeseries</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">symbols</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">harris</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">harris_path_from_function</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">harris</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">harris</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-4.png" class="plot-directive" src="../_images/timeseries-4.png" />
+</figure>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -277,9 +362,63 @@ min(values), creating smallest excursion containing the series.</p>
 </dl>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add doctests here</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">visualizations</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_timeseries</span><span class="p">,</span> <span class="n">plot_tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">symbols</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">harris</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">harris_path_from_function</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">harris</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">harris</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+<figure class="align-default">
+<img alt="../_images/timeseries-5.png" class="plot-directive" src="../_images/timeseries-5.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">myTree</span> <span class="o">=</span> <span class="n">harris</span><span class="o">.</span><span class="n">to_level_set_tree</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_tree</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s1">&#39;disk&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-6.png" class="plot-directive" src="../_images/timeseries-6.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">ts_nested</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+<span class="n">tree_nested</span> <span class="o">=</span> <span class="n">ts_nested</span><span class="o">.</span><span class="n">to_level_set_tree</span><span class="p">(</span><span class="n">edge_metric</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;A Few Nested Peaks&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-7.png" class="plot-directive" src="../_images/timeseries-7.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_tree</span><span class="p">(</span><span class="n">tree_nested</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s1">&#39;disk&#39;</span><span class="p">,</span> <span class="n">show_node_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-8.png" class="plot-directive" src="../_images/timeseries-8.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">])</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">ts_triangle</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+<span class="n">tree_triangle</span> <span class="o">=</span> <span class="n">ts_triangle</span><span class="o">.</span><span class="n">to_level_set_tree</span><span class="p">(</span><span class="n">edge_metric</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Triangle Wave&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-9.png" class="plot-directive" src="../_images/timeseries-9.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_tree</span><span class="p">(</span><span class="n">tree_triangle</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s1">&#39;disk&#39;</span><span class="p">,</span> <span class="n">show_node_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/timeseries-10.png" class="plot-directive" src="../_images/timeseries-10.png" />
+</figure>
 </div>
 </dd></dl>
 
@@ -403,7 +542,7 @@ For weighted trees, slopes = edge_length / unit_time.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-12-02 16:16:32.
+      <span class="lastupdated">Last updated on 2025-12-10 23:24:16.
       </span></p>
   </div>
 

@@ -13,9 +13,9 @@
 | core/real\_tree.py                 |       19 |       14 |     26% |
 | core/tree.py                       |      332 |       81 |     76% |
 | timeseries/\_\_init\_\_.py         |        2 |        2 |      0% |
-| timeseries/timeseries.py           |      222 |      222 |      0% |
+| timeseries/timeseries.py           |      288 |      288 |      0% |
 | visualizations/\_\_init\_\_.py     |        4 |        4 |      0% |
-| visualizations/plot\_combined.py   |       36 |       36 |      0% |
-| visualizations/plot\_timeseries.py |       43 |       43 |      0% |
-| visualizations/plot\_trees.py      |      167 |      167 |      0% |
-|                          **TOTAL** | **1296** |  **780** | **40%** |
+| visualizations/plot\_combined.py   |       35 |       35 |      0% |
+| visualizations/plot\_timeseries.py |       42 |       42 |      0% |
+| visualizations/plot\_trees.py      |      210 |      210 |      0% |
+|                          **TOTAL** | **1403** |  **887** | **37%** |

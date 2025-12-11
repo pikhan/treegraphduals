@@ -95,8 +95,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">)))</span>
-
 
 <div class="viewcode-block" id="plot_timeseries">
 <a class="viewcode-back" href="../../api/visualizations.html#visualizations.plot_timeseries">[docs]</a>
@@ -138,7 +136,7 @@
 <span class="sd">    &gt;&gt;&gt; times = np.linspace(0, 10, 100)</span>
 <span class="sd">    &gt;&gt;&gt; values = np.sin(times)</span>
 <span class="sd">    &gt;&gt;&gt; fig, ax = plot_timeseries(times, values, title=&quot;Sine wave&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; # plt.show()</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 
@@ -191,7 +189,7 @@
 <span class="sd">    &gt;&gt;&gt; times = np.linspace(0, 10, 100)</span>
 <span class="sd">    &gt;&gt;&gt; values = np.sin(times) + 0.1 * np.sin(5 * times)</span>
 <span class="sd">    &gt;&gt;&gt; fig, ax = plot_timeseries_with_extrema(times, values)</span>
-<span class="sd">    &gt;&gt;&gt; # plt.show()</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -261,7 +259,7 @@
 <span class="sd">    &gt;&gt;&gt; times = np.array([0, 1, 2, 3, 4])</span>
 <span class="sd">    &gt;&gt;&gt; values = np.array([0, 1, 2, 1, 0])</span>
 <span class="sd">    &gt;&gt;&gt; fig, ax = plot_excursion(times, values)</span>
-<span class="sd">    &gt;&gt;&gt; # plt.show()</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -283,7 +281,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-12-02 16:08:51.
+      <span class="lastupdated">Last updated on 2025-12-10 22:51:14.
       </span></p>
   </div>
 
