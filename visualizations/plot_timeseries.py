@@ -45,10 +45,22 @@ def plot_timeseries(times: np.ndarray,
 
     Examples
     --------
-    >>> times = np.linspace(0, 10, 100)
-    >>> values = np.sin(times)
-    >>> fig, ax = plot_timeseries(times, values, title="Sine wave")
-    >>> plt.show()
+
+        .. plot::
+           :include-source:
+           :context: close-figs
+
+           import numpy as np
+           import matplotlib.pyplot as plt
+           from core.tree import Tree
+           from core.binary_tree import BinaryTree
+           from visualizations.plot_trees import plot_tree
+           from visualizations.plot_timeseries import plot_timeseries, plot_timeseries_with_extrema, plot_excursion
+
+           times = np.linspace(0, 10, 100)
+           values = np.sin(times)
+           fig, ax = plot_timeseries(times, values, title="Sine wave")
+           plt.show()
     """
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -95,10 +107,14 @@ def plot_timeseries_with_extrema(times: np.ndarray,
 
     Examples
     --------
-    >>> times = np.linspace(0, 10, 100)
-    >>> values = np.sin(times) + 0.1 * np.sin(5 * times)
-    >>> fig, ax = plot_timeseries_with_extrema(times, values)
-    >>> plt.show()
+        .. plot::
+           :include-source:
+           :context: close-figs
+
+           times = np.linspace(0, 10, 100)
+           values = np.sin(times) + 0.1 * np.sin(5 * times)
+           fig, ax = plot_timeseries_with_extrema(times, values)
+           plt.show()
     """
     fig, ax = plot_timeseries(times, values, **kwargs)
 
@@ -162,10 +178,14 @@ def plot_excursion(times: np.ndarray,
 
     Examples
     --------
-    >>> times = np.array([0, 1, 2, 3, 4])
-    >>> values = np.array([0, 1, 2, 1, 0])
-    >>> fig, ax = plot_excursion(times, values)
-    >>> plt.show()
+        .. plot::
+           :include-source:
+           :context: close-figs
+
+           times = np.array([0, 1, 2, 3, 4])
+           values = np.array([0, 1, 2, 1, 0])
+           fig, ax = plot_excursion(times, values)
+           plt.show()
     """
     fig, ax = plot_timeseries(times, values, **kwargs)
 

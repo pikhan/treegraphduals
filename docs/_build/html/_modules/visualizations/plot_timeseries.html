@@ -8,6 +8,7 @@
   <title>visualizations.plot_timeseries &mdash; treegraphduals 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -133,10 +134,22 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; times = np.linspace(0, 10, 100)</span>
-<span class="sd">    &gt;&gt;&gt; values = np.sin(times)</span>
-<span class="sd">    &gt;&gt;&gt; fig, ax = plot_timeseries(times, values, title=&quot;Sine wave&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">           :include-source:</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           import numpy as np</span>
+<span class="sd">           import matplotlib.pyplot as plt</span>
+<span class="sd">           from core.tree import Tree</span>
+<span class="sd">           from core.binary_tree import BinaryTree</span>
+<span class="sd">           from visualizations.plot_trees import plot_tree</span>
+<span class="sd">           from visualizations.plot_timeseries import plot_timeseries, plot_timeseries_with_extrema, plot_excursion</span>
+
+<span class="sd">           times = np.linspace(0, 10, 100)</span>
+<span class="sd">           values = np.sin(times)</span>
+<span class="sd">           fig, ax = plot_timeseries(times, values, title=&quot;Sine wave&quot;)</span>
+<span class="sd">           plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 
@@ -186,10 +199,14 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; times = np.linspace(0, 10, 100)</span>
-<span class="sd">    &gt;&gt;&gt; values = np.sin(times) + 0.1 * np.sin(5 * times)</span>
-<span class="sd">    &gt;&gt;&gt; fig, ax = plot_timeseries_with_extrema(times, values)</span>
-<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+<span class="sd">        .. plot::</span>
+<span class="sd">           :include-source:</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           times = np.linspace(0, 10, 100)</span>
+<span class="sd">           values = np.sin(times) + 0.1 * np.sin(5 * times)</span>
+<span class="sd">           fig, ax = plot_timeseries_with_extrema(times, values)</span>
+<span class="sd">           plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -256,10 +273,14 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; times = np.array([0, 1, 2, 3, 4])</span>
-<span class="sd">    &gt;&gt;&gt; values = np.array([0, 1, 2, 1, 0])</span>
-<span class="sd">    &gt;&gt;&gt; fig, ax = plot_excursion(times, values)</span>
-<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+<span class="sd">        .. plot::</span>
+<span class="sd">           :include-source:</span>
+<span class="sd">           :context: close-figs</span>
+
+<span class="sd">           times = np.array([0, 1, 2, 3, 4])</span>
+<span class="sd">           values = np.array([0, 1, 2, 1, 0])</span>
+<span class="sd">           fig, ax = plot_excursion(times, values)</span>
+<span class="sd">           plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_timeseries</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -281,7 +302,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2025, Ibraheem Khan.
-      <span class="lastupdated">Last updated on 2025-12-10 22:51:14.
+      <span class="lastupdated">Last updated on 2025-12-10 23:50:19.
       </span></p>
   </div>
 

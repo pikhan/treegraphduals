@@ -56,27 +56,43 @@ def plot_tree(tree: Tree,
 
     Examples
     --------
-    >>> tree = Tree(n_nodes=5, root=0)
-    >>> tree.add_edge(0, 1, length=1.0)
-    >>> tree.add_edge(0, 2, length=1.5)
-    >>> tree.add_edge(1,2)
-    >>> tree.validate()
-    False
-    >>> tree = Tree(n_nodes=5, root=0)
-    >>> tree.add_edge(0, 1, length=1.0)
-    >>> tree.add_edge(0, 2, length=1.5)
-    >>> tree.add_edge(1, 3, length=2)
-    >>> tree.add_edge(1, 4, length=0.5)
-    >>> tree.validate()
-    True
-    >>> fig, ax = plot_tree(tree, layout='disk', show_node_labels=True, show_edge_lengths=True)
-    >>> plt.show()  # User calls explicitly
-    >>> fig, ax = plot_tree(tree, layout='radial', show_node_labels=True, show_edge_lengths=True)
-    >>> plt.show()
-    >>> fig, ax = plot_tree(tree, layout='force', show_node_labels=True, show_edge_lengths=True)
-    >>> plt.show()
-    >>> fig, ax = plot_tree(tree, layout='hierarchical', show_node_labels=True, show_edge_lengths=True)
-    >>> plt.show()
+        .. plot::
+           :include-source:
+           :context: close-figs
+
+           import numpy as np
+           import matplotlib.pyplot as plt
+           from core.tree import Tree
+           from core.binary_tree import BinaryTree
+           from visualizations.plot_trees import plot_tree
+           import visualizations.plot_timeseries
+
+           tree = Tree(n_nodes=5, root=0)
+           tree.add_edge(0, 1, length=1.0)
+           tree.add_edge(0, 2, length=1.5)
+           tree.add_edge(1, 3, length=2)
+           tree.add_edge(1, 4, length=0.5)
+
+           fig, ax = plot_tree(tree, layout='disk', show_node_labels=True, show_edge_lengths=True)
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           fig, ax = plot_tree(tree, layout='radial', show_node_labels=True, show_edge_lengths=True)
+           plt.show()
+
+       .. plot::
+           :context: close-figs
+
+           fig, ax = plot_tree(tree, layout='force', show_node_labels=True, show_edge_lengths=True)
+           plt.show()
+
+       .. plot::
+           :context: close-figs
+
+           fig, ax = plot_tree(tree, layout='hierarchical', show_node_labels=True, show_edge_lengths=True)
+           plt.show()
     """
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -398,18 +414,24 @@ def color_by_horton_strahler(tree: Tree,
 
     Examples
     --------
-    >>> tree = BinaryTree(n_nodes=7, root=0)
-    >>> tree.add_edge(0, 1)
-    >>> tree.add_edge(0, 2)
-    >>> tree.add_edge(1, 3)
-    >>> tree.add_edge(1, 4)
-    >>> tree.add_edge(2, 5)
-    >>> tree.add_edge(2, 6)
-    >>> from visualizations.plot_trees import _disk_layout
-    >>> pos = _disk_layout(tree)
-    >>> fig, ax = plt.subplots(figsize=(10, 10))
-    >>> ax = color_by_horton_strahler(tree, pos, ax)
-    >>> plt.show()
+    .. plot::
+       :include-source:
+       :context: close-figs
+
+       from visualizations.plot_trees import color_by_horton_strahler
+
+       tree = BinaryTree(n_nodes=7, root=0)
+       tree.add_edge(0, 1)
+       tree.add_edge(0, 2)
+       tree.add_edge(1, 3)
+       tree.add_edge(1, 4)
+       tree.add_edge(2, 5)
+       tree.add_edge(2, 6)
+       from visualizations.plot_trees import _disk_layout
+       pos = _disk_layout(tree)
+       fig, ax = plt.subplots(figsize=(10, 10))
+       ax = color_by_horton_strahler(tree, pos, ax)
+       plt.show()
     """
     from core.binary_tree import BinaryTree
 
@@ -529,14 +551,19 @@ def add_node_annotation(tree: Tree,
 
     Examples
     --------
-    >>> tree = Tree(n_nodes=5, root=0)
-    >>> tree.add_edge(0, 1)
-    >>> tree.add_edge(0, 2)
-    >>> from visualizations.plot_trees import _disk_layout
-    >>> pos = _disk_layout(tree)
-    >>> fig, ax = plot_tree(tree, layout='disk')
-    >>> ax = add_node_annotation(tree, pos, ax, 0, "Root node", fontsize=12)
-    >>> plt.show()
+    .. plot::
+       :include-source:
+       :context: close-figs
+
+       from visualizations.plot_trees import add_node_annotation, add_edge_annotation
+       tree = Tree(n_nodes=5, root=0)
+       tree.add_edge(0, 1)
+       tree.add_edge(0, 2)
+       from visualizations.plot_trees import _disk_layout
+       pos = _disk_layout(tree)
+       fig, ax = plot_tree(tree, layout='disk')
+       ax = add_node_annotation(tree, pos, ax, 0, "Root node", fontsize=12)
+       plt.show()
     """
     if node_idx not in pos:
         raise ValueError(f"Node {node_idx} not in position dictionary")
@@ -590,14 +617,18 @@ def add_edge_annotation(tree: Tree,
 
     Examples
     --------
-    >>> tree = Tree(n_nodes=3, root=0)
-    >>> tree.add_edge(0, 1, length=2.5)
-    >>> tree.add_edge(0, 2, length=1.5)
-    >>> from visualizations.plot_trees import _disk_layout
-    >>> pos = _disk_layout(tree)
-    >>> fig, ax = plot_tree(tree, layout='disk', show_edge_lengths=False)
-    >>> ax = add_edge_annotation(tree, pos, ax, 0, 1, "Important edge")
-    >>> plt.show()
+    .. plot::
+       :include-source:
+       :context: close-figs
+
+       tree = Tree(n_nodes=3, root=0)
+       tree.add_edge(0, 1, length=2.5)
+       tree.add_edge(0, 2, length=1.5)
+       from visualizations.plot_trees import _disk_layout
+       pos = _disk_layout(tree)
+       fig, ax = plot_tree(tree, layout='disk', show_edge_lengths=False)
+       ax = add_edge_annotation(tree, pos, ax, 0, 1, "Important edge")
+       plt.show()
     """
     if parent_idx not in pos:
         raise ValueError(f"Parent node {parent_idx} not in position dictionary")

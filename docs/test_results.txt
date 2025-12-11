@@ -69,11 +69,11 @@ timeseries/__init__.py                  2      2     0%   23-31
 timeseries/timeseries.py              288    288     0%   10-856
 visualizations/__init__.py              4      4     0%   17-36
 visualizations/plot_combined.py        35     35     0%   8-160
-visualizations/plot_timeseries.py      42     42     0%   6-178
-visualizations/plot_trees.py          210    210     0%   9-628
+visualizations/plot_timeseries.py      42     42     0%   6-198
+visualizations/plot_trees.py          210    210     0%   9-659
 -----------------------------------------------------------------
 TOTAL                                1403    887    37%
 Coverage HTML written to dir htmlcov
 Coverage JSON written to file coverage.json
 Coverage Markdown information written to file docs/coverage_report.md
-============================== 40 passed in 1.29s ==============================
+============================== 40 passed in 0.94s ==============================
