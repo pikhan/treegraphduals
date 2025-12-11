@@ -14,8 +14,6 @@ from typing import Optional, Dict, Tuple, List
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from core.tree import Tree
 from core.binary_tree import BinaryTree
 
@@ -61,8 +59,24 @@ def plot_tree(tree: Tree,
     >>> tree = Tree(n_nodes=5, root=0)
     >>> tree.add_edge(0, 1, length=1.0)
     >>> tree.add_edge(0, 2, length=1.5)
-    >>> fig, ax = plot_tree(tree, layout='disk')
-    >>> # plt.show()  # User calls explicitly
+    >>> tree.add_edge(1,2)
+    >>> tree.validate()
+    False
+    >>> tree = Tree(n_nodes=5, root=0)
+    >>> tree.add_edge(0, 1, length=1.0)
+    >>> tree.add_edge(0, 2, length=1.5)
+    >>> tree.add_edge(1, 3, length=2)
+    >>> tree.add_edge(1, 4, length=0.5)
+    >>> tree.validate()
+    True
+    >>> fig, ax = plot_tree(tree, layout='disk', show_node_labels=True, show_edge_lengths=True)
+    >>> plt.show()  # User calls explicitly
+    >>> fig, ax = plot_tree(tree, layout='radial', show_node_labels=True, show_edge_lengths=True)
+    >>> plt.show()
+    >>> fig, ax = plot_tree(tree, layout='force', show_node_labels=True, show_edge_lengths=True)
+    >>> plt.show()
+    >>> fig, ax = plot_tree(tree, layout='hierarchical', show_node_labels=True, show_edge_lengths=True)
+    >>> plt.show()
     """
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -349,75 +363,161 @@ def _draw_disk_boundary(ax: plt.Axes):
 
 
 def color_by_horton_strahler(tree: Tree,
-                             fig: plt.Figure,
+                             pos: Dict[int, Tuple[float, float]],
                              ax: plt.Axes,
-                             cmap: str = 'viridis') -> Tuple[plt.Figure, plt.Axes]:
+                             cmap: str = 'viridis',
+                             node_size: int = 300,
+                             show_node_labels: bool = False,
+                             show_edge_lengths: bool = False) -> plt.Axes:
     """
-    Apply Horton-Strahler order coloring to existing tree plot.
+    Apply Horton-Strahler order coloring to tree plot.
+
+    Redraws the tree on existing axes with nodes colored by Horton-Strahler order.
 
     Parameters
     ----------
     tree : Tree or BinaryTree
-        Tree with Horton-Strahler orders computed
-    fig : matplotlib.Figure
-        Existing figure
+        Tree with Horton-Strahler orders
+    pos : dict
+        Node positions from layout {node_id: (x, y)}
     ax : matplotlib.Axes
-        Existing axes with tree plot
+        Axes to draw on
     cmap : str
-        Colormap name
+        Colormap name (default: 'viridis')
+    node_size : int
+        Size of nodes
+    show_node_labels : bool
+        Show node IDs
+    show_edge_lengths : bool
+        Show edge lengths as labels
 
     Returns
     -------
-    fig : matplotlib.Figure
     ax : matplotlib.Axes
-        Updated with color coding
+        Updated axes with colored tree
 
     Examples
     --------
     >>> tree = BinaryTree(n_nodes=7, root=0)
-    >>> # ... add edges ...
-    >>> fig, ax = plot_tree(tree, layout='disk')
-    >>> orders = tree.horton_strahler_order()
-    >>> fig, ax = color_by_horton_strahler(tree, fig, ax)
-    >>> # plt.show()
+    >>> tree.add_edge(0, 1)
+    >>> tree.add_edge(0, 2)
+    >>> tree.add_edge(1, 3)
+    >>> tree.add_edge(1, 4)
+    >>> tree.add_edge(2, 5)
+    >>> tree.add_edge(2, 6)
+    >>> from visualizations.plot_trees import _disk_layout
+    >>> pos = _disk_layout(tree)
+    >>> fig, ax = plt.subplots(figsize=(10, 10))
+    >>> ax = color_by_horton_strahler(tree, pos, ax)
+    >>> plt.show()
     """
+    from core.binary_tree import BinaryTree
+
     # Compute Horton-Strahler orders
     if isinstance(tree, BinaryTree):
         orders = tree.horton_strahler_order()
     else:
-        # For general trees, need to implement horton_strahler_order
-        # For now, use depth as proxy
+        # For general trees, use depth as proxy
+        # (general tree Horton-Strahler not yet implemented)
         orders = {i: int(tree.get_depth(i)) for i in range(tree.n_nodes)}
 
     # Get colormap
     max_order = max(orders.values())
+    min_order = min(orders.values())
     cmap_obj = plt.get_cmap(cmap)
 
-    # Clear and redraw with colors
-    # This is a simplified version - full implementation would
-    # extract positions from existing plot
-    # TBD: More elegant solution
+    # Normalize orders to [0, 1] for colormap
+    if max_order == min_order:
+        norm_orders = {node: 0.5 for node in orders}
+    else:
+        norm_orders = {node: (orders[node] - min_order) / (max_order - min_order)
+                       for node in orders}
 
+    # Clear axes
     ax.clear()
-    ax.text(0.5, 0.5, 'TBD: Horton-Strahler coloring\nUse plot_tree() with custom colors',
-            transform=ax.transAxes, ha='center', va='center', fontsize=12)
 
-    return fig, ax
+    # Redraw edges
+    for node in tree.breadth_first_search():
+        x1, y1 = pos[node]
+
+        for child in tree.get_children(node):
+            x2, y2 = pos[child]
+
+            # Draw edge
+            ax.plot([x1, x2], [y1, y2], 'k-', linewidth=1.5, zorder=1, alpha=0.6)
+
+            # Show edge length if requested
+            if show_edge_lengths:
+                length = tree.get_edge_length(node, child)
+                mid_x, mid_y = (x1 + x2) / 2, (y1 + y2) / 2
+                ax.text(mid_x, mid_y, f'{length:.2f}',
+                        fontsize=8, ha='center',
+                        bbox=dict(boxstyle='round,pad=0.3',
+                                  facecolor='white', edgecolor='none', alpha=0.7))
+
+    # Draw nodes with colors
+    leaves = tree.get_leaves()
+    root = tree.root
+
+    for node in range(tree.n_nodes):
+        x, y = pos[node]
+
+        # Get color from Horton-Strahler order
+        color = cmap_obj(norm_orders[node])
+
+        # Marker shape: root=square, others=circle
+        if node == root:
+            marker = 's'
+        else:
+            marker = 'o'
+
+        # Draw node
+        ax.scatter(x, y, s=node_size, c=[color], marker=marker,
+                   edgecolors='black', linewidths=1.5, zorder=2)
+
+        # Show node labels if requested
+        if show_node_labels:
+            ax.text(x, y, str(node), fontsize=10, ha='center', va='center',
+                    zorder=3, fontweight='bold')
+
+    # Add colorbar
+    sm = plt.cm.ScalarMappable(cmap=cmap_obj,
+                               norm=plt.Normalize(vmin=min_order, vmax=max_order))
+    sm.set_array([])
+    cbar = plt.colorbar(sm, ax=ax, pad=0.02)
+    cbar.set_label('Horton-Strahler Order', fontsize=12)
+
+    # Redraw disk boundary for disk layout
+    circle = Circle((0, 0), 1.0, fill=False, edgecolor='gray',
+                    linewidth=2, linestyle='--', alpha=0.5)
+    ax.add_patch(circle)
+
+    ax.set_aspect('equal')
+    ax.axis('off')
+    ax.set_title('Tree colored by Horton-Strahler Order', fontsize=14)
+
+    return ax
 
 
-def add_node_annotation(ax: plt.Axes,
-                        node_pos: Tuple[float, float],
+def add_node_annotation(tree: Tree,
+                        pos: Dict[int, Tuple[float, float]],
+                        ax: plt.Axes,
+                        node_idx: int,
                         text: str,
                         **kwargs) -> plt.Axes:
     """
-    Add annotation to a specific node.
+    Add annotation to a specific node (disk layout).
 
     Parameters
     ----------
+    tree : Tree
+        Tree being plotted (not used currently, for future extensions)
+    pos : dict
+        Node positions from layout {node_id: (x, y)}
     ax : matplotlib.Axes
         Axes to annotate
-    node_pos : tuple
-        (x, y) position of node
+    node_idx : int
+        Index of node to annotate
     text : str
         Annotation text
     **kwargs
@@ -429,36 +529,56 @@ def add_node_annotation(ax: plt.Axes,
 
     Examples
     --------
-    >>> fig, ax = plot_tree(tree)
-    >>> ax = add_node_annotation(ax, (0, 0), "Root node", fontsize=12)
+    >>> tree = Tree(n_nodes=5, root=0)
+    >>> tree.add_edge(0, 1)
+    >>> tree.add_edge(0, 2)
+    >>> from visualizations.plot_trees import _disk_layout
+    >>> pos = _disk_layout(tree)
+    >>> fig, ax = plot_tree(tree, layout='disk')
+    >>> ax = add_node_annotation(tree, pos, ax, 0, "Root node", fontsize=12)
+    >>> plt.show()
     """
+    if node_idx not in pos:
+        raise ValueError(f"Node {node_idx} not in position dictionary")
+
+    node_pos = pos[node_idx]
+
     default_kwargs = {
         'fontsize': 10,
         'bbox': dict(boxstyle='round,pad=0.5', facecolor='yellow', alpha=0.7),
-        'arrowprops': dict(arrowstyle='->', connectionstyle='arc3,rad=0.3')
+        'arrowprops': dict(arrowstyle='->', connectionstyle='arc3,rad=0.3'),
+        'xytext': (20, 20),
+        'textcoords': 'offset points'
     }
     default_kwargs.update(kwargs)
 
-    ax.annotate(text, xy=node_pos, xytext=(10, 10),
-                textcoords='offset points', **default_kwargs)
+    ax.annotate(text, xy=node_pos, **default_kwargs)
 
     return ax
 
 
-def add_edge_annotation(ax: plt.Axes,
-                        pos1: Tuple[float, float],
-                        pos2: Tuple[float, float],
+def add_edge_annotation(tree: Tree,
+                        pos: Dict[int, Tuple[float, float]],
+                        ax: plt.Axes,
+                        parent_idx: int,
+                        child_idx: int,
                         text: str,
                         **kwargs) -> plt.Axes:
     """
-    Add annotation to an edge.
+    Add annotation to an edge (disk layout).
 
     Parameters
     ----------
+    tree : Tree
+        Tree being plotted
+    pos : dict
+        Node positions from layout {node_id: (x, y)}
     ax : matplotlib.Axes
         Axes to annotate
-    pos1, pos2 : tuple
-        Edge endpoints (x, y)
+    parent_idx : int
+        Parent node index
+    child_idx : int
+        Child node index
     text : str
         Annotation text
     **kwargs
@@ -470,15 +590,34 @@ def add_edge_annotation(ax: plt.Axes,
 
     Examples
     --------
-    >>> fig, ax = plot_tree(tree)
-    >>> ax = add_edge_annotation(ax, (0, 0), (1, 1), "Important edge")
+    >>> tree = Tree(n_nodes=3, root=0)
+    >>> tree.add_edge(0, 1, length=2.5)
+    >>> tree.add_edge(0, 2, length=1.5)
+    >>> from visualizations.plot_trees import _disk_layout
+    >>> pos = _disk_layout(tree)
+    >>> fig, ax = plot_tree(tree, layout='disk', show_edge_lengths=False)
+    >>> ax = add_edge_annotation(tree, pos, ax, 0, 1, "Important edge")
+    >>> plt.show()
     """
+    if parent_idx not in pos:
+        raise ValueError(f"Parent node {parent_idx} not in position dictionary")
+    if child_idx not in pos:
+        raise ValueError(f"Child node {child_idx} not in position dictionary")
+
+    # Verify edge exists
+    if child_idx not in tree.get_children(parent_idx):
+        raise ValueError(f"Edge ({parent_idx}, {child_idx}) does not exist in tree")
+
+    pos1 = pos[parent_idx]
+    pos2 = pos[child_idx]
+
     mid_x = (pos1[0] + pos2[0]) / 2
     mid_y = (pos1[1] + pos2[1]) / 2
 
     default_kwargs = {
         'fontsize': 9,
         'ha': 'center',
+        'va': 'center',
         'bbox': dict(boxstyle='round,pad=0.3', facecolor='white',
                      edgecolor='gray', alpha=0.8)
     }
