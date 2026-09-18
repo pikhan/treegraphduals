@@ -1,7 +1,6 @@
 .idea
 .claude/
 CLAUDE.md
-uv.lock
 __pycache__/
 *.py[cod]
 *.egg-info/
