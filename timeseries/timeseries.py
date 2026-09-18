@@ -527,6 +527,22 @@ class TimeSeries:
 
            fig, ax = plot_tree(tree_triangle, layout='disk', show_node_labels=True)
            plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           values = np.array([0.0, 5.0, 3.0, 5.0, 3.0, 4.0, 1.0, 2.0, 0.0])
+           times = np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0])
+           ts_repeated = TimeSeries(times=times, values=values)
+           tree_repeated = ts_repeated.to_level_set_tree(edge_metric='vertical')
+           fig, ax = plot_timeseries(times, values, title="Repeated")
+           plt.show()
+
+        .. plot::
+           :context: close-figs
+
+           fig, ax = plot_tree(tree_repeated, layout='disk', show_node_labels=True)
+           plt.show()
         """
         # Preprocess if needed
         ts = self

@@ -66,7 +66,7 @@ core/polytree.py                       30     24    20%   14-16, 20-23, 33-56
 core/real_tree.py                      19     14    26%   13-14, 20-36
 core/tree.py                          332     81    76%   75, 257, 286, 430, 597-618, 737-739, 742, 745-747, 805-833, 860-891, 911, 920, 922, 926, 969, 995, 1023-1026, 1035, 1045, 1078, 1096, 1136, 1163-1164
 timeseries/__init__.py                  2      2     0%   23-31
-timeseries/timeseries.py              288    288     0%   10-856
+timeseries/timeseries.py              288    288     0%   10-872
 visualizations/__init__.py              4      4     0%   17-36
 visualizations/plot_combined.py        35     35     0%   8-160
 visualizations/plot_timeseries.py      42     42     0%   6-198
@@ -76,4 +76,4 @@ TOTAL                                1403    887    37%
 Coverage HTML written to dir htmlcov
 Coverage JSON written to file coverage.json
 Coverage Markdown information written to file docs/coverage_report.md
-============================== 40 passed in 0.94s ==============================
+============================== 40 passed in 1.09s ==============================

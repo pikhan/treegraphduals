@@ -16,3 +16,14 @@ dependencies = [
     "sphinx-rtd-theme>=3.0.2",
     "sympy>=1.14.0",
 ]
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.168.0",
+]
+
+[tool.ruff.lint]
+extend-select = ["D"]  # enables pydocstyle rules
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
