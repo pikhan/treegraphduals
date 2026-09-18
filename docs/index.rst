@@ -1,7 +1,7 @@
 Welcome to TreeGraphDuals Documentation
 =========================================
 
-An extension of my Master's thesis: [The Horizontal Tunnelability Graph is Dual to Level Set Trees](https://scholarworks.unr.edu//handle/11714/10548).
+An extension of my Master's thesis: [The Horizontal Tunnelability Graph is Dual to Level Set Trees](https://scholarworks.unr.edu/handle/11714/10548).
 A package for working with trees, their duals, graphs, time series, and more.
 
 Quick Start
