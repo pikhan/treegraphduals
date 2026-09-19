@@ -9,8 +9,8 @@ jobs:
   lint-and-typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
       - run: uv sync
       - run: uv run ruff check .
       - run: uv run ruff format --check .
@@ -19,12 +19,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
       - run: uv sync
       - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --doctest-modules -v
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-html
           path: htmlcov/
