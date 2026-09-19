@@ -10,7 +10,7 @@ A package for working with trees, their duals, graphs, and time series.
 - Python 3.12+, packaged with `uv`, built with Hatchling (`src/` layout)
 - Lint/format: Ruff (`ruff check`, `ruff format`)
 - Type checking: Pyrefly
-- Tests: pytest, coverage via `pytest-cov`; Hypothesis is available in the dev group but no property-based tests are written yet
+- Tests: pytest + Hypothesis for property-based testing (extensive use planned; none written yet), coverage via `pytest-cov`
 - Docs: Sphinx (numpydoc-style docstrings double as both API docs and doctests), hosted on Read the Docs
 - Pre-commit hooks enforce lint/type-check/citation-sync on every commit; full test suite runs in CI on push/PR
 
