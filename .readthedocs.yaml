@@ -6,7 +6,7 @@ build:
     python: "3.12"
   jobs:
     pre_build:
-      - pytest --cov=core --cov-report=html --cov-report=term --cov-report=json --doctest-modules -v
+      - pytest --cov=treegraphduals --cov-report=html --cov-report=term --cov-report=json --doctest-modules -v
       - coverage report --format=markdown > docs/coverage_report.md
       - pytest --tb=no --no-header -q > docs/test_results.txt || true
     post_build:

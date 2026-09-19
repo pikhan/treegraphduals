@@ -1,9 +1,8 @@
-# timeseries/__init__.py
 """
 Time series to tree conversions using level-set trees and Harris paths.
 
 Basic usage:
-    from timeseries import TimeSeries, timeseries_to_tree, tree_to_timeseries
+    from treegraphduals.timeseries import TimeSeries, timeseries_to_tree, tree_to_timeseries
 
     # Create time series from various formats
     ts = TimeSeries.from_array([1, 2, 3, 2, 1])
@@ -22,19 +21,16 @@ Basic usage:
 
 from .timeseries import (
     TimeSeries,
-    timeseries_to_tree,
-    tree_to_timeseries,
-    tree_to_harris_path,
     detect_local_extrema,
+    timeseries_to_tree,
+    tree_to_harris_path,
+    tree_to_timeseries,
 )
 
 __all__ = [
-    # Main class
-    'TimeSeries',
-    # Conversion functions
-    'timeseries_to_tree',
-    'tree_to_timeseries',
-    'tree_to_harris_path',
-    # Utilities
-    'detect_local_extrema',
+    "TimeSeries",
+    "detect_local_extrema",
+    "timeseries_to_tree",
+    "tree_to_harris_path",
+    "tree_to_timeseries",
 ]

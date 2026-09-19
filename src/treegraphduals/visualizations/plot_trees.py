@@ -1,4 +1,3 @@
-# visualizations/plot_trees.py
 """
 Tree visualization functions.
 
@@ -6,25 +5,24 @@ Provides layouts for trees including disk embeddings (for duality computation),
 force-directed, and hierarchical layouts.
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
 import networkx as nx
-from typing import Optional, Dict, Tuple, List
-import sys
-import os
+import numpy as np
+from matplotlib.patches import Circle
 
-from core.tree import Tree
-from core.binary_tree import BinaryTree
+from ..core.binary_tree import BinaryTree
+from ..core.tree import Tree
 
 
-def plot_tree(tree: Tree,
-              layout: str = 'disk',
-              show_node_labels: bool = False,
-              show_edge_lengths: bool = False,
-              node_size: int = 300,
-              figsize: Tuple[float, float] = (10, 10),
-              title: Optional[str] = None) -> Tuple[plt.Figure, plt.Axes]:
+def plot_tree(
+    tree: Tree,
+    layout: str = "disk",
+    show_node_labels: bool = False,
+    show_edge_lengths: bool = False,
+    node_size: int = 300,
+    figsize: tuple[float, float] = (10, 10),
+    title: str | None = None,
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Plot a tree with specified layout.
 
@@ -62,10 +60,10 @@ def plot_tree(tree: Tree,
 
            import numpy as np
            import matplotlib.pyplot as plt
-           from core.tree import Tree
-           from core.binary_tree import BinaryTree
-           from visualizations.plot_trees import plot_tree
-           import visualizations.plot_timeseries
+           from treegraphduals.core.tree import Tree
+           from treegraphduals.core.binary_tree import BinaryTree
+           from treegraphduals.visualizations.plot_trees import plot_tree
+           import treegraphduals.visualizations.plot_timeseries
 
            tree = Tree(n_nodes=5, root=0)
            tree.add_edge(0, 1, length=1.0)
@@ -96,18 +94,9 @@ def plot_tree(tree: Tree,
     """
     fig, ax = plt.subplots(figsize=figsize)
 
-    # Compute layout
-    if layout == 'disk':
-        pos = _disk_layout(tree)
+    pos = _compute_layout(tree, layout)
+    if layout == "disk":
         _draw_disk_boundary(ax)
-    elif layout == 'radial':
-        pos = _radial_layout(tree)
-    elif layout == 'force':
-        pos = _force_directed_layout(tree)
-    elif layout == 'hierarchical':
-        pos = _hierarchical_layout(tree)
-    else:
-        raise ValueError(f"Unknown layout: {layout}")
 
     # Draw tree
     _draw_tree(tree, pos, ax, show_node_labels, show_edge_lengths, node_size)
@@ -115,13 +104,13 @@ def plot_tree(tree: Tree,
     if title:
         ax.set_title(title, fontsize=14)
 
-    ax.set_aspect('equal')
-    ax.axis('off')
+    ax.set_aspect("equal")
+    ax.axis("off")
 
     return fig, ax
 
 
-def _disk_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
+def _disk_layout(tree: Tree) -> dict[int, tuple[float, float]]:
     """
     Disk embedding layout: leaves and root on circle boundary.
 
@@ -134,8 +123,7 @@ def _disk_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
     # Identify leaves and root
     leaves = tree.get_leaves()
     root = tree.root
-    internal_nodes = [i for i in range(tree.n_nodes)
-                      if i not in leaves and i != root]
+    internal_nodes = [i for i in range(tree.n_nodes) if i not in leaves and i != root]
 
     n_leaves = len(leaves)
 
@@ -186,18 +174,14 @@ def _disk_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
         # Spring layout with fixed boundary nodes
         fixed_nodes = leaves + [root]
         internal_pos = nx.spring_layout(
-            G,
-            pos=initial_pos,
-            fixed=fixed_nodes,
-            k=0.5,
-            iterations=50
+            G, pos=initial_pos, fixed=fixed_nodes, k=0.5, iterations=50
         )
 
         # Update internal node positions (constrained to disk interior)
         for node in internal_nodes:
             x, y = internal_pos[node]
             # Ensure inside disk
-            dist = np.sqrt(x ** 2 + y ** 2)
+            dist = np.sqrt(x**2 + y**2)
             if dist > 0.9:  # Keep away from boundary
                 x = x / dist * 0.9
                 y = y / dist * 0.9
@@ -206,7 +190,7 @@ def _disk_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
     return pos
 
 
-def _radial_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
+def _radial_layout(tree: Tree) -> dict[int, tuple[float, float]]:
     """
     Radial layout with root at bottom center.
 
@@ -249,7 +233,7 @@ def _radial_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
     return pos
 
 
-def _force_directed_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
+def _force_directed_layout(tree: Tree) -> dict[int, tuple[float, float]]:
     """
     Force-directed layout with edge lengths proportional to weights.
 
@@ -264,13 +248,7 @@ def _force_directed_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
             G.add_edge(node, child, weight=length)
 
     # Spring layout respecting edge lengths
-    pos = nx.spring_layout(
-        G,
-        weight='weight',
-        k=1.0,
-        iterations=50,
-        seed=42
-    )
+    pos = nx.spring_layout(G, weight="weight", k=1.0, iterations=50, seed=42)
 
     # Flip vertically to put root at bottom
     max_y = max(y for x, y in pos.values())
@@ -279,10 +257,8 @@ def _force_directed_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
     return pos
 
 
-def _hierarchical_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
-    """
-    Hierarchical layout: nodes arranged in layers by depth, root at bottom.
-    """
+def _hierarchical_layout(tree: Tree) -> dict[int, tuple[float, float]]:
+    """Hierarchical layout: nodes arranged in layers by depth, root at bottom."""
     pos = {}
 
     # Get depth of each node
@@ -317,14 +293,15 @@ def _hierarchical_layout(tree: Tree) -> Dict[int, Tuple[float, float]]:
     return pos
 
 
-def _draw_tree(tree: Tree,
-               pos: Dict[int, Tuple[float, float]],
-               ax: plt.Axes,
-               show_node_labels: bool,
-               show_edge_lengths: bool,
-               node_size: int):
+def _draw_tree(
+    tree: Tree,
+    pos: dict[int, tuple[float, float]],
+    ax: plt.Axes,
+    show_node_labels: bool,
+    show_edge_lengths: bool,
+    node_size: int,
+):
     """Draw tree on axes with given positions."""
-
     # Draw edges
     for node in tree.breadth_first_search():
         x1, y1 = pos[node]
@@ -333,16 +310,25 @@ def _draw_tree(tree: Tree,
             x2, y2 = pos[child]
 
             # Draw edge
-            ax.plot([x1, x2], [y1, y2], 'k-', linewidth=1.5, zorder=1)
+            ax.plot([x1, x2], [y1, y2], "k-", linewidth=1.5, zorder=1)
 
             # Show edge length if requested
             if show_edge_lengths:
                 length = tree.get_edge_length(node, child)
                 mid_x, mid_y = (x1 + x2) / 2, (y1 + y2) / 2
-                ax.text(mid_x, mid_y, f'{length:.2f}',
-                        fontsize=8, ha='center',
-                        bbox=dict(boxstyle='round,pad=0.3',
-                                  facecolor='white', edgecolor='none', alpha=0.7))
+                ax.text(
+                    mid_x,
+                    mid_y,
+                    f"{length:.2f}",
+                    fontsize=8,
+                    ha="center",
+                    bbox={
+                        "boxstyle": "round,pad=0.3",
+                        "facecolor": "white",
+                        "edgecolor": "none",
+                        "alpha": 0.7,
+                    },
+                )
 
     # Draw nodes
     leaves = tree.get_leaves()
@@ -353,38 +339,103 @@ def _draw_tree(tree: Tree,
 
         # Color code: root=red, leaves=green, internal=blue
         if node == root:
-            color = 'red'
-            marker = 's'  # Square for root
+            color = "red"
+            marker = "s"  # Square for root
         elif node in leaves:
-            color = 'lightgreen'
-            marker = 'o'
+            color = "lightgreen"
+            marker = "o"
         else:
-            color = 'lightblue'
-            marker = 'o'
+            color = "lightblue"
+            marker = "o"
 
-        ax.scatter(x, y, s=node_size, c=color, marker=marker,
-                   edgecolors='black', linewidths=1.5, zorder=2)
+        ax.scatter(
+            x,
+            y,
+            s=node_size,
+            c=color,
+            marker=marker,
+            edgecolors="black",
+            linewidths=1.5,
+            zorder=2,
+        )
 
         # Show node labels if requested
         if show_node_labels:
-            ax.text(x, y, str(node), fontsize=10, ha='center', va='center',
-                    zorder=3)
+            ax.text(x, y, str(node), fontsize=10, ha="center", va="center", zorder=3)
+
+
+def _compute_layout(tree: Tree, layout: str) -> dict[int, tuple[float, float]]:
+    """
+    Compute node positions for a tree under the named layout.
+
+    Separated from :func:`plot_tree` so that callers which already own an axes
+    can lay out a tree without creating a figure of their own.
+
+    Parameters
+    ----------
+    tree : Tree
+        Tree to lay out.
+    layout : str
+        Layout algorithm:
+        - 'disk': Leaves and root on circle edge (for duality)
+        - 'radial': Radial from root at bottom
+        - 'force': Force-directed with edge lengths
+        - 'hierarchical': Layered by depth, root at bottom
+
+    Returns
+    -------
+    dict
+        Mapping from node index to its ``(x, y)`` position.
+
+    Raises
+    ------
+    ValueError
+        If `layout` is not one of the supported layout names.
+
+    Examples
+    --------
+    >>> from treegraphduals.core.tree import Tree
+    >>> tree = Tree(n_nodes=3, root=0)
+    >>> tree.add_edge(0, 1)
+    >>> tree.add_edge(0, 2)
+    >>> pos = _compute_layout(tree, "hierarchical")
+    >>> sorted(pos)
+    [0, 1, 2]
+    """
+    if layout == "disk":
+        return _disk_layout(tree)
+    if layout == "radial":
+        return _radial_layout(tree)
+    if layout == "force":
+        return _force_directed_layout(tree)
+    if layout == "hierarchical":
+        return _hierarchical_layout(tree)
+    raise ValueError(f"Unknown layout: {layout}")
 
 
 def _draw_disk_boundary(ax: plt.Axes):
     """Draw circle boundary for disk layout."""
-    circle = Circle((0, 0), 1.0, fill=False, edgecolor='gray',
-                    linewidth=2, linestyle='--', alpha=0.5)
+    circle = Circle(
+        (0, 0),
+        1.0,
+        fill=False,
+        edgecolor="gray",
+        linewidth=2,
+        linestyle="--",
+        alpha=0.5,
+    )
     ax.add_patch(circle)
 
 
-def color_by_horton_strahler(tree: Tree,
-                             pos: Dict[int, Tuple[float, float]],
-                             ax: plt.Axes,
-                             cmap: str = 'viridis',
-                             node_size: int = 300,
-                             show_node_labels: bool = False,
-                             show_edge_lengths: bool = False) -> plt.Axes:
+def color_by_horton_strahler(
+    tree: Tree,
+    pos: dict[int, tuple[float, float]],
+    ax: plt.Axes,
+    cmap: str = "viridis",
+    node_size: int = 300,
+    show_node_labels: bool = False,
+    show_edge_lengths: bool = False,
+) -> plt.Axes:
     """
     Apply Horton-Strahler order coloring to tree plot.
 
@@ -418,7 +469,7 @@ def color_by_horton_strahler(tree: Tree,
        :include-source:
        :context: close-figs
 
-       from visualizations.plot_trees import color_by_horton_strahler
+       from treegraphduals.visualizations.plot_trees import color_by_horton_strahler
 
        tree = BinaryTree(n_nodes=7, root=0)
        tree.add_edge(0, 1)
@@ -427,14 +478,12 @@ def color_by_horton_strahler(tree: Tree,
        tree.add_edge(1, 4)
        tree.add_edge(2, 5)
        tree.add_edge(2, 6)
-       from visualizations.plot_trees import _disk_layout
+       from treegraphduals.visualizations.plot_trees import _disk_layout
        pos = _disk_layout(tree)
        fig, ax = plt.subplots(figsize=(10, 10))
        ax = color_by_horton_strahler(tree, pos, ax)
        plt.show()
     """
-    from core.binary_tree import BinaryTree
-
     # Compute Horton-Strahler orders
     if isinstance(tree, BinaryTree):
         orders = tree.horton_strahler_order()
@@ -452,8 +501,10 @@ def color_by_horton_strahler(tree: Tree,
     if max_order == min_order:
         norm_orders = {node: 0.5 for node in orders}
     else:
-        norm_orders = {node: (orders[node] - min_order) / (max_order - min_order)
-                       for node in orders}
+        norm_orders = {
+            node: (orders[node] - min_order) / (max_order - min_order)
+            for node in orders
+        }
 
     # Clear axes
     ax.clear()
@@ -466,19 +517,27 @@ def color_by_horton_strahler(tree: Tree,
             x2, y2 = pos[child]
 
             # Draw edge
-            ax.plot([x1, x2], [y1, y2], 'k-', linewidth=1.5, zorder=1, alpha=0.6)
+            ax.plot([x1, x2], [y1, y2], "k-", linewidth=1.5, zorder=1, alpha=0.6)
 
             # Show edge length if requested
             if show_edge_lengths:
                 length = tree.get_edge_length(node, child)
                 mid_x, mid_y = (x1 + x2) / 2, (y1 + y2) / 2
-                ax.text(mid_x, mid_y, f'{length:.2f}',
-                        fontsize=8, ha='center',
-                        bbox=dict(boxstyle='round,pad=0.3',
-                                  facecolor='white', edgecolor='none', alpha=0.7))
+                ax.text(
+                    mid_x,
+                    mid_y,
+                    f"{length:.2f}",
+                    fontsize=8,
+                    ha="center",
+                    bbox={
+                        "boxstyle": "round,pad=0.3",
+                        "facecolor": "white",
+                        "edgecolor": "none",
+                        "alpha": 0.7,
+                    },
+                )
 
     # Draw nodes with colors
-    leaves = tree.get_leaves()
     root = tree.root
 
     for node in range(tree.n_nodes):
@@ -489,44 +548,70 @@ def color_by_horton_strahler(tree: Tree,
 
         # Marker shape: root=square, others=circle
         if node == root:
-            marker = 's'
+            marker = "s"
         else:
-            marker = 'o'
+            marker = "o"
 
         # Draw node
-        ax.scatter(x, y, s=node_size, c=[color], marker=marker,
-                   edgecolors='black', linewidths=1.5, zorder=2)
+        ax.scatter(
+            x,
+            y,
+            s=node_size,
+            c=[color],
+            marker=marker,
+            edgecolors="black",
+            linewidths=1.5,
+            zorder=2,
+        )
 
         # Show node labels if requested
         if show_node_labels:
-            ax.text(x, y, str(node), fontsize=10, ha='center', va='center',
-                    zorder=3, fontweight='bold')
+            ax.text(
+                x,
+                y,
+                str(node),
+                fontsize=10,
+                ha="center",
+                va="center",
+                zorder=3,
+                fontweight="bold",
+            )
 
     # Add colorbar
-    sm = plt.cm.ScalarMappable(cmap=cmap_obj,
-                               norm=plt.Normalize(vmin=min_order, vmax=max_order))
+    sm = plt.cm.ScalarMappable(
+        cmap=cmap_obj, norm=plt.Normalize(vmin=min_order, vmax=max_order)
+    )
     sm.set_array([])
     cbar = plt.colorbar(sm, ax=ax, pad=0.02)
-    cbar.set_label('Horton-Strahler Order', fontsize=12)
+    cbar.set_label("Horton-Strahler Order", fontsize=12)
 
     # Redraw disk boundary for disk layout
-    circle = Circle((0, 0), 1.0, fill=False, edgecolor='gray',
-                    linewidth=2, linestyle='--', alpha=0.5)
+    circle = Circle(
+        (0, 0),
+        1.0,
+        fill=False,
+        edgecolor="gray",
+        linewidth=2,
+        linestyle="--",
+        alpha=0.5,
+    )
     ax.add_patch(circle)
 
-    ax.set_aspect('equal')
-    ax.axis('off')
-    ax.set_title('Tree colored by Horton-Strahler Order', fontsize=14)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    ax.set_title("Tree colored by Horton-Strahler Order", fontsize=14)
 
     return ax
 
 
-def add_node_annotation(tree: Tree,
-                        pos: Dict[int, Tuple[float, float]],
-                        ax: plt.Axes,
-                        node_idx: int,
-                        text: str,
-                        **kwargs) -> plt.Axes:
+def add_node_annotation(
+    tree: Tree,
+    pos: dict[int, tuple[float, float]],
+    ax: plt.Axes,
+    node_idx: int,
+    text: str,
+    **kwargs,
+) -> plt.Axes:
     """
     Add annotation to a specific node (disk layout).
 
@@ -555,11 +640,11 @@ def add_node_annotation(tree: Tree,
        :include-source:
        :context: close-figs
 
-       from visualizations.plot_trees import add_node_annotation, add_edge_annotation
+       from treegraphduals.visualizations.plot_trees import add_node_annotation, add_edge_annotation
        tree = Tree(n_nodes=5, root=0)
        tree.add_edge(0, 1)
        tree.add_edge(0, 2)
-       from visualizations.plot_trees import _disk_layout
+       from treegraphduals.visualizations.plot_trees import _disk_layout
        pos = _disk_layout(tree)
        fig, ax = plot_tree(tree, layout='disk')
        ax = add_node_annotation(tree, pos, ax, 0, "Root node", fontsize=12)
@@ -571,11 +656,11 @@ def add_node_annotation(tree: Tree,
     node_pos = pos[node_idx]
 
     default_kwargs = {
-        'fontsize': 10,
-        'bbox': dict(boxstyle='round,pad=0.5', facecolor='yellow', alpha=0.7),
-        'arrowprops': dict(arrowstyle='->', connectionstyle='arc3,rad=0.3'),
-        'xytext': (20, 20),
-        'textcoords': 'offset points'
+        "fontsize": 10,
+        "bbox": {"boxstyle": "round,pad=0.5", "facecolor": "yellow", "alpha": 0.7},
+        "arrowprops": {"arrowstyle": "->", "connectionstyle": "arc3,rad=0.3"},
+        "xytext": (20, 20),
+        "textcoords": "offset points",
     }
     default_kwargs.update(kwargs)
 
@@ -584,13 +669,15 @@ def add_node_annotation(tree: Tree,
     return ax
 
 
-def add_edge_annotation(tree: Tree,
-                        pos: Dict[int, Tuple[float, float]],
-                        ax: plt.Axes,
-                        parent_idx: int,
-                        child_idx: int,
-                        text: str,
-                        **kwargs) -> plt.Axes:
+def add_edge_annotation(
+    tree: Tree,
+    pos: dict[int, tuple[float, float]],
+    ax: plt.Axes,
+    parent_idx: int,
+    child_idx: int,
+    text: str,
+    **kwargs,
+) -> plt.Axes:
     """
     Add annotation to an edge (disk layout).
 
@@ -624,7 +711,7 @@ def add_edge_annotation(tree: Tree,
        tree = Tree(n_nodes=3, root=0)
        tree.add_edge(0, 1, length=2.5)
        tree.add_edge(0, 2, length=1.5)
-       from visualizations.plot_trees import _disk_layout
+       from treegraphduals.visualizations.plot_trees import _disk_layout
        pos = _disk_layout(tree)
        fig, ax = plot_tree(tree, layout='disk', show_edge_lengths=False)
        ax = add_edge_annotation(tree, pos, ax, 0, 1, "Important edge")
@@ -646,11 +733,15 @@ def add_edge_annotation(tree: Tree,
     mid_y = (pos1[1] + pos2[1]) / 2
 
     default_kwargs = {
-        'fontsize': 9,
-        'ha': 'center',
-        'va': 'center',
-        'bbox': dict(boxstyle='round,pad=0.3', facecolor='white',
-                     edgecolor='gray', alpha=0.8)
+        "fontsize": 9,
+        "ha": "center",
+        "va": "center",
+        "bbox": {
+            "boxstyle": "round,pad=0.3",
+            "facecolor": "white",
+            "edgecolor": "gray",
+            "alpha": 0.8,
+        },
     }
     default_kwargs.update(kwargs)
 

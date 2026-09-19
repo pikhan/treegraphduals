@@ -1,10 +1,10 @@
+"""Multigraph: a graph allowing parallel edges between vertices."""
+
 from .graph import Graph
 
 
 class Multigraph(Graph):
-    """
-    Multigraph: allows multiple edges between same vertices.
-    """
+    """Multigraph: allows multiple edges between the same pair of vertices."""
 
     def __init__(self, n_nodes: int = 0, directed: bool = True):
         super().__init__(n_nodes, directed)

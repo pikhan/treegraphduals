@@ -1,5 +1,8 @@
-from .base_graph import BaseGraph
+"""Real tree (R-tree): a continuous, 0-hyperbolic metric space."""
+
 import numpy as np
+
+from .base_graph import BaseGraph
 
 
 class RealTree(BaseGraph):
@@ -22,7 +25,7 @@ class RealTree(BaseGraph):
             return True
 
         # Sample check (full check is expensive)
-        for _ in range(min(100, n ** 4)):
+        for _ in range(min(100, n**4)):
             w, x, y, z = np.random.choice(n, 4, replace=False)
             d = self.metric
 

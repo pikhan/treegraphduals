@@ -7,13 +7,17 @@ Implements constructions from:
 - Khan (2023): The Horizontal Tunnelability Graph is Dual to Level Set Trees.
 """
 
-import numpy as np
-from typing import Union, Optional, List, Tuple, Dict, Any
-from collections import deque
-import sys
-import os
+import warnings
+from typing import Any
 
-from core.tree import Tree
+import numpy as np
+
+from ..core.tree import Tree
+
+# A root of a real polynomial can come back from sympy in complex form with an
+# imaginary part that is pure floating-point noise (~1e-23); treat anything
+# below this relative threshold as real.
+_IMAGINARY_TOLERANCE = 1e-9
 
 
 class TimeSeries:
@@ -33,8 +37,9 @@ class TimeSeries:
         Whether series starts and ends at same value
     """
 
-    def __init__(self, times: Optional[np.ndarray] = None,
-                 values: Optional[np.ndarray] = None):
+    def __init__(
+        self, times: np.ndarray | None = None, values: np.ndarray | None = None
+    ):
         """
         Initialize time series.
 
@@ -61,12 +66,12 @@ class TimeSeries:
         self.is_excursion = np.abs(self.values[0] - self.values[-1]) < 1e-10
 
     @classmethod
-    def from_array(cls, data: Union[np.ndarray, List]) -> 'TimeSeries':
+    def from_array(cls, data: np.ndarray | list) -> "TimeSeries":
         """Create from numpy array or list (values only)."""
         return cls(values=data)
 
     @classmethod
-    def from_pandas(cls, series_or_df) -> 'TimeSeries':
+    def from_pandas(cls, series_or_df) -> "TimeSeries":
         """
         Create from pandas Series or DataFrame.
 
@@ -81,10 +86,18 @@ class TimeSeries:
             raise ImportError("pandas required for this method")
 
         if isinstance(series_or_df, pd.Series):
-            times = series_or_df.index.values if hasattr(series_or_df.index, 'values') else np.arange(len(series_or_df))
+            times = (
+                series_or_df.index.values
+                if hasattr(series_or_df.index, "values")
+                else np.arange(len(series_or_df))
+            )
             values = series_or_df.values
         elif isinstance(series_or_df, pd.DataFrame):
-            times = series_or_df.index.values if hasattr(series_or_df.index, 'values') else np.arange(len(series_or_df))
+            times = (
+                series_or_df.index.values
+                if hasattr(series_or_df.index, "values")
+                else np.arange(len(series_or_df))
+            )
             values = series_or_df.iloc[:, 0].values
         else:
             raise TypeError("Input must be pandas Series or DataFrame")
@@ -92,8 +105,14 @@ class TimeSeries:
         return cls(times=times, values=values)
 
     @classmethod
-    def from_function(cls, func, t_start: float = 0, t_end: float = 1,
-                      n_points: int = 100, preserve_extrema: bool = True) -> 'TimeSeries':
+    def from_function(
+        cls,
+        func,
+        t_start: float = 0,
+        t_end: float = 1,
+        n_points: int = 100,
+        preserve_extrema: bool = True,
+    ) -> "TimeSeries":
         """
         Create from continuous function (sympy or callable).
 
@@ -123,8 +142,8 @@ class TimeSeries:
            :include-source:
            :context: close-figs
 
-           from timeseries import TimeSeries
-           from visualizations import plot_timeseries
+           from treegraphduals.timeseries import TimeSeries
+           from treegraphduals.visualizations import plot_timeseries
            from sympy import symbols
            import matplotlib.pyplot as plt
            t = symbols('t')
@@ -151,10 +170,11 @@ class TimeSeries:
         # Handle sympy functions
         try:
             import sympy as sp
+
             if isinstance(func, sp.Basic):
                 # Convert sympy to lambda
-                t = sp.Symbol('t')
-                func_lambda = sp.lambdify(t, func, 'numpy')
+                t = sp.Symbol("t")
+                func_lambda = sp.lambdify(t, func, "numpy")
                 is_sympy = True
             else:
                 func_lambda = func
@@ -175,37 +195,28 @@ class TimeSeries:
         if is_sympy:
             try:
                 import sympy as sp
-                t_sym = sp.Symbol('t')
+
+                t_sym = sp.Symbol("t")
 
                 # Compute derivative
                 func_derivative = sp.diff(func, t_sym)
 
-                # Find critical points
-                critical_points = sp.solve(func_derivative, t_sym)
-
-                # Filter to real numbers in interval
-                extrema_times = [t_start]
-
-                for cp in critical_points:
-                    try:
-                        cp_float = float(cp.evalf())
-                        if t_start < cp_float < t_end:  # Strictly interior
-                            extrema_times.append(cp_float)
-                    except:
-                        continue
-
-                extrema_times.append(t_end)
-                extrema_times = sorted(extrema_times)
+                interior = _real_critical_points(func_derivative, t_sym, t_start, t_end)
+                extrema_times = [t_start, *interior, t_end]
 
                 # Evaluate function at extrema
                 extrema_values = np.array([func_lambda(t) for t in extrema_times])
 
                 return cls(times=np.array(extrema_times), values=extrema_values)
 
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001 - any symbolic failure falls back
                 # Fall back to numerical method if symbolic fails
-                print(f"Symbolic differentiation failed: {e}, using numerical method")
-                pass
+                warnings.warn(
+                    f"Symbolic differentiation failed ({e}); "
+                    "falling back to the numerical extrema search",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
 
         # Numerical method for non-sympy or if symbolic failed
         # Use fine sampling with better extrema detection
@@ -238,21 +249,32 @@ class TimeSeries:
 
             for i in range(window, len(values_dense) - window):
                 # Check if local maximum (within window)
-                is_max = all(values_dense[i] >= values_dense[i - j] for j in range(1, window + 1))
-                is_max = is_max and all(values_dense[i] >= values_dense[i + j] for j in range(1, window + 1))
+                is_max = all(
+                    values_dense[i] >= values_dense[i - j] for j in range(1, window + 1)
+                )
+                is_max = is_max and all(
+                    values_dense[i] >= values_dense[i + j] for j in range(1, window + 1)
+                )
 
                 # Check if local minimum (within window)
-                is_min = all(values_dense[i] <= values_dense[i - j] for j in range(1, window + 1))
-                is_min = is_min and all(values_dense[i] <= values_dense[i + j] for j in range(1, window + 1))
+                is_min = all(
+                    values_dense[i] <= values_dense[i - j] for j in range(1, window + 1)
+                )
+                is_min = is_min and all(
+                    values_dense[i] <= values_dense[i + j] for j in range(1, window + 1)
+                )
 
                 # Check if it's actually an extremum (not flat everywhere)
                 left_change = abs(values_dense[i] - values_dense[i - window])
                 right_change = abs(values_dense[i] - values_dense[i + window])
 
-                if (is_max or is_min) and (left_change > 1e-10 or right_change > 1e-10):
-                    # Avoid duplicates (don't add if very close to previous extremum)
-                    if not extrema_indices or i - extrema_indices[-1] > window // 2:
-                        extrema_indices.append(i)
+                # Avoid duplicates (don't add if very close to previous extremum)
+                if (
+                    (is_max or is_min)
+                    and (left_change > 1e-10 or right_change > 1e-10)
+                    and (not extrema_indices or i - extrema_indices[-1] > window // 2)
+                ):
+                    extrema_indices.append(i)
 
             extrema_indices.append(len(times_dense) - 1)  # End
 
@@ -263,8 +285,9 @@ class TimeSeries:
         return cls(times=times_extrema, values=values_extrema)
 
     @classmethod
-    def harris_path_from_function(cls, func, t_start: float = 0, t_end: float = 1,
-                                  n_sample: int = 1000) -> 'TimeSeries':
+    def harris_path_from_function(
+        cls, func, t_start: float = 0, t_end: float = 1, n_sample: int = 1000
+    ) -> "TimeSeries":
         """
         Create Harris path directly from function.
 
@@ -292,7 +315,7 @@ class TimeSeries:
            :context: close-figs
 
            from matplotlib import pyplot as plt
-           from visualizations import plot_timeseries
+           from treegraphduals.visualizations import plot_timeseries
            from sympy import symbols
            t = symbols('t')
            poly = (t-1)*(t-3)*(t-5)*(t-7)
@@ -301,18 +324,21 @@ class TimeSeries:
            plt.show()
         """
         # Step 1: Sample function to get extrema
-        ts_sampled = cls.from_function(func, t_start, t_end,
-                                       n_points=n_sample, preserve_extrema=True)
+        ts_sampled = cls.from_function(
+            func, t_start, t_end, n_points=n_sample, preserve_extrema=True
+        )
 
         # Step 2: Build level-set tree
-        tree = ts_sampled.to_level_set_tree(edge_metric='vertical', unit_slopes=False, return_partial=True)
+        tree = ts_sampled.to_level_set_tree(
+            edge_metric="vertical", unit_slopes=False, return_partial=True
+        )
 
         # Step 3: Construct Harris path from tree
         harris_path = tree_to_harris_path(tree)
 
         return harris_path
 
-    def find_local_extrema(self) -> Tuple[np.ndarray, np.ndarray]:
+    def find_local_extrema(self) -> tuple[np.ndarray, np.ndarray]:
         """
         Find indices of local minima and maxima.
 
@@ -330,9 +356,15 @@ class TimeSeries:
 
         # Check interior points
         for i in range(1, n - 1):
-            if self.values[i] < self.values[i - 1] and self.values[i] < self.values[i + 1]:
+            if (
+                self.values[i] < self.values[i - 1]
+                and self.values[i] < self.values[i + 1]
+            ):
                 minima.append(i)
-            elif self.values[i] > self.values[i - 1] and self.values[i] > self.values[i + 1]:
+            elif (
+                self.values[i] > self.values[i - 1]
+                and self.values[i] > self.values[i + 1]
+            ):
                 maxima.append(i)
 
         # Check endpoints
@@ -349,7 +381,7 @@ class TimeSeries:
 
         return np.array(minima, dtype=int), np.array(maxima, dtype=int)
 
-    def to_unit_slope_excursion(self) -> 'TimeSeries':
+    def to_unit_slope_excursion(self) -> "TimeSeries":
         """
         Convert to piecewise linear excursion with alternating ±1 slopes.
 
@@ -403,7 +435,7 @@ class TimeSeries:
 
         return TimeSeries(times=np.array(new_times), values=np.array(new_values))
 
-    def to_minimal_excursion(self) -> 'TimeSeries':
+    def to_minimal_excursion(self) -> "TimeSeries":
         """
         Convert to minimal excursion (Haskell 2020, Definition 3.2.3).
 
@@ -444,11 +476,13 @@ class TimeSeries:
 
         return TimeSeries(times=full_times, values=full_values)
 
-    def to_level_set_tree(self,
-                          edge_metric: str = 'euclidean',
-                          unit_slopes: bool = False,
-                          force_excursion: bool = True,
-                          return_partial: bool = False) -> Union[Tree, Tuple[Tree, int, int]]:
+    def to_level_set_tree(
+        self,
+        edge_metric: str = "euclidean",
+        unit_slopes: bool = False,
+        force_excursion: bool = True,
+        return_partial: bool = False,
+    ) -> Tree | tuple[Tree, int, int]:
         """
         Convert time series to level-set tree.
 
@@ -481,7 +515,7 @@ class TimeSeries:
            :context: close-figs
 
            from matplotlib import pyplot as plt
-           from visualizations import plot_timeseries, plot_tree
+           from treegraphduals.visualizations import plot_timeseries, plot_tree
            from sympy import symbols
            t = symbols('t')
            poly = (t-1)*(t-3)*(t-5)*(t-7)
@@ -578,11 +612,13 @@ class TimeSeries:
         return tree
 
 
-def _build_level_set_tree_structure(times: np.ndarray,
-                                    values: np.ndarray,
-                                    minima_idx: np.ndarray,
-                                    maxima_idx: np.ndarray,
-                                    edge_metric: str) -> Tree:
+def _build_level_set_tree_structure(
+    times: np.ndarray,
+    values: np.ndarray,
+    minima_idx: np.ndarray,
+    maxima_idx: np.ndarray,
+    edge_metric: str,
+) -> Tree:
     """
     Build level-set tree from excursion using left-to-right connection.
 
@@ -592,7 +628,6 @@ def _build_level_set_tree_structure(times: np.ndarray,
     - Root at baseline (value=0)
     - Connect vertices left-to-right
     """
-
     # Verify excursion
     if not (np.abs(values[0] - values[-1]) < 1e-10):
         raise ValueError("Must be an excursion (start and end at same value)")
@@ -602,11 +637,11 @@ def _build_level_set_tree_structure(times: np.ndarray,
     interior_maxima = [idx for idx in maxima_idx if 0 < idx < len(values) - 1]
 
     # Build list of all nodes
-    nodes = [(0, values[0], 'root')]
+    nodes = [(0, values[0], "root")]
     for idx in interior_minima:
-        nodes.append((idx, values[idx], 'min'))
+        nodes.append((idx, values[idx], "min"))
     for idx in interior_maxima:
-        nodes.append((idx, values[idx], 'max'))
+        nodes.append((idx, values[idx], "max"))
 
     # Sort by time (left-to-right)
     nodes.sort(key=lambda x: x[0])
@@ -615,12 +650,13 @@ def _build_level_set_tree_structure(times: np.ndarray,
     tree = Tree(n_nodes=n_nodes)
     tree.root = 0
 
-    # Map time index to node id
-    idx_to_node = {nodes[i][0]: i for i in range(n_nodes)}
-
     # Separate valleys and peaks in order
-    valleys = [(i, nodes[i][0], nodes[i][1]) for i in range(n_nodes) if nodes[i][2] == 'min']
-    peaks = [(i, nodes[i][0], nodes[i][1]) for i in range(n_nodes) if nodes[i][2] == 'max']
+    valleys = [
+        (i, nodes[i][0], nodes[i][1]) for i in range(n_nodes) if nodes[i][2] == "min"
+    ]
+    peaks = [
+        (i, nodes[i][0], nodes[i][1]) for i in range(n_nodes) if nodes[i][2] == "max"
+    ]
 
     # Connect root to first valley
     if valleys:
@@ -628,9 +664,11 @@ def _build_level_set_tree_structure(times: np.ndarray,
         first_valley_idx = valleys[0][1]
 
         edge_length = _compute_edge_length(
-            times[0], values[0],
-            times[first_valley_idx], values[first_valley_idx],
-            edge_metric
+            times[0],
+            values[0],
+            times[first_valley_idx],
+            values[first_valley_idx],
+            edge_metric,
         )
         tree.add_edge(tree.root, first_valley_node, length=edge_length)
 
@@ -639,16 +677,17 @@ def _build_level_set_tree_structure(times: np.ndarray,
         # LEFT child: peak immediately before this valley
         left_peak = None
         for peak_node, peak_idx, peak_val in peaks:
-            if peak_idx < valley_idx:
-                if left_peak is None or peak_idx > left_peak[1]:
-                    left_peak = (peak_node, peak_idx, peak_val)
+            if peak_idx < valley_idx and (left_peak is None or peak_idx > left_peak[1]):
+                left_peak = (peak_node, peak_idx, peak_val)
 
         if left_peak:
             peak_node, peak_idx, peak_val = left_peak
             edge_length = _compute_edge_length(
-                times[valley_idx], values[valley_idx],
-                times[peak_idx], values[peak_idx],
-                edge_metric
+                times[valley_idx],
+                values[valley_idx],
+                times[peak_idx],
+                values[peak_idx],
+                edge_metric,
             )
             tree.add_edge(valley_node, peak_node, length=edge_length)
             # Remove this peak so it's not used again
@@ -657,36 +696,111 @@ def _build_level_set_tree_structure(times: np.ndarray,
         # RIGHT child: next valley OR next peak (if last valley)
         if i < len(valleys) - 1:
             # Not last valley → RIGHT child is next valley
-            next_valley_node, next_valley_idx, next_valley_val = valleys[i + 1]
+            next_valley_node, next_valley_idx, _ = valleys[i + 1]
             edge_length = _compute_edge_length(
-                times[valley_idx], values[valley_idx],
-                times[next_valley_idx], values[next_valley_idx],
-                edge_metric
+                times[valley_idx],
+                values[valley_idx],
+                times[next_valley_idx],
+                values[next_valley_idx],
+                edge_metric,
             )
             tree.add_edge(valley_node, next_valley_node, length=edge_length)
         else:
             # Last valley → RIGHT child is next peak (if any)
             right_peak = None
             for peak_node, peak_idx, peak_val in peaks:
-                if peak_idx > valley_idx:
-                    if right_peak is None or peak_idx < right_peak[1]:
-                        right_peak = (peak_node, peak_idx, peak_val)
+                if peak_idx > valley_idx and (
+                    right_peak is None or peak_idx < right_peak[1]
+                ):
+                    right_peak = (peak_node, peak_idx, peak_val)
 
             if right_peak:
                 peak_node, peak_idx, peak_val = right_peak
                 edge_length = _compute_edge_length(
-                    times[valley_idx], values[valley_idx],
-                    times[peak_idx], values[peak_idx],
-                    edge_metric
+                    times[valley_idx],
+                    values[valley_idx],
+                    times[peak_idx],
+                    values[peak_idx],
+                    edge_metric,
                 )
                 tree.add_edge(valley_node, peak_node, length=edge_length)
 
     return tree
 
 
-def _compute_edge_length(t1: float, y1: float,
-                         t2: float, y2: float,
-                         metric: str) -> float:
+def _real_critical_points(
+    derivative, symbol, t_start: float, t_end: float
+) -> list[float]:
+    """
+    Find the real critical points strictly inside an interval.
+
+    Solves ``derivative == 0`` and keeps only the roots that are real numbers in
+    the open interval ``(t_start, t_end)``. Two subtleties make this more than a
+    call to :func:`sympy.solve`:
+
+    - ``solve`` returns only the principal solutions of a periodic equation, so
+      ``cos(t) == 0`` yields ``pi/2`` and ``3*pi/2`` and nothing beyond. This
+      function asks :func:`sympy.solveset` for the solutions *within the
+      interval* first, which enumerates the periodic ones as well.
+    - A root can be real yet expressed in complex form. Cardano's formula writes
+      the three real roots of a cubic using ``I``, so ``float()`` raises on them
+      even though they are ordinary real numbers. Reality is therefore decided
+      by the size of the imaginary part, not by whether ``float()`` succeeds.
+
+    Parameters
+    ----------
+    derivative : sympy.Expr
+        Derivative whose zeros are the critical points.
+    symbol : sympy.Symbol
+        Variable to solve for.
+    t_start, t_end : float
+        Interval endpoints. Roots at the endpoints are excluded; callers add the
+        endpoints themselves.
+
+    Returns
+    -------
+    list of float
+        Interior real critical points, in increasing order.
+
+    Notes
+    -----
+    Critical points include saddle and inflection points -- ``t**3`` has a
+    critical point at 0 that is neither a maximum nor a minimum. They are kept,
+    since a redundant vertex leaves the piecewise-linear shape unchanged.
+    """
+    import sympy as sp
+
+    # Solving over the interval enumerates periodic solutions; solve() does not.
+    solutions = sp.solveset(derivative, symbol, sp.Interval(t_start, t_end))
+    if isinstance(solutions, sp.FiniteSet):
+        candidates = list(solutions)
+    elif solutions is sp.S.EmptySet:
+        candidates = []
+    else:
+        # solveset could not enumerate the solution set (e.g. a ConditionSet);
+        # fall back to solve(), which may still manage it or raise and hand the
+        # caller over to the numerical path.
+        candidates = sp.solve(derivative, symbol)
+
+    interior = []
+    for candidate in candidates:
+        try:
+            value = complex(candidate.evalf())
+        except (TypeError, ValueError):
+            # Still symbolic: the expression has free symbols besides `symbol`.
+            continue
+        scale = max(1.0, abs(value.real))
+        if abs(value.imag) > _IMAGINARY_TOLERANCE * scale:
+            continue  # genuinely complex: not a critical point of the real function
+        if t_start < value.real < t_end:  # strictly interior
+            interior.append(value.real)
+
+    return sorted(interior)
+
+
+def _compute_edge_length(
+    t1: float, y1: float, t2: float, y2: float, metric: str
+) -> float:
     """
     Compute edge length between two points.
 
@@ -704,21 +818,21 @@ def _compute_edge_length(t1: float, y1: float,
     float
         Edge length
     """
-    if metric == 'euclidean':
+    if metric == "euclidean":
         return np.sqrt((t2 - t1) ** 2 + (y2 - y1) ** 2)
-    elif metric == 'vertical':
+    elif metric == "vertical":
         return abs(y2 - y1)
-    elif metric == 'manhattan':
+    elif metric == "manhattan":
         return abs(t2 - t1) + abs(y2 - y1)
-    elif metric == 'temporal':
+    elif metric == "temporal":
         return abs(t2 - t1)
     else:
         raise ValueError(f"Unknown metric: {metric}")
 
 
-def tree_to_harris_path(tree: Tree,
-                        start_node: Optional[int] = None,
-                        end_node: Optional[int] = None) -> TimeSeries:
+def tree_to_harris_path(
+    tree: Tree, start_node: int | None = None, end_node: int | None = None
+) -> TimeSeries:
     """
     Construct Harris path from tree (tree → time series).
 
@@ -809,14 +923,16 @@ def detect_local_extrema(values: np.ndarray) -> np.ndarray:
     extrema = np.zeros(n, dtype=bool)
 
     for i in range(1, n - 1):
-        if (values[i] > values[i - 1] and values[i] > values[i + 1]) or \
-                (values[i] < values[i - 1] and values[i] < values[i + 1]):
+        if (values[i] > values[i - 1] and values[i] > values[i + 1]) or (
+            values[i] < values[i - 1] and values[i] < values[i + 1]
+        ):
             extrema[i] = True
 
     return extrema
 
 
 # Convenience functions
+
 
 def timeseries_to_tree(data: Any, **kwargs) -> Tree:
     """
@@ -841,7 +957,7 @@ def timeseries_to_tree(data: Any, **kwargs) -> Tree:
     # Auto-detect format
     if callable(data):
         ts = TimeSeries.from_function(data)
-    elif hasattr(data, 'values'):  # pandas
+    elif hasattr(data, "values"):  # pandas
         ts = TimeSeries.from_pandas(data)
     else:  # array-like
         ts = TimeSeries.from_array(data)

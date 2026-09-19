@@ -1,3 +1,5 @@
+"""General graph with no structural constraints."""
+
 from .base_graph import BaseGraph
 
 

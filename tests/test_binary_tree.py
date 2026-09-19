@@ -4,21 +4,20 @@ Test suite for Binary Tree class.
 Run with:
     pytest tests/test_binary_tree.py
     pytest tests/test_binary_tree.py -v
-    pytest tests/test_binary_tree.py --cov=core.binary_tree
+    pytest tests/test_binary_tree.py --cov=treegraphduals.core.binary_tree
 """
 
-import pytest
 import numpy as np
-import importlib.util
+import pytest
 
-from core.binary_tree import BinaryTree
+from treegraphduals.core.binary_tree import BinaryTree
+
 
 class TestBasicBinaryTree:
-    """Test some basic binary tree methods"""
+    """Test some basic binary tree methods."""
 
     def test_demo_binary_tree(self):
         """Demonstrate binary tree construction and operations."""
-
         # Create a binary tree
         btree = BinaryTree(n_nodes=8, root=0, planted=False)
 
@@ -31,18 +30,20 @@ class TestBasicBinaryTree:
         #    /   / \
         #   5   6   7
 
-        btree.add_edge(0, 1, side='left', length=0.5)
-        btree.add_edge(1, 3, side='left', length=2.5)
-        btree.add_edge(1, 4, side='right', length=1.5)
-        btree.add_edge(0, 2, side='right', length=4.0)
-        btree.add_edge(3, 5, side='left', length=1.0)
-        btree.add_edge(4, 6, side='left', length=2.0)
+        btree.add_edge(0, 1, side="left", length=0.5)
+        btree.add_edge(1, 3, side="left", length=2.5)
+        btree.add_edge(1, 4, side="right", length=1.5)
+        btree.add_edge(0, 2, side="right", length=4.0)
+        btree.add_edge(3, 5, side="left", length=1.0)
+        btree.add_edge(4, 6, side="left", length=2.0)
         btree.add_edge(4, 7, length=3.0)
 
-        #print(f"\nBinary Tree: {btree}")
+        # print(f"\nBinary Tree: {btree}")
         assert btree.validate()
         assert [int(x) for x in btree.get_leaves_lr()] == [5, 6, 7, 2]
-        assert [value for key, value in sorted(btree.horton_strahler_order().items())] == [2, 2, 1, 1, 2, 1, 1, 1]
+        assert [
+            value for key, value in sorted(btree.horton_strahler_order().items())
+        ] == [2, 2, 1, 1, 2, 1, 1, 1]
         assert btree.get_left_child(1) == 3
         assert btree.get_right_child(1) == 4
         assert btree.is_left_child(2) == False
@@ -54,7 +55,6 @@ class TestBasicBinaryTree:
 
     def test_parent_array_conversion(self):
         """Demonstrate conversion from MATLAB-style parent arrays."""
-
         # MATLAB-style parent array
         # Node 0 is root (parent = -1)
         parent_array = np.array([-1, 0, 0, 1, 1, 2, 2])
@@ -72,11 +72,12 @@ class TestBasicBinaryTree:
 
         # Edge lengths for non-root nodes should match (root node has no incoming edge)
         non_root_mask = parent_array != -1
-        assert np.allclose(edge_lengths[non_root_mask], lengths_back[non_root_mask]), "Edge lengths mismatch!"
+        assert np.allclose(edge_lengths[non_root_mask], lengths_back[non_root_mask]), (
+            "Edge lengths mismatch!"
+        )
 
     def test_networkx_conversion(self):
         """Demonstrate NetworkX conversion."""
-
         # Create tree
         tree = BinaryTree(n_nodes=5, root=0)
         tree.add_edge(0, 1, length=1.0)
@@ -97,17 +98,14 @@ class TestBasicBinaryTree:
         assert tree.n_nodes == tree_back.n_nodes, "Node count mismatch!"
         assert tree.n_edges == tree_back.n_edges, "Edge count mismatch!"
 
-
     def test_igraph_conversion(self):
         """Demonstrate igraph conversion."""
-
         # Create tree
         tree = BinaryTree(n_nodes=5, root=0)
         tree.add_edge(0, 1, length=1.0)
         tree.add_edge(0, 2, length=1.5)
         tree.add_edge(1, 3, length=2.0)
         tree.add_edge(1, 4, length=1.0)
-
 
         # Convert to igraph
         ig_graph = tree.to_igraph(directed=True)
@@ -127,7 +125,6 @@ class TestBasicBinaryTree:
 
     def test_adjacency_matrix(self):
         """Demonstrate adjacency matrix conversion."""
-
         # Create tree
         tree = BinaryTree(n_nodes=5, root=0)
         tree.add_edge(0, 1, length=1.0)
@@ -136,10 +133,12 @@ class TestBasicBinaryTree:
         tree.add_edge(1, 4, length=1.0)
 
         # Convert to adjacency matrix (weighted)
-        adj_weighted = tree.to_adjacency_matrix(weighted=True, weight_attr='length')
+        adj_weighted = tree.to_adjacency_matrix(weighted=True, weight_attr="length")
 
         # Create tree from adjacency matrix
-        tree_back = BinaryTree.from_adjacency_matrix(adj_weighted, weighted=True, root=0)
+        tree_back = BinaryTree.from_adjacency_matrix(
+            adj_weighted, weighted=True, root=0
+        )
 
         # Test structural equality instead of object equality
         assert tree_back.n_nodes == tree.n_nodes
@@ -154,10 +153,13 @@ class TestBasicBinaryTree:
         for i in range(tree.n_nodes):
             if not tree.is_root(i):
                 parent = int(tree.parent[i])
-                assert tree_back.get_edge_length(parent, i) == tree.get_edge_length(parent, i)
+                assert tree_back.get_edge_length(parent, i) == tree.get_edge_length(
+                    parent, i
+                )
 
         # Check leaves match
         assert set(tree_back.get_leaves()) == set(tree.get_leaves())
 
-if __name__ == '__main__':
-    pytest.main([__file__, '-v'])
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

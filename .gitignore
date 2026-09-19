@@ -1,6 +1,5 @@
 .idea
-.claude/
-CLAUDE.md
+.claude/settings.local.json
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -15,3 +14,6 @@ build/
 dist/
 .mypy_cache/
 .ruff_cache/
+.env
+docs/coverage_report.md
+docs/test_results.txt

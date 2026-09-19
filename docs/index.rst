@@ -19,7 +19,7 @@ Basic Usage
 
 .. code-block:: python
 
-   from core import Tree, BinaryTree
+   from treegraphduals.core import Tree, BinaryTree
    import numpy as np
 
    # Create a tree

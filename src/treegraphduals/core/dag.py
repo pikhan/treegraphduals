@@ -1,7 +1,8 @@
-from .base_graph import BaseGraph
-import numpy as np
-from typing import List, Dict, Set
+"""Directed acyclic graph with an adjacency-list representation."""
+
 from collections import deque
+
+from .base_graph import BaseGraph
 
 
 class DAG(BaseGraph):
@@ -14,8 +15,8 @@ class DAG(BaseGraph):
 
     def __init__(self, n_nodes: int = 0):
         super().__init__(n_nodes)
-        self.adj_list: Dict[int, List[int]] = {i: [] for i in range(n_nodes)}
-        self.reverse_adj_list: Dict[int, List[int]] = {i: [] for i in range(n_nodes)}
+        self.adj_list: dict[int, list[int]] = {i: [] for i in range(n_nodes)}
+        self.reverse_adj_list: dict[int, list[int]] = {i: [] for i in range(n_nodes)}
 
     def add_edge(self, u: int, v: int, **attrs):
         """Add directed edge u -> v."""
@@ -25,15 +26,15 @@ class DAG(BaseGraph):
         if u not in self.reverse_adj_list[v]:
             self.reverse_adj_list[v].append(u)
 
-    def get_successors(self, node: int) -> List[int]:
+    def get_successors(self, node: int) -> list[int]:
         """Get nodes this node points to."""
         return self.adj_list.get(node, [])
 
-    def get_predecessors(self, node: int) -> List[int]:
+    def get_predecessors(self, node: int) -> list[int]:
         """Get nodes pointing to this node."""
         return self.reverse_adj_list.get(node, [])
 
-    def get_neighbors(self, node: int) -> List[int]:
+    def get_neighbors(self, node: int) -> list[int]:
         """For DAGs, neighbors = successors."""
         return self.get_successors(node)
 
@@ -60,13 +61,12 @@ class DAG(BaseGraph):
             return False
 
         for node in range(self.n_nodes):
-            if node not in visited:
-                if has_cycle(node):
-                    return False
+            if node not in visited and has_cycle(node):
+                return False
 
         return True
 
-    def topological_sort(self) -> List[int]:
+    def topological_sort(self) -> list[int]:
         """Return nodes in topological order."""
         in_degree = {i: len(self.get_predecessors(i)) for i in range(self.n_nodes)}
         queue = deque([node for node in range(self.n_nodes) if in_degree[node] == 0])

@@ -1,13 +1,14 @@
-from .binary_tree import BinaryTree
+"""Galton-Watson trees generated from a branching process."""
+
 import numpy as np
+
+from .binary_tree import BinaryTree
 
 
 class GaltonWatsonTree(BinaryTree):
-    """
-    Galton-Watson tree from branching process.
-    """
+    """Galton-Watson tree from a branching process."""
 
-    def __init__(self, n_nodes: int = 0, offspring_dist: dict = None):
+    def __init__(self, n_nodes: int = 0, offspring_dist: dict | None = None):
         super().__init__(n_nodes)
         self.offspring_dist = offspring_dist or {0: 0.5, 2: 0.5}
 
@@ -32,8 +33,7 @@ class GaltonWatsonTree(BinaryTree):
             for parent in current_generation:
                 # Sample number of offspring
                 k = np.random.choice(
-                    list(offspring_dist.keys()),
-                    p=list(offspring_dist.values())
+                    list(offspring_dist.keys()), p=list(offspring_dist.values())
                 )
                 for _ in range(k):
                     nodes.append((parent, node_id))
@@ -47,7 +47,7 @@ class GaltonWatsonTree(BinaryTree):
         # Build tree
         tree = cls(n_nodes=node_id, offspring_dist=offspring_dist)
         for parent, child in nodes:
-            side = 'left' if tree.left_child[parent] == -1 else 'right'
+            side = "left" if tree.left_child[parent] == -1 else "right"
             tree.add_edge(parent, child, side=side)
 
         return tree

@@ -1,11 +1,12 @@
-from .graph import Graph
+"""Erdős–Rényi random graph model G(n, p)."""
+
 import numpy as np
+
+from .graph import Graph
 
 
 class ErdosRenyi(Graph):
-    """
-    Erdős–Rényi random graph G(n,p).
-    """
+    """Erdős–Rényi random graph G(n, p)."""
 
     def __init__(self, n_nodes: int = 0, directed: bool = False):
         super().__init__(n_nodes, directed)

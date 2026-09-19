@@ -30,7 +30,7 @@ test:
 
 coverage:
 	@echo "Running pytest with coverage..."
-	cd .. && $(PYTEST) --cov=core --cov=timeseries --cov=visualizations --cov-report=html --cov-report=term -v
+	cd .. && $(PYTEST) --cov=treegraphduals --cov-report=html --cov-report=term -v
 
 docs-with-tests:
 	@echo "========================================="
@@ -38,9 +38,7 @@ docs-with-tests:
 	@echo "========================================="
 	@echo ""
 	@echo "Step 1: Running all tests with coverage..."
-	cd .. && $(PYTEST) --cov=core \
-	                    --cov=timeseries \
-	                    --cov=visualizations \
+	cd .. && $(PYTEST) --cov=treegraphduals \
 	                    --cov-report=html \
 	                    --cov-report=term \
 	                    --cov-report=json \

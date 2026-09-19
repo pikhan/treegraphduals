@@ -28,7 +28,7 @@ Running Tests Yourself
 .. code-block:: bash
 
    # Run tests with coverage
-   pytest --cov=core --cov-report=html
+   pytest --cov=treegraphduals --cov-report=html
 
    # View coverage
    python -m http.server 8000 --directory htmlcov

@@ -1,5 +1,6 @@
+"""Forest: a collection of disconnected trees joined by a virtual root."""
+
 from .tree import Tree
-from typing import List
 
 
 class Forest(Tree):
@@ -9,7 +10,7 @@ class Forest(Tree):
     Implemented as a Tree with virtual root connecting all tree roots.
     """
 
-    def __init__(self, trees: List[Tree] = None):
+    def __init__(self, trees: list[Tree] | None = None):
         if trees is None:
             trees = []
 
@@ -30,10 +31,12 @@ class Forest(Tree):
                 if not tree.is_root(i):
                     parent = tree.parent[i] + offset
                     child = i + offset
-                    self.add_edge(parent, child, length=tree.get_edge_length(tree.parent[i], i))
+                    self.add_edge(
+                        parent, child, length=tree.get_edge_length(tree.parent[i], i)
+                    )
             offset += tree.n_nodes
 
-    def get_connected_components(self) -> List[Tree]:
+    def get_connected_components(self) -> list[Tree]:
         """Get individual trees in the forest."""
         return self.trees
 

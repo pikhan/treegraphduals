@@ -1,5 +1,7 @@
-from .tree import Tree
+"""Polytree: a DAG whose underlying undirected graph is a tree."""
+
 from .dag import DAG
+from .tree import Tree
 
 
 class Polytree(Tree):

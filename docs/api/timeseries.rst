@@ -3,7 +3,7 @@ Time Series Module
 
 The time series module provides the fundamental time series data structures and tools for manipulation/analysis.
 
-.. autoclass:: timeseries.TimeSeries
+.. autoclass:: treegraphduals.timeseries.TimeSeries
    :members:
    :inherited-members:
    :show-inheritance:
@@ -11,13 +11,13 @@ The time series module provides the fundamental time series data structures and 
 Conversion Functions
 --------------------
 
-.. autofunction:: timeseries.timeseries_to_tree
+.. autofunction:: treegraphduals.timeseries.timeseries_to_tree
 
-.. autofunction:: timeseries.tree_to_timeseries
+.. autofunction:: treegraphduals.timeseries.tree_to_timeseries
 
-.. autofunction:: timeseries.tree_to_harris_path
+.. autofunction:: treegraphduals.timeseries.tree_to_harris_path
 
 Utilities
 ---------
 
-.. autofunction:: timeseries.detect_local_extrema
+.. autofunction:: treegraphduals.timeseries.detect_local_extrema

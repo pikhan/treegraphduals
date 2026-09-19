@@ -2,14 +2,12 @@
 
 import datetime
 import re
-from datetime import timezone
-from pathlib import Path
-
 import tomllib
+from pathlib import Path
 
 pyproject = tomllib.loads(Path("pyproject.toml").read_text())
 version = pyproject["project"]["version"]
-today = datetime.datetime.now(timezone.utc).date().isoformat()
+today = datetime.datetime.now(datetime.UTC).date().isoformat()
 
 cff_path = Path("CITATION.cff")
 text = cff_path.read_text()

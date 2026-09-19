@@ -1,23 +1,19 @@
-# visualizations/plot_timeseries.py
-"""
-Time series visualization functions.
-"""
+"""Time series visualization functions."""
 
-import numpy as np
 import matplotlib.pyplot as plt
-from typing import Optional, Tuple, List
-import sys
-import os
+import numpy as np
 
 
-def plot_timeseries(times: np.ndarray,
-                    values: np.ndarray,
-                    figsize: Tuple[float, float] = (12, 4),
-                    title: Optional[str] = None,
-                    xlabel: str = 'Time',
-                    ylabel: str = 'Value',
-                    grid: bool = True,
-                    **plot_kwargs) -> Tuple[plt.Figure, plt.Axes]:
+def plot_timeseries(
+    times: np.ndarray,
+    values: np.ndarray,
+    figsize: tuple[float, float] = (12, 4),
+    title: str | None = None,
+    xlabel: str = "Time",
+    ylabel: str = "Value",
+    grid: bool = True,
+    **plot_kwargs,
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Plot time series.
 
@@ -52,10 +48,10 @@ def plot_timeseries(times: np.ndarray,
 
            import numpy as np
            import matplotlib.pyplot as plt
-           from core.tree import Tree
-           from core.binary_tree import BinaryTree
-           from visualizations.plot_trees import plot_tree
-           from visualizations.plot_timeseries import plot_timeseries, plot_timeseries_with_extrema, plot_excursion
+           from treegraphduals.core.tree import Tree
+           from treegraphduals.core.binary_tree import BinaryTree
+           from treegraphduals.visualizations.plot_trees import plot_tree
+           from treegraphduals.visualizations.plot_timeseries import plot_timeseries, plot_timeseries_with_extrema, plot_excursion
 
            times = np.linspace(0, 10, 100)
            values = np.sin(times)
@@ -65,7 +61,7 @@ def plot_timeseries(times: np.ndarray,
     fig, ax = plt.subplots(figsize=figsize)
 
     # Default plot style
-    default_kwargs = {'linewidth': 1.5, 'color': 'blue'}
+    default_kwargs = {"linewidth": 1.5, "color": "blue"}
     default_kwargs.update(plot_kwargs)
 
     ax.plot(times, values, **default_kwargs)
@@ -82,10 +78,9 @@ def plot_timeseries(times: np.ndarray,
     return fig, ax
 
 
-def plot_timeseries_with_extrema(times: np.ndarray,
-                                 values: np.ndarray,
-                                 mark_extrema: bool = True,
-                                 **kwargs) -> Tuple[plt.Figure, plt.Axes]:
+def plot_timeseries_with_extrema(
+    times: np.ndarray, values: np.ndarray, mark_extrema: bool = True, **kwargs
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Plot time series with local extrema marked.
 
@@ -124,22 +119,34 @@ def plot_timeseries_with_extrema(times: np.ndarray,
 
         # Mark minima
         if len(minima_idx) > 0:
-            ax.scatter(times[minima_idx], values[minima_idx],
-                       c='red', s=100, marker='v', zorder=3,
-                       label='Local minima')
+            ax.scatter(
+                times[minima_idx],
+                values[minima_idx],
+                c="red",
+                s=100,
+                marker="v",
+                zorder=3,
+                label="Local minima",
+            )
 
         # Mark maxima
         if len(maxima_idx) > 0:
-            ax.scatter(times[maxima_idx], values[maxima_idx],
-                       c='green', s=100, marker='^', zorder=3,
-                       label='Local maxima')
+            ax.scatter(
+                times[maxima_idx],
+                values[maxima_idx],
+                c="green",
+                s=100,
+                marker="^",
+                zorder=3,
+                label="Local maxima",
+            )
 
         ax.legend()
 
     return fig, ax
 
 
-def _find_extrema(values: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+def _find_extrema(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Find indices of local minima and maxima."""
     minima = []
     maxima = []
@@ -154,9 +161,9 @@ def _find_extrema(values: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     return np.array(minima), np.array(maxima)
 
 
-def plot_excursion(times: np.ndarray,
-                   values: np.ndarray,
-                   **kwargs) -> Tuple[plt.Figure, plt.Axes]:
+def plot_excursion(
+    times: np.ndarray, values: np.ndarray, **kwargs
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Plot excursion (time series starting and ending at 0).
 
@@ -190,9 +197,9 @@ def plot_excursion(times: np.ndarray,
     fig, ax = plot_timeseries(times, values, **kwargs)
 
     # Fill area under curve
-    ax.fill_between(times, 0, values, alpha=0.3, color='blue')
+    ax.fill_between(times, 0, values, alpha=0.3, color="blue")
 
     # Emphasize zero line
-    ax.axhline(y=0, color='black', linewidth=2, linestyle='-', alpha=0.5)
+    ax.axhline(y=0, color="black", linewidth=2, linestyle="-", alpha=0.5)
 
     return fig, ax
