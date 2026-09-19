@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22839827.svg)](https://doi.org/10.5281/zenodo.22839827)
+
 This package is an extension of my Master's thesis: [The Horizontal Tunnelability Graph is Dual to Level Set Trees](http://hdl.handle.net/11714/10548).
 I have tried to keep everything as compatible as possible with other popular time series, tree, and graph libraries. This package serves to allow for the simple computation of
 - Level Set Trees of Time Series as Alternating Piecewise Linear Excursions with Slopes +/- 1 (Harris Paths)

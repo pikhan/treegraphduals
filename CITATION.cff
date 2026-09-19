@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software in your work, please cite it as below."
+title: "treegraphduals"
+version: "0.1.0"
+date-released: "2026-09-19"
+authors:
+  - family-names: "Khan"
+    given-names: "Ibraheem"
+    orcid: "https://orcid.org/0009-0002-5697-0682"
+url: "https://github.com/pikhan/treegraphduals"
+repository-code: "https://github.com/pikhan/treegraphduals"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22839827
+    description: "The concept DOI representing all versions of this work."
+preferred-citation:
+  type: thesis
+  thesis-type: "Master's Thesis"
+  title: "The Horizontal Tunnelability Graph is Dual to Level Set Trees"
+  authors:
+    - family-names: "Khan"
+      given-names: "Ibraheem"
+      orcid: "https://orcid.org/0009-0002-5697-0682"
+  institution:
+    name: "University of Nevada, Reno"
+  year: 2023
+  month: 9
+  url: "http://hdl.handle.net/11714/10548"
