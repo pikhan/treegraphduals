@@ -26,6 +26,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   (pyplot kept every discarded `plot_tree` figure alive), and now draws the tree
   into its left axes instead of a "Tree plot" placeholder.
 
+### Changed
+- README reorganized into what the package computes today versus what is
+  planned. Every original bullet is preserved; the previous single list mixed
+  25+ unimplemented features (duals, visibility graphs, merge trees, graph
+  metrics) with the 7 that work, and it is the PyPI long description.
+
 ### Added
 - `tests/test_timeseries.py`: regression tests for the extrema cases above, the
   numerical fallback path, uniform sampling, and level-set tree construction.
