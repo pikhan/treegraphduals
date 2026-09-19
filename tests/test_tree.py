@@ -73,7 +73,7 @@ class TestTreeOperations:
 
     @pytest.fixture
     def sample_tree(self):
-        """Create a sample tree for testing.
+        r"""Create a sample tree for testing.
         
         Structure:
               0

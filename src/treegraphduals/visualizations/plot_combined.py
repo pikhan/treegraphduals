@@ -57,6 +57,7 @@ def plot_tree_and_harris_path(
     >>> len(plt.get_fignums())  # exactly one figure, nothing leaked
     1
     >>> plt.close(fig)
+
     """
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize)
 
@@ -121,6 +122,7 @@ def plot_levelset_overlay(
     Examples
     --------
     >>> # TBD: Add example once implemented
+
     """
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -181,6 +183,7 @@ def plot_graph_overlay(
     Examples
     --------
     >>> # TBD: Add example
+
     """
     fig, ax = plt.subplots(figsize=figsize)
 

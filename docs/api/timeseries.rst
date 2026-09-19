@@ -1,5 +1,5 @@
 Time Series Module
-===========
+==================
 
 The time series module provides the fundamental time series data structures and tools for manipulation/analysis.
 

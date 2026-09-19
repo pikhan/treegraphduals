@@ -490,10 +490,10 @@ class TimeSeries:
         ----------
         edge_metric : str
             Edge length computation:
-            - 'euclidean': sqrt((Δt)² + (Δy)²) [DEFAULT]
-            - 'vertical': |Δy| (vertical distance only)
-            - 'manhattan': |Δt| + |Δy|
-            - 'temporal': |Δt| (temporal distance only)
+            - 'euclidean': ``sqrt((Δt)² + (Δy)²)`` [DEFAULT]
+            - 'vertical': ``|Δy|`` (vertical distance only)
+            - 'manhattan': ``|Δt| + |Δy|``
+            - 'temporal': ``|Δt|`` (temporal distance only)
         unit_slopes : bool
             If True, converts to unit slope (±1) excursion first
         force_excursion : bool
@@ -856,6 +856,7 @@ def tree_to_harris_path(
     Examples
     --------
     >>> # Add doctests here
+
     """
     if start_node is None:
         if isinstance(tree, tuple):
@@ -953,6 +954,7 @@ def timeseries_to_tree(data: Any, **kwargs) -> Tree:
     Examples
     --------
     >>> # Add doctests here
+
     """
     # Auto-detect format
     if callable(data):
@@ -984,5 +986,6 @@ def tree_to_timeseries(tree: Tree, **kwargs) -> TimeSeries:
     Examples
     --------
     >>> # Add doctests here
+
     """
     return tree_to_harris_path(tree, **kwargs)

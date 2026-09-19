@@ -1,5 +1,5 @@
 Visualizations Module
-===========
+=====================
 
 The visualizations module provides the main methods for visualizing trees, graphs, time series, duals, etc.
 

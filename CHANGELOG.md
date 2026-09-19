@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 ### Fixed
+- Docstring tree diagrams rendered mangled: 15 docstrings were not raw strings,
+  so a trailing `\` in the ASCII art silently swallowed the following newline
+  and joined rows together (`/ \` + `1   2` became `/             1   2`). The
+  art in the source was correct all along. Diagrams are now raw strings inside
+  RST literal blocks, and the Horton pruning and Horton-Strahler examples are
+  redrawn from what the algorithms actually produce.
+- The Sphinx build is now warning-free (was 84 warnings).
 - Symbolic extrema search (`TimeSeries.from_function(..., preserve_extrema=True)`)
   no longer silently discards critical points:
   - Real roots that sympy returns in complex form (Cardano's formula writes the

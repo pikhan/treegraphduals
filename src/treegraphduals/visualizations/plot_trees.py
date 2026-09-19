@@ -401,6 +401,7 @@ def _compute_layout(tree: Tree, layout: str) -> dict[int, tuple[float, float]]:
     >>> pos = _compute_layout(tree, "hierarchical")
     >>> sorted(pos)
     [0, 1, 2]
+
     """
     if layout == "disk":
         return _disk_layout(tree)
