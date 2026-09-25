@@ -61,6 +61,7 @@ Contents
    contributing
    testing
    changelog
+   adr/README
 
 Indices and tables
 ==================
