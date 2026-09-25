@@ -45,6 +45,7 @@ Contents
    quickstart
    tutorial
    examples
+   definitions
 
 .. toctree::
    :maxdepth: 2
