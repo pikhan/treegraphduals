@@ -26,7 +26,7 @@ import sys
 from typing import NoReturn
 
 PROTECTED_BRANCHES = {"main", "master"}
-SEGMENT_SPLIT = re.compile(r"&&|\|\||[;|\n]")
+HEREDOC = re.compile(r"<<(-?)\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\2")
 GIT_OPTIONS_WITH_VALUE = {"-C", "-c", "--git-dir", "--work-tree", "--namespace"}
 FORCE_FLAGS = {"-f", "--force", "--mirror", "--all", "--prune"}
 REPO_SETTINGS_COMMANDS = {"edit", "delete", "rename", "archive"}
@@ -196,11 +196,102 @@ def check_segment(segment: str, cwd: str) -> None:
         check_gh(tokens[1:], segment)
 
 
+def strip_heredocs(command: str) -> tuple[str, list[str]]:
+    """
+    Remove heredoc bodies from ``command``.
+
+    Returns the command without the bodies, and the bodies whose delimiter is
+    unquoted: the shell still expands ``$(...)`` and backticks inside those.
+    """
+    lines = command.split("\n")
+    kept: list[str] = []
+    expanding: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        kept.append(line)
+        i += 1
+        for match in HEREDOC.finditer(line):
+            dash, quote, delimiter = match.group(1), match.group(2), match.group(3)
+            body: list[str] = []
+            while i < len(lines):
+                end = lines[i].lstrip("\t") if dash else lines[i]
+                i += 1
+                if end == delimiter:
+                    break
+                body.append(lines[i - 1])
+            if not quote:
+                expanding.append("\n".join(body))
+    return "\n".join(kept), expanding
+
+
+def substitutions(text: str) -> list[str]:
+    """Return the contents of ``$(...)`` and backtick substitutions outside single quotes."""
+    found: list[str] = []
+    in_single = in_double = False
+    i = 0
+    while i < len(text):
+        char = text[i]
+        if char == "\\" and not in_single:
+            i += 2
+            continue
+        if char == "'" and not in_double:
+            in_single = not in_single
+        elif char == '"' and not in_single:
+            in_double = not in_double
+        elif not in_single and text.startswith("$(", i):
+            depth, j = 1, i + 2
+            while j < len(text) and depth:
+                depth += {"(": 1, ")": -1}.get(text[j], 0)
+                j += 1
+            found.append(text[i + 2 : j - 1])
+            i = j
+            continue
+        elif not in_single and char == "`":
+            end = text.find("`", i + 1)
+            if end == -1:
+                break
+            found.append(text[i + 1 : end])
+            i = end + 1
+            continue
+        i += 1
+    return found
+
+
+def split_unquoted(text: str) -> list[str]:
+    """Split on ``&&``, ``||``, ``;``, ``|``, ``&`` and newlines that are not quoted."""
+    segments: list[str] = []
+    current: list[str] = []
+    in_single = in_double = False
+    i = 0
+    while i < len(text):
+        char = text[i]
+        if char == "\\" and not in_single:
+            current.append(text[i : i + 2])
+            i += 2
+            continue
+        if char == "'" and not in_double:
+            in_single = not in_single
+        elif char == '"' and not in_single:
+            in_double = not in_double
+        elif not in_single and not in_double and char in ";|&\n":
+            segments.append("".join(current))
+            current = []
+            i += 2 if text[i : i + 2] in {"&&", "||"} else 1
+            continue
+        current.append(char)
+        i += 1
+    segments.append("".join(current))
+    return segments
+
+
 def check_command(command: str, cwd: str) -> None:
     """Check every simple command inside a (possibly compound) shell command."""
-    for inner in re.findall(r"\$\(([^()]*)\)|`([^`]*)`", command):
-        check_command(inner[0] or inner[1], cwd)
-    for segment in SEGMENT_SPLIT.split(command):
+    command, expanding_bodies = strip_heredocs(command)
+    for text in [command, *expanding_bodies]:
+        for inner in substitutions(text):
+            check_command(inner, cwd)
+    for segment in split_unquoted(command):
         cd = re.match(r"\s*cd\s+(\S+)\s*$", segment)
         if cd:
             cwd = os.path.join(cwd, os.path.expanduser(cd.group(1)))
