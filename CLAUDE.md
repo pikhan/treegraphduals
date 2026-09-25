@@ -22,13 +22,14 @@ A package for working with trees, their duals, graphs, and time series.
 - `uv run pytest --tb=no --no-header -q > docs/test_results.txt || true` — regenerate the test-results summary embedded in the docs
 - `uv run ruff check --fix .` / `uv run ruff format .` — lint/format
 - `uv run pyrefly check` — type check
-- `uv run pre-commit run --all-files` — run all pre-commit hooks manually
+- `uv run pre-commit run --all-files` — run all pre-commit hooks manually (this also re-dates `CITATION.cff`; revert that unless releasing)
 - `uv build` — build the sdist + wheel into `dist/`
 
 ## Conventions
 
 - Docstrings: numpy style (Parameters/Returns/Examples sections); doctest examples in docstrings are run as tests.
 - Type hints required on public functions/classes; checked by Pyrefly, not Pyright/Pylance.
+- Design decisions (mathematical conventions, public API shape, architecture) are recorded as ADRs in `docs/adr/` (see its README). Code follows accepted ADRs. When an issue's "Decision needed" is settled, the decision becomes an ADR linked from the issue.
 - `CHANGELOG.md` is edited only by the maintainer, at merge time. Never edit it in a branch or PR; propose an entry in the PR description instead (see below). At release time the maintainer renames `## [Unreleased]` to the new version + date, alongside the `pyproject.toml` version bump.
 
 ## Layout
@@ -58,18 +59,22 @@ The plan is the pinned roadmap issue (#50): `gh issue view 50`. Every issue carr
 
 ## Agent workflow (one agent per issue)
 
+Start issue work with `/work-issue <N>` (`.claude/skills/work-issue/`), one background session per issue from agent view. That session is the worker. It hands its PR to the `reviewer` subagent (`.claude/agents/reviewer.md`, which has the full review brief).
+
+A PreToolUse hook (`.claude/hooks/guard_github.py`) denies the following to Claude and every agent: pushing to `main`, force-pushing, merging PRs, and changing repository settings or branch protection. Don't work around it. If one of those is needed, ask the maintainer.
+
 Worker agent:
 - One issue per git worktree, branch and PR. Name the branch `issue-<N>-<short-slug>`. The PR body starts with `Closes #<N>`.
-- In a fresh worktree run `uv sync` first. Before pushing, run `uv run pre-commit run --all-files` and the full test command above.
+- In a fresh worktree run `uv sync` first. Before pushing, run the full test command above. The pre-commit hooks run on every commit (worktrees share them); never skip them with `--no-verify`.
 - **Tests are the spec.** Never modify, delete, skip or weaken an existing test. That includes expected values, `xfail`/`skip` markers, `@example`s and Hypothesis settings. You may add new tests. One exception: remove a `strict=True` `xfail` marker once your fix makes that test pass, and say so in the PR. If you think an existing test is wrong, leave it alone and explain under a "Test concerns" heading in the PR.
 - Stay in scope. Don't fix other issues along the way; list anything you notice under "Out of scope" in the PR.
-- Don't settle anything the issue leaves open (public API, mathematical conventions, tie handling, new dependencies). Comment on the issue and stop.
+- Don't settle anything the issue leaves open (public API, mathematical conventions, tie handling, new dependencies). Ask the maintainer and wait: use AskUserQuestion in a session, otherwise comment on the issue and stop.
 - Never edit `CHANGELOG.md`. Put the proposed entry under a "Changelog" heading in the PR description.
 - Never push to `main` and never merge PRs. `main` is protected: PRs need green `lint-and-typecheck` and `test` checks.
 
-Reviewer agent:
+Reviewer agent (summary; the full brief is `.claude/agents/reviewer.md`):
 - Review from the issue and the diff only, not the worker's reasoning or transcript.
 - First check whether the diff touches `tests/`, test markers or Hypothesis settings. If it does, flag that at the top of the review.
 - Run the full test suite yourself. For mathematical code, also try to break the change with inputs the tests don't cover, and check it against the thesis definition the issue cites.
-- Report a verdict (approve / changes requested), then blocking problems with evidence (commands run and their output), then non-blocking notes.
+- Report Test integrity, Evidence, Spec, Maths and Standards separately, then a verdict with blocking problems backed by evidence.
 - At most two worker ↔ reviewer rounds, then hand the PR to the maintainer, including any disagreement.

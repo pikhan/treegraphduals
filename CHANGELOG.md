@@ -62,3 +62,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.1.0] - 2026-09-18
 ### Added
 - Initial project setup: `uv` packaging, Ruff lint/format, Pyrefly type checking, pytest + Hypothesis + coverage, Sphinx docs on Read the Docs, `CITATION.cff` with Zenodo DOI, pre-commit hooks.
+
+## [0.1.] - 2026-09-24
+### Added
+- Agent workflow tooling: a PreToolUse hook (.claude/hooks/guard_github.py) that keeps pushes to main, PR merges and repository-settings changes with me
+- a reviewer subagent based on matt pocock's skills
+- the /work-issue skill
+- docs/adr/ for architecture decision records. 

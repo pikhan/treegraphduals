@@ -17,3 +17,4 @@ dist/
 .env
 docs/coverage_report.md
 docs/test_results.txt
+.claude/worktrees/
