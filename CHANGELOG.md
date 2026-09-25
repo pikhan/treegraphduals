@@ -65,4 +65,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [0.1.] - 2026-09-24
 ### Added
-- Agent workflow tooling: a PreToolUse hook (.claude/hooks/guard_github.py) that keeps pushes to main, PR merges and repository-settings changes with me; a reviewer   subagent; the /work-issue skill; and docs/adr/ for architecture decision records. Basically just tooling to better work with AI on this project.
+- Agent workflow tooling: a PreToolUse hook (.claude/hooks/guard_github.py) that keeps pushes to main, PR merges and repository-settings changes with me
+- a reviewer subagent based on matt pocock's skills
+- the /work-issue skill
+- docs/adr/ for architecture decision records. 
