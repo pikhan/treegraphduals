@@ -76,5 +76,5 @@ Reviewer agent (summary; the full brief is `.claude/agents/reviewer.md`):
 - Review from the issue and the diff only, not the worker's reasoning or transcript.
 - First check whether the diff touches `tests/`, test markers or Hypothesis settings. If it does, flag that at the top of the review.
 - Run the full test suite yourself. For mathematical code, also try to break the change with inputs the tests don't cover, and check it against the thesis definition the issue cites.
-- Report Test integrity, Evidence, Spec, Maths and Standards separately, then a verdict with blocking problems backed by evidence.
+- Report Test integrity, Evidence, Spec, Math and Standards separately, then a verdict with blocking problems backed by evidence.
 - At most two worker ↔ reviewer rounds, then hand the PR to the maintainer, including any disagreement.
