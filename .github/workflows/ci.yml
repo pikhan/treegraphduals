@@ -11,20 +11,51 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
+        with:
+          python-version: "3.13" # the floor (ADR 0001, decision 7)
       - run: uv sync
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pyrefly check
 
-  test:
+  tests:
+    name: test (${{ matrix.python }})${{ matrix.experimental && ' (experimental)' || '' }}
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.13" # floor
+            experimental: false
+          - python: "3.14" # newest stable
+            experimental: false
+          - python: "3.14t" # free-threaded early warning (ADR 0001, decision 6)
+            experimental: true
+          - python: "3.15" # made blocking in #79
+            experimental: true
+          - python: "3.15t"
+            experimental: true
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
+        with:
+          python-version: ${{ matrix.python }}
       - run: uv sync
+      - run: uv run python -VV
       - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --doctest-modules -v
       - name: Upload coverage report
+        if: matrix.python == '3.13' # artifact names must be unique per run
         uses: actions/upload-artifact@v7
         with:
           name: coverage-html
           path: htmlcov/
+
+  # Branch protection requires a check named exactly `test`. Matrix jobs report
+  # as `test (3.13)` and so on, so this job turns the matrix result into `test`.
+  test:
+    needs: tests
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "${{ needs.tests.result }}" = success
