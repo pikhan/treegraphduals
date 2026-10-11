@@ -43,6 +43,8 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: uv sync
       - run: uv run python -VV
+      - run: "false" # THROWAWAY: gating demo, to be reverted
+        if: matrix.python == '3.13'
       - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --doctest-modules -v
       - name: Upload coverage report
         if: matrix.python == '3.13' # artifact names must be unique per run
