@@ -9,33 +9,45 @@ permissions:
   contents: read
 
 jobs:
+  # The supported versions live in pyproject.toml (requires-python + classifiers).
+  # Reading them here means a SPEC 0 floor bump never has to edit this file.
+  versions:
+    runs-on: ubuntu-latest
+    outputs:
+      floor: ${{ steps.read.outputs.floor }}
+      matrix: ${{ steps.read.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+      # Arguments to --ci-matrix are non-blocking extras: 3.15 until #79.
+      # No free-threaded (3.14t, 3.15t) jobs: see ADR 0003.
+      - id: read
+        run: |
+          echo "floor=$(python3 scripts/sync_python_versions.py --floor)" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(python3 scripts/sync_python_versions.py --ci-matrix 3.15)" >> "$GITHUB_OUTPUT"
+
   lint-and-typecheck:
+    needs: versions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
         with:
-          python-version: "3.13" # the floor (ADR 0001, decision 7)
+          python-version: ${{ needs.versions.outputs.floor }} # ADR 0001, decision 7
       - run: uv sync
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pyrefly check
+      - name: Check the supported-Python copies match pyproject.toml
+        run: uv run python scripts/sync_python_versions.py --check
 
   tests:
     name: test (${{ matrix.python }})${{ matrix.experimental && ' (experimental)' || '' }}
+    needs: versions
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - python: "3.13" # floor
-            experimental: false
-          - python: "3.14" # newest stable
-            experimental: false
-          - python: "3.15" # made blocking in #79
-            experimental: true
-          # No free-threaded (3.14t, 3.15t) jobs: see ADR 0003.
+      matrix: ${{ fromJSON(needs.versions.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
@@ -45,11 +57,29 @@ jobs:
       - run: uv run python -VV
       - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --doctest-modules -v
       - name: Upload coverage report
-        if: matrix.python == '3.13' # artifact names must be unique per run
+        if: matrix.python == needs.versions.outputs.floor # artifact names must be unique per run
         uses: actions/upload-artifact@v7
         with:
           name: coverage-html
           path: htmlcov/
+
+  # The dependency floors in pyproject.toml, on the floor Python. This is what
+  # makes the floors tested facts rather than claims (ADR 0001, decision 3).
+  # Non-blocking for now: add it to the `test` job's `needs` once it stays green.
+  test-lowest-direct:
+    name: test (${{ needs.versions.outputs.floor }}, lowest-direct) (experimental)
+    needs: versions
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
+        with:
+          python-version: ${{ needs.versions.outputs.floor }}
+      # Re-resolves instead of installing uv.lock; the rewritten lockfile stays in the runner.
+      - run: uv sync --resolution lowest-direct
+      - run: uv pip list
+      - run: uv run --no-sync pytest --doctest-modules -v
 
   # Branch protection requires a check named exactly `test`. Matrix jobs report
   # as `test (3.13)` and so on, so this job turns the matrix result into `test`.

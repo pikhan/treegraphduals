@@ -1,0 +1,4 @@
+# GitHub requests a review from these owners on every PR, including the SPEC 0
+# bot's, and .github/workflows/spec0.yml mentions them when it fails. When the
+# maintainers change, update this file (or name a team here).
+* @pikhan

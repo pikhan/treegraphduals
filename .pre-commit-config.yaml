@@ -23,3 +23,12 @@ repos:
         language: system
         files: ^pyproject\.toml$
         pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: sync-python-versions
+        name: Check supported-Python copies match pyproject.toml
+        entry: uv run python scripts/sync_python_versions.py --check
+        language: system
+        files: ^(pyproject\.toml|\.python-version|\.readthedocs\.yaml|README\.md|CLAUDE\.md|scripts/sync_python_versions\.py)$
+        pass_filenames: false

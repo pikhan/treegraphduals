@@ -1,0 +1,129 @@
+name: SPEC 0 floor bump
+
+# Quarterly: raise requires-python and the dependency floors to the SPEC 0
+# window (ADR 0001, ADR 0002) and open a PR for a maintainer to review.
+# See docs/contributing.rst ("SPEC 0 floor bumps") for what to do with the PR.
+#
+# The PR is opened with a GitHub App token (secrets PR_APP_ID and
+# PR_APP_PRIVATE_KEY), not GITHUB_TOKEN: events caused by GITHUB_TOKEN don't
+# start other workflows, so CI would never run on the PR and branch protection
+# would keep it unmergeable.
+#
+# GitHub disables scheduled workflows after 60 days without repository
+# activity. Re-enable it from the Actions tab if that happens.
+on:
+  schedule:
+    # Day 3 of each quarter, a day after spec0-action publishes the schedule.
+    - cron: "0 0 3 1,4,7,10 *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write # the failure step opens an issue
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Raise the floors in pyproject.toml
+        uses: scientific-python/spec0-action@7c875bc60508e9aab2bdb851e99bfcc53b283e94 # v1.6
+        with:
+          create_pr: false # the PR must include the synced copies below
+          update_all: 2 # ADR 0001, decision 3
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet -- pyproject.toml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Floors already match SPEC 0; nothing to do."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git --no-pager diff -- pyproject.toml
+            cp pyproject.toml "$RUNNER_TEMP/pyproject.toml"
+          fi
+
+      - name: Create a GitHub App token
+        if: steps.changes.outputs.changed == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.PR_APP_ID }}
+          private-key: ${{ secrets.PR_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      # spec0-action checks out with GITHUB_TOKEN. Check out again with the App
+      # token so the push and the PR come from the App, then restore its edit.
+      - if: steps.changes.outputs.changed == 'true'
+        uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - if: steps.changes.outputs.changed == 'true'
+        uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
+
+      - name: Sync the other copies and the lockfile
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          cp "$RUNNER_TEMP/pyproject.toml" pyproject.toml
+          python3 scripts/sync_python_versions.py
+          uv lock
+
+      - name: Open the pull request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          user_id="$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${user_id}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+          branch="spec0-floor-bump-${GITHUB_RUN_ID}"
+          git switch -c "$branch"
+          git add -u
+          git commit -m "Raise Python and dependency floors to SPEC 0 ($(date -u +%Y-%m-%d))"
+          git push origin "$branch"
+
+          cat > "$RUNNER_TEMP/body.md" <<'BODY'
+          Automated quarterly floor bump under [ADR 0001](REPO_URL/blob/main/docs/adr/0001-spec-0-support-policy.md) (SPEC 0), opened by `.github/workflows/spec0.yml`.
+
+          spec0-action raised `requires-python` and the dependency floors in `pyproject.toml`; `scripts/sync_python_versions.py` updated the other copies of the floor and `uv lock` re-locked.
+
+          **To check before merging** (see "SPEC 0 floor bumps" in `docs/contributing.rst`):
+
+          - [ ] CI is green, including the `lowest-direct` job, which tests the new floors.
+          - [ ] If Python was dropped, the code no longer needs workarounds for it (search for the old version).
+          - [ ] The floors follow [ADR 0002](REPO_URL/blob/main/docs/adr/0002-spec-0-windows-per-minor-version.md): `>=x.y`, never a patch release.
+          - [ ] Add a `CHANGELOG.md` entry at merge.
+
+          If CI is red, push fixes to this branch.
+          BODY
+          sed -i "s|REPO_URL|${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}|g" "$RUNNER_TEMP/body.md"
+
+          gh pr create --base main --head "$branch" \
+            --title "Raise Python and dependency floors to SPEC 0" \
+            --body-file "$RUNNER_TEMP/body.md"
+
+      # Ping whoever .github/CODEOWNERS names, so this keeps working when the
+      # maintainers change.
+      - name: Open an issue if this workflow failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          owners="$(awk '$1 == "*" { $1 = ""; print }' .github/CODEOWNERS 2>/dev/null | xargs)"
+          owners="${owners:-@${GITHUB_REPOSITORY_OWNER}}"
+          gh issue create \
+            --title "SPEC 0 floor-bump workflow failed" \
+            --body "${owners}: the quarterly SPEC 0 workflow failed, so no floor-bump PR was opened. Run: ${RUN_URL}
+
+          See \"SPEC 0 floor bumps\" in docs/contributing.rst. Once fixed, re-run it from the Actions tab (Run workflow)."
