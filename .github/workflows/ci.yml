@@ -17,7 +17,9 @@ jobs:
       floor: ${{ steps.read.outputs.floor }}
       matrix: ${{ steps.read.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       # Arguments to --ci-matrix are non-blocking extras: 3.15 until #79.
       # No free-threaded (3.14t, 3.15t) jobs: see ADR 0003.
       - id: read
@@ -32,8 +34,10 @@ jobs:
     needs: versions
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0 # no moving v10 tag upstream; pinned exactly
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           python-version: ${{ needs.versions.outputs.floor }} # ADR 0001, decision 7
       - run: uv sync
@@ -52,8 +56,10 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.versions.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0 # no moving v10 tag upstream; pinned exactly
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           python-version: ${{ matrix.python }}
       - run: uv sync
@@ -61,13 +67,13 @@ jobs:
       - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --cov-report=json --doctest-modules -v
       - name: Upload coverage report
         if: matrix.python == needs.versions.outputs.floor # artifact names must be unique per run
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-html
           path: htmlcov/
       - name: Upload coverage JSON for the badge
         if: matrix.python == needs.versions.outputs.floor
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-json
           path: coverage.json
@@ -85,8 +91,10 @@ jobs:
       group: coverage-badge
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/download-artifact@v8
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true # zizmor: ignore[artipacked] `git push` below needs them
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: coverage-json
           path: ${{ runner.temp }}/coverage
@@ -118,8 +126,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0 # no moving v10 tag upstream; pinned exactly
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           python-version: ${{ needs.versions.outputs.floor }}
       # Re-resolves instead of installing uv.lock; the rewritten lockfile stays in the runner.

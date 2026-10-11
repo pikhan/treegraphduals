@@ -29,7 +29,9 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Raise the floors in pyproject.toml
         uses: scientific-python/spec0-action@7c875bc60508e9aab2bdb851e99bfcc53b283e94 # v1.6
@@ -62,12 +64,13 @@ jobs:
       # spec0-action checks out with GITHUB_TOKEN. Check out again with the App
       # token so the push and the PR come from the App, then restore its edit.
       - if: steps.changes.outputs.changed == 'true'
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true # zizmor: ignore[artipacked] `git push` below needs them
 
       - if: steps.changes.outputs.changed == 'true'
-        uses: astral-sh/setup-uv@v10.2.0 # no moving v10 tag upstream; pinned exactly
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
       - name: Sync the other copies and the lockfile
         if: steps.changes.outputs.changed == 'true'

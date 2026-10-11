@@ -6,6 +6,14 @@ repos:
         args: [--fix]
       - id: ruff-format
 
+  # Static analysis of .github/workflows/ (#83). Catches what CodeQL's Actions
+  # analysis doesn't, such as unpinned actions and persisted checkout credentials.
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.30.1
+    hooks:
+      - id: zizmor
+        files: ^\.github/workflows/
+
   - repo: local
     hooks:
       - id: pyrefly-check
