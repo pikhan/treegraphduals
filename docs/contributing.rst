@@ -2,9 +2,25 @@ Contributing
 ============
 
 Contributions are welcome: bug reports, questions about a definition, fixes,
-new features and documentation. Report bugs and request features in the
-`issue tracker <https://github.com/pikhan/treegraphduals/issues>`_; report
-security vulnerabilities privately (see `Security`_ below).
+new features and documentation. Everyone taking part is expected to follow the
+`Code of Conduct <https://github.com/pikhan/treegraphduals/blob/main/CODE_OF_CONDUCT.md>`_.
+
+Where to go
+-----------
+
+- **Questions** about using the package: `GitHub Discussions
+  <https://github.com/pikhan/treegraphduals/discussions>`_, in the **Q&A**
+  category. Open-ended questions about the mathematical definitions go in the
+  **Math and Definitions** category.
+- **Bugs, feature requests and definition disagreements**: open an issue in the
+  `issue tracker <https://github.com/pikhan/treegraphduals/issues/new/choose>`_
+  using one of its forms (bug report, feature request, or math / definition
+  question). Disagreements about a definition in :doc:`definitions` are among
+  the most valuable reports the project can get.
+- **Security vulnerabilities**: report them privately (see `Security`_ below).
+
+`SUPPORT.md <https://github.com/pikhan/treegraphduals/blob/main/SUPPORT.md>`_
+summarizes the same routes.
 
 How to contribute
 -----------------
@@ -26,9 +42,10 @@ Changes are made through pull requests against ``main``:
        uv run ruff check . && uv run ruff format --check .
        uv run pyrefly check
 
-5. Open a pull request. Its description should say which issue it closes
-   (``Closes #N``), what changed and how you verified it, and whether you used
-   AI tools (which ones, and for what).
+5. Open a pull request. The `pull request template
+   <https://github.com/pikhan/treegraphduals/blob/main/.github/pull_request_template.md>`_
+   asks which issue it closes (``Closes #N``), what changed and how you
+   verified it, and whether you used AI tools (which ones, and for what).
 
 A pull request can be merged once the ``lint-and-typecheck`` and ``test`` CI
 checks pass and the maintainer has reviewed it. The maintainer adds the
@@ -138,7 +155,9 @@ Please don't report security vulnerabilities in public issues. Use GitHub's
 `private vulnerability reporting form
 <https://github.com/pikhan/treegraphduals/security/advisories/new>`_ (the
 **Report a vulnerability** button under the repository's Security tab), which
-only the maintainers can see.
+only the maintainers can see. The `security policy
+<https://github.com/pikhan/treegraphduals/blob/main/SECURITY.md>`_ has the
+details, including which versions get fixes (the latest release only).
 
 When editing ``.github/workflows/``:
 
