@@ -49,13 +49,9 @@ JOSS and pyOpenSci reviewers (#64) look for a stated support policy.
    date (2026 Q4), or a few days before it if that release lands before
    2026-10-01.
 2. **Core dependencies** (the SPEC 0 core packages we depend on: NumPy, SciPy,
-   Matplotlib, NetworkX). Floors follow SPEC 0's 2-year window. As in SPEC 0,
-   the window is counted per minor version from its x.y.0 release: a floor is
-   the oldest minor version (`>=x.y`) whose x.y.0 came out within the last 2
-   years, never a patch release.
+   Matplotlib, NetworkX). Floors follow SPEC 0's 2-year window.
 3. **Other runtime dependencies** (igraph, SymPy, and any added later). Floors
-   follow the same 2-year, per-minor-version window (spec0-action's
-   `update_all: 2`). They are
+   follow the same 2-year window (spec0-action's `update_all: 2`). They are
    raised further when CI's lowest-direct job (#78) shows they must be.
 4. **Cadence.** Floors are bumped quarterly by an automated PR (#78) that a
    maintainer reviews and merges. The PR's GitHub notification (email) is the
