@@ -37,9 +37,9 @@ jobs:
       - name: Validate metadata and README rendering
         run: uvx twine check dist/*
 
-      - name: Smoke-test the built wheel in a clean environment
+      - name: Smoke-test the built wheel in a clean environment, on the floor Python
         run: |
-          uv venv --python 3.13 /tmp/smoke
+          uv venv --python "$(python3 scripts/sync_python_versions.py --floor)" /tmp/smoke
           VIRTUAL_ENV=/tmp/smoke uv pip install dist/*.whl
           /tmp/smoke/bin/python -c "
           from treegraphduals.core import Tree
