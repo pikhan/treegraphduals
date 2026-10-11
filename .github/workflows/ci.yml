@@ -58,13 +58,56 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: uv sync
       - run: uv run python -VV
-      - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --doctest-modules -v
+      - run: uv run pytest --cov=treegraphduals --cov-report=term --cov-report=html --cov-report=json --doctest-modules -v
       - name: Upload coverage report
         if: matrix.python == needs.versions.outputs.floor # artifact names must be unique per run
         uses: actions/upload-artifact@v7
         with:
           name: coverage-html
           path: htmlcov/
+      - name: Upload coverage JSON for the badge
+        if: matrix.python == '3.13'
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-json
+          path: coverage.json
+
+  # The README's coverage badge is a shields.io endpoint badge reading
+  # coverage.json from the orphan `badges` branch. Only pushes to main update it.
+  coverage-badge:
+    needs: tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push to the `badges` branch
+    # Queue runs so two quick pushes to main can't race on the `badges` branch.
+    concurrency:
+      group: coverage-badge
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: coverage-json
+          path: ${{ runner.temp }}/coverage
+      - run: python3 scripts/coverage_badge.py "$RUNNER_TEMP/coverage/coverage.json" "$RUNNER_TEMP/coverage.json"
+      - name: Commit the badge to the badges branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898273+github-actions[bot]@users.noreply.github.com"
+          if git fetch --depth=1 origin badges; then
+            git switch -c badges FETCH_HEAD
+          else
+            git switch --orphan badges
+          fi
+          cp "$RUNNER_TEMP/coverage.json" coverage.json
+          git add coverage.json
+          if git diff --cached --quiet; then
+            echo "Coverage unchanged; nothing to push."
+          else
+            git commit -m "Update coverage badge for ${GITHUB_SHA::7}"
+            git push origin badges
+          fi
 
   # The dependency floors in pyproject.toml, on the floor Python. This is what
   # makes the floors tested facts rather than claims (ADR 0001, decision 3).
