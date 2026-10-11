@@ -19,14 +19,9 @@ takes a new ADR that supersedes the old one, never an edit to the old one.
 
 ## Records
 
-None yet. The PR that adds the first record also adds this listing, so every
-later record appears automatically:
-
-````md
 ```{toctree}
 :maxdepth: 1
 :glob:
 
 0*
 ```
-````
