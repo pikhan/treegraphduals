@@ -63,7 +63,7 @@ and still be mathematically wrong, or be correct but ignore the spec.
   looks implemented actually wrong? Quote the issue line for each finding. If the
   change settles something the issue left open (API, convention, tie handling, a
   new dependency) without a recorded decision or ADR, that is blocking.
-- **Maths**: only if the change touches mathematical code. Check it against the
+- **Math**: only if the change touches mathematical code. Check it against the
   definitions the issue or ADRs cite: excursion (thesis Def 2.27), U-shaped segments
   (Def 2.29), Harris path (Def 2.30), level-set tree via d_f (Def 2.31), horizontal
   tunnelability (Def 3.1), and Kovchegov–Zaliapin Horton pruning. Then try to break
@@ -83,7 +83,7 @@ and still be mathematically wrong, or be correct but ignore the spec.
 ### Evidence
 <command> → <result>
 ### Spec
-### Maths
+### Math
 ### Standards
 
 ### Blocking
