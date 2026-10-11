@@ -93,4 +93,5 @@ When editing ``.github/workflows/``:
   with those credentials.
 
 The `zizmor <https://docs.zizmor.sh/>`_ pre-commit hook checks these rules on
-every commit that touches a workflow or ``.github/dependabot.yml``.
+every commit that touches a workflow, ``.github/dependabot.yml``,
+``.pre-commit-config.yaml`` or an ``action.yml``.

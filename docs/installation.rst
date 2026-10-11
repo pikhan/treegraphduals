@@ -20,6 +20,7 @@ release workflow from the tagged commit. To check a downloaded file, use the
    gh attestation verify treegraphduals-<version>-py3-none-any.whl --repo pikhan/treegraphduals
 
 The same provenance is attached to each GitHub release as
-``treegraphduals-<version>.provenance.sigstore.json``, for verifying offline
-with ``gh attestation verify --bundle``. PyPI also shows a publish attestation
-for each file, under "Provenance" on the file's page.
+``treegraphduals-<version>.provenance.sigstore.json``. Pass it with
+``gh attestation verify --bundle`` to verify without querying GitHub's
+attestation API. PyPI also shows a publish attestation for each file, under
+"Provenance" on the file's page.

@@ -6,9 +6,9 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  # Static analysis of .github/workflows/ and dependabot.yml (#83). Catches what
-  # CodeQL's Actions analysis doesn't, such as unpinned actions and persisted
-  # checkout credentials.
+  # Static analysis of workflows, dependabot.yml, this file and any action.yml
+  # (#83). Catches what CodeQL's Actions analysis doesn't, such as unpinned
+  # actions and persisted checkout credentials.
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     rev: v1.30.1
     hooks:
