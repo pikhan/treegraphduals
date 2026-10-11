@@ -7,7 +7,7 @@ A package for working with trees, their duals, graphs, and time series.
 
 ## Stack
 
-- Python 3.12+, packaged with `uv`, built with Hatchling (`src/` layout)
+- Python 3.13+, packaged with `uv`, built with Hatchling (`src/` layout)
 - Lint/format: Ruff (`ruff check`, `ruff format`)
 - Type checking: Pyrefly
 - Tests: pytest + Hypothesis for property-based testing (extensive use planned; none written yet), coverage via `pytest-cov`
