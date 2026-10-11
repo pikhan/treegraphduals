@@ -1,7 +1,66 @@
 Contributing
 ============
 
-Coming soon...
+Contributions are welcome: bug reports, questions about a definition, fixes,
+new features and documentation. Report bugs and request features in the
+`issue tracker <https://github.com/pikhan/treegraphduals/issues>`_; report
+security vulnerabilities privately (see `Security`_ below).
+
+How to contribute
+-----------------
+
+Changes are made through pull requests against ``main``:
+
+1. For anything beyond a small fix, open or comment on an issue first, so the
+   approach can be agreed before you write code.
+2. Fork the repository and create a branch. Set up the environment and the
+   pre-commit hooks::
+
+       uv sync
+       uv run pre-commit install
+
+3. Make the change, with tests (see `Test policy`_) and numpy-style docstrings.
+4. Run the checks locally::
+
+       uv run pytest --doctest-modules
+       uv run ruff check . && uv run ruff format --check .
+       uv run pyrefly check
+
+5. Open a pull request. Its description should say which issue it closes
+   (``Closes #N``), what changed and how you verified it, and whether you used
+   AI tools (which ones, and for what).
+
+A pull request can be merged once the ``lint-and-typecheck`` and ``test`` CI
+checks pass and the maintainer has reviewed it. The maintainer adds the
+``CHANGELOG.md`` entry at merge time, so don't edit that file in a pull request.
+
+Requirements for code
+~~~~~~~~~~~~~~~~~~~~~
+
+- Code passes `Ruff <https://docs.astral.sh/ruff/>`_ (lint and format) and
+  `Pyrefly <https://pyrefly.org/>`_ (type checking). The pre-commit hooks and
+  CI enforce both.
+- Public functions and classes have type hints and
+  `numpy-style docstrings <https://numpydoc.readthedocs.io/en/latest/format.html>`_
+  with runnable examples. The examples run as doctests.
+- Mathematical conventions and API decisions follow the accepted
+  architecture decision records in ``docs/adr/``. A change to one of them
+  needs a new ADR, discussed in an issue first.
+
+Test policy
+-----------
+
+- **New functionality comes with tests** in ``tests/``, added in the same pull
+  request, plus runnable examples in its docstrings.
+- **Bug fixes come with a regression test** that fails without the fix.
+- **Expected values come from an independent source**: a worked example, the
+  definition, or another library such as NetworkX, never from running the
+  code under test.
+- **Existing tests are the specification.** Don't weaken, skip or delete one
+  to make a change pass. If you think a test is wrong, say why in the pull
+  request.
+
+CI runs the whole suite, doctests included, on every push and pull request.
 
 SPEC 0 floor bumps
 ------------------
