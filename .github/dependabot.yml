@@ -1,0 +1,21 @@
+# Version updates (#60). Security updates are a repository setting (#83).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+    # Refresh uv.lock only. The floors in pyproject.toml follow SPEC 0
+    # (ADR 0001), so Dependabot must not raise them.
+    versioning-strategy: lockfile-only
+    groups:
+      uv:
+        patterns: ["*"]
