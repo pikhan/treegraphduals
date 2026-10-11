@@ -4,7 +4,7 @@ contact_links:
     url: https://treegraphduals.readthedocs.io/en/latest/
     about: The user guide, API reference and working definitions.
   - name: Ask a question (GitHub Discussions)
-    url: https://github.com/pikhan/treegraphduals/discussions
+    url: https://github.com/pikhan/treegraphduals/discussions/categories/q-a
     about: Questions about using the package go to the Q&A category of Discussions.
   - name: Report a security vulnerability
     url: https://github.com/pikhan/treegraphduals/security/advisories/new

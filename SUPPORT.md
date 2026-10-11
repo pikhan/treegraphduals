@@ -2,7 +2,7 @@
 
 - **Questions** about using the package: ask in
   [GitHub Discussions](https://github.com/pikhan/treegraphduals/discussions), in the **Q&A** category.
-  Questions about the mathematical definitions go in the **Math & definitions** category.
+  Questions about the mathematical definitions go in the **Math and Definitions** category.
 - **Bugs and feature requests**: open an [issue](https://github.com/pikhan/treegraphduals/issues/new/choose).
   If a definition looks wrong, use the **Math / definition question** form.
 - **Security vulnerabilities**: report them privately; see [SECURITY.md](SECURITY.md).

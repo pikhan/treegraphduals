@@ -11,7 +11,7 @@ Where to go
 - **Questions** about using the package: `GitHub Discussions
   <https://github.com/pikhan/treegraphduals/discussions>`_, in the **Q&A**
   category. Open-ended questions about the mathematical definitions go in the
-  **Math & definitions** category.
+  **Math and Definitions** category.
 - **Bugs, feature requests and definition disagreements**: open an issue in the
   `issue tracker <https://github.com/pikhan/treegraphduals/issues/new/choose>`_
   using one of its forms (bug report, feature request, or math / definition

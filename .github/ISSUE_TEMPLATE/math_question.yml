@@ -8,7 +8,7 @@ body:
         Disagreements about definitions are among the most valuable reports this project can get: the package
         is only as correct as the definitions it implements. The working definitions are in
         [docs/definitions.md](https://treegraphduals.readthedocs.io/en/latest/definitions.html).
-        For a more open-ended discussion, you can also use the **Math & definitions** category in
+        For a more open-ended discussion, you can also use the **Math and Definitions** category in
         [Discussions](https://github.com/pikhan/treegraphduals/discussions).
   - type: input
     id: definition

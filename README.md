@@ -152,7 +152,7 @@ Full API documentation, tutorials, and examples: <https://treegraphduals.readthe
 ## Getting help and contributing
 
 - Questions: [GitHub Discussions](https://github.com/pikhan/treegraphduals/discussions) (Q&A; definition
-  questions go in Math & definitions).
+  questions go in Math and Definitions).
 - Bugs, feature requests and definition disagreements: [issues](https://github.com/pikhan/treegraphduals/issues/new/choose).
 - Security vulnerabilities: report privately, see [`SECURITY.md`](SECURITY.md).
 - Contributing: see the [contributing guide](https://treegraphduals.readthedocs.io/en/latest/contributing.html).
