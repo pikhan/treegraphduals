@@ -86,10 +86,11 @@ When editing ``.github/workflows/``:
 - Pin every action to a full commit SHA, with its version in a trailing
   comment (``uses: actions/checkout@<sha> # v7.0.1``). Dependabot keeps the
   SHAs and the comments current.
-- Give the workflow a read-only default (``permissions: contents: read``) and
-  grant more only to the jobs that need it.
+- Start from a read-only default (``permissions: contents: read``) and grant
+  write permissions as narrowly as practical, preferably to the jobs that need
+  them.
 - Check out with ``persist-credentials: false`` unless a later step pushes
   with those credentials.
 
 The `zizmor <https://docs.zizmor.sh/>`_ pre-commit hook checks these rules on
-every commit that touches a workflow.
+every commit that touches a workflow or ``.github/dependabot.yml``.
