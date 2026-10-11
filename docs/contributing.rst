@@ -20,9 +20,10 @@ Where the versions live
 - the ``Programming Language :: Python :: X.Y`` classifiers are the **full list**
   of supported versions.
 
-``scripts/sync_python_versions.py`` copies the floor into ``.python-version``,
-``.readthedocs.yaml``, ``README.md`` and ``CLAUDE.md``, and drops classifiers
-below the floor. The CI workflows don't hold a copy: they ask the script at run
+``scripts/sync_python_versions.py`` copies the floor into ``.readthedocs.yaml``,
+``README.md`` and ``CLAUDE.md``, drops classifiers below the floor, and sets
+``.python-version`` (the local development interpreter) to the newest
+supported version (ADR 0001, decision 7). The CI workflows don't hold a copy: they ask the script at run
 time, so the test matrix is the classifiers plus any non-blocking prerelease
 listed in ``.github/workflows/ci.yml``. A pre-commit hook and CI both run the
 script with ``--check``, so a hand edit can't leave the copies inconsistent.

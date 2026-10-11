@@ -21,9 +21,12 @@ jobs:
       # Arguments to --ci-matrix are non-blocking extras: 3.15 until #79.
       # No free-threaded (3.14t, 3.15t) jobs: see ADR 0003.
       - id: read
+        # Plain assignments, so a script error fails this step (echo "$(...)" wouldn't).
         run: |
-          echo "floor=$(python3 scripts/sync_python_versions.py --floor)" >> "$GITHUB_OUTPUT"
-          echo "matrix=$(python3 scripts/sync_python_versions.py --ci-matrix 3.15)" >> "$GITHUB_OUTPUT"
+          floor="$(python3 scripts/sync_python_versions.py --floor)"
+          matrix="$(python3 scripts/sync_python_versions.py --ci-matrix 3.15)"
+          echo "floor=$floor" >> "$GITHUB_OUTPUT"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   lint-and-typecheck:
     needs: versions

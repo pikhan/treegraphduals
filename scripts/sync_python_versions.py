@@ -8,6 +8,9 @@ Sources of truth (ADR 0001):
   classifier is added if missing. New versions are added by hand (ADR 0001,
   decision 5).
 
+``.python-version`` (the local development interpreter) follows the newest
+supported version instead, per ADR 0001 decision 7.
+
 The CI workflows don't hold a copy: they ask this script at run time
 (``--floor``, ``--ci-matrix``), so the bot's PR never has to edit a workflow.
 
@@ -34,10 +37,12 @@ CLASSIFIER = re.compile(
     r'^\s*"Programming Language :: Python :: (3\.\d+)",\n', flags=re.MULTILINE
 )
 
-# Files holding the floor: (path, pattern whose group 1 is the version). Each
+# Files holding a version: (path, pattern whose group 1 is the version). Each
 # pattern must match exactly once, so rewording a file can't silently drop it.
-FLOOR_COPIES = [
+NEWEST_COPIES = [
     (".python-version", r"\A(3\.\d+)\n\Z"),
+]
+FLOOR_COPIES = [
     (".readthedocs.yaml", r'^    python: "(3\.\d+)"$'),
     ("README.md", r"^Requires Python (3\.\d+)\+\.$"),
     ("CLAUDE.md", r"^- Python (3\.\d+)\+, packaged with `uv`"),
@@ -98,14 +103,17 @@ def sync(floor: str) -> dict[Path, str]:
     text = PYPROJECT.read_text()
     if (new := synced_pyproject(text, floor)) != text:
         stale[PYPROJECT] = new
-    for name, pattern in FLOOR_COPIES:
+    newest = supported(floor)[-1]
+    copies = [(n, p, newest) for n, p in NEWEST_COPIES]
+    copies += [(n, p, floor) for n, p in FLOOR_COPIES]
+    for name, pattern, version in copies:
         path = ROOT / name
         text = path.read_text()
         matches = list(re.finditer(pattern, text, flags=re.MULTILINE))
         if len(matches) != 1:
             sys.exit(f"{name}: expected one match for {pattern!r}, got {len(matches)}")
         start, end = matches[0].span(1)
-        new = text[:start] + floor + text[end:]
+        new = text[:start] + version + text[end:]
         if new != text:
             stale[path] = new
     return stale
@@ -133,7 +141,7 @@ def main() -> None:
     elif args.check:
         stale = sync(floor)
         for path in stale:
-            print(f"{path.relative_to(ROOT)} doesn't match requires-python >={floor}")
+            print(f"{path.relative_to(ROOT)} needs updating")
         if stale:
             sys.exit("run: uv run python scripts/sync_python_versions.py")
     else:
