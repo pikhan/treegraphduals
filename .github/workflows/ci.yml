@@ -66,7 +66,7 @@ jobs:
           name: coverage-html
           path: htmlcov/
       - name: Upload coverage JSON for the badge
-        if: matrix.python == '3.13'
+        if: matrix.python == needs.versions.outputs.floor
         uses: actions/upload-artifact@v7
         with:
           name: coverage-json
