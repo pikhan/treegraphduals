@@ -1,10 +1,14 @@
 # Version updates (#60). Security updates are a repository setting (#83).
+# Each update waits a 7-day cooldown, so a compromised or broken release is
+# usually caught upstream before it reaches us. Security updates skip it.
 version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     groups:
       github-actions:
         patterns: ["*"]
@@ -13,6 +17,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     # Refresh uv.lock only. The floors in pyproject.toml follow SPEC 0
     # (ADR 0001), so Dependabot must not raise them.
     versioning-strategy: lockfile-only

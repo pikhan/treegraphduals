@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/pypi/l/treegraphduals)](https://github.com/pikhan/treegraphduals/blob/main/LICENSE)
 [![Docs](https://readthedocs.org/projects/treegraphduals/badge/?version=latest)](https://treegraphduals.readthedocs.io/en/latest/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22839827.svg)](https://doi.org/10.5281/zenodo.22839827)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/pikhan/treegraphduals/badge)](https://scorecard.dev/viewer/?uri=github.com/pikhan/treegraphduals)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15397/badge)](https://www.bestpractices.dev/projects/15397)
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Typed: Pyrefly](https://img.shields.io/badge/typed-Pyrefly-blue)](https://pyrefly.org/)
