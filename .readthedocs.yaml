@@ -6,9 +6,13 @@ build:
     python: "3.13"
   jobs:
     pre_build:
-      - pytest --cov=treegraphduals --cov-report=html --cov-report=term --cov-report=json --doctest-modules -v
+      # Run the suite once (pytest.ini's addopts add coverage, the HTML report and
+      # doctests). Piping into tee keeps a failing test from aborting the build, so
+      # the Testing page always reflects main, failures included; CI's required
+      # `test` check is the merge gate.
+      - pytest --tb=no --no-header -q | tee docs/test_results.txt
       - coverage report --format=markdown > docs/coverage_report.md
-      - pytest --tb=no --no-header -q > docs/test_results.txt || true
+      - coverage json
     post_build:
       - mkdir -p $READTHEDOCS_OUTPUT/html/htmlcov
       - cp -r htmlcov/* $READTHEDOCS_OUTPUT/html/htmlcov/
