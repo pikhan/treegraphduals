@@ -7,17 +7,16 @@ build:
   jobs:
     pre_build:
       # Run the suite once (pytest.ini's addopts add coverage, the HTML report and
-      # doctests). Piping into tee keeps a failing test from aborting the build, so
-      # the Testing page always reflects main, failures included; CI's required
-      # `test` check is the merge gate. If collection fails (a syntax or import
-      # error), pytest writes no coverage data, so the coverage steps below must
-      # not abort the build either.
-      - pytest --tb=no --no-header -q | tee docs/test_results.txt
-      - coverage report --format=markdown > docs/coverage_report.md || echo "No coverage data, because the test run stopped before collecting it. See the test results above." > docs/coverage_report.md
-      - coverage json || true
+      # doctests). pytest exits 1 when tests fail: the build goes on and the
+      # Testing page shows the failures, so the docs always reflect main. Exit 2+
+      # means the suite didn't run properly (tests failed to load, none were
+      # collected, or a pytest error), which also fails CI: abort the build.
+      - pytest --tb=no --no-header -q > docs/test_results.txt; status=$?; cat docs/test_results.txt; [ "$status" -le 1 ]
+      - coverage report --format=markdown > docs/coverage_report.md
+      - coverage json
     post_build:
       - mkdir -p $READTHEDOCS_OUTPUT/html/htmlcov
-      - cp -r htmlcov/* $READTHEDOCS_OUTPUT/html/htmlcov/ || true
+      - cp -r htmlcov/* $READTHEDOCS_OUTPUT/html/htmlcov/
 
 sphinx:
   configuration: docs/conf.py

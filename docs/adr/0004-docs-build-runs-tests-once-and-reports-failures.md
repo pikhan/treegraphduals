@@ -35,20 +35,26 @@ CI already runs the full suite, and its `test` check is required to merge into
 
 ## Decision
 
-Option C (maintainer, on #31):
+Option C, with tests that fail to load still aborting the build (maintainer,
+on #31 and in the PR #98 session):
 
 1. RTD keeps generating the test and coverage reports. They don't move to CI.
 2. `pre_build` runs pytest once. Its output goes to `docs/test_results.txt`,
    and the coverage reports (`coverage_report.md`, `coverage.json`, `htmlcov/`)
    come from that same run's data.
-3. No test outcome aborts the docs build, collection errors included. Failures
-   and errors appear on the Testing page. If pytest records no coverage data,
-   `coverage_report.md` says so instead of the build failing.
-4. CI's required `test` check, not the docs build, is the merge gate.
+3. Failing tests (pytest exit code 1) don't abort the docs build. The failures
+   appear on the Testing page.
+4. If the suite doesn't run properly (exit code 2 or higher: tests that fail to
+   load, no tests collected, or a pytest error), the docs build aborts. The
+   same failure already fails CI and blocks the merge. In that case RTD keeps
+   serving the last good build, rather than publishing a page with no results
+   and no coverage.
+5. CI's required `test` check, not the docs build, is the merge gate.
 
 ## Consequences
 
-- `.readthedocs.yaml` pipes the single pytest run through `tee`, and makes the
-  coverage steps and the `htmlcov` copy non-fatal (#31).
+- `.readthedocs.yaml` writes the single pytest run to `test_results.txt`, echoes
+  it to the build log, and aborts only when pytest's exit code is 2 or higher
+  (#31).
 - A red Testing page on `main` means broken code got past CI: treat it as a bug.
 - A green docs build no longer means the tests passed. Check CI for that.
