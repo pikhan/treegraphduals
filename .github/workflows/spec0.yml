@@ -67,7 +67,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - if: steps.changes.outputs.changed == 'true'
-        uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
+        uses: astral-sh/setup-uv@v10.2.0 # no moving v10 tag upstream; pinned exactly
 
       - name: Sync the other copies and the lockfile
         if: steps.changes.outputs.changed == 'true'

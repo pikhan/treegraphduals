@@ -119,7 +119,7 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.1.0 # no moving v10 tag upstream; pinned exactly
+      - uses: astral-sh/setup-uv@v10.2.0 # no moving v10 tag upstream; pinned exactly
         with:
           python-version: ${{ needs.versions.outputs.floor }}
       # Re-resolves instead of installing uv.lock; the rewritten lockfile stays in the runner.
