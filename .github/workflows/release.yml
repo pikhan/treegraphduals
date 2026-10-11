@@ -15,6 +15,11 @@ on:
         type: choice
         options: [testpypi, pypi]
 
+# Default for jobs without their own block (only `build`). Jobs that set
+# `permissions:` replace this rather than add to it.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
