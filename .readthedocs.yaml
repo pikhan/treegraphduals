@@ -6,9 +6,14 @@ build:
     python: "3.13"
   jobs:
     pre_build:
-      - pytest --cov=treegraphduals --cov-report=html --cov-report=term --cov-report=json --doctest-modules -v
+      # Run the suite once (pytest.ini's addopts add coverage, the HTML report and
+      # doctests). pytest exits 1 when tests fail: the build goes on and the
+      # Testing page shows the failures, so the docs always reflect main. Exit 2+
+      # means the suite didn't run properly (tests failed to load, none were
+      # collected, or a pytest error), which also fails CI: abort the build.
+      - pytest --tb=no --no-header -q > docs/test_results.txt; status=$?; cat docs/test_results.txt; [ "$status" -le 1 ]
       - coverage report --format=markdown > docs/coverage_report.md
-      - pytest --tb=no --no-header -q > docs/test_results.txt || true
+      - coverage json
     post_build:
       - mkdir -p $READTHEDOCS_OUTPUT/html/htmlcov
       - cp -r htmlcov/* $READTHEDOCS_OUTPUT/html/htmlcov/
