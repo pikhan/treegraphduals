@@ -16,7 +16,7 @@ the piece you need is ready.
 pip install treegraphduals     # or: uv add treegraphduals
 ```
 
-Requires Python 3.12+.
+Requires Python 3.13+.
 
 ## Quickstart
 

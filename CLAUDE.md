@@ -7,7 +7,7 @@ A package for working with trees, their duals, graphs, and time series.
 
 ## Stack
 
-- Python 3.12+, packaged with `uv`, built with Hatchling (`src/` layout)
+- Python 3.13+, packaged with `uv`, built with Hatchling (`src/` layout)
 - Lint/format: Ruff (`ruff check`, `ruff format`)
 - Type checking: Pyrefly
 - Tests: pytest + Hypothesis for property-based testing (extensive use planned; none written yet), coverage via `pytest-cov`
@@ -22,7 +22,7 @@ A package for working with trees, their duals, graphs, and time series.
 - `uv run pytest --tb=no --no-header -q > docs/test_results.txt || true` — regenerate the test-results summary embedded in the docs
 - `uv run ruff check --fix .` / `uv run ruff format .` — lint/format
 - `uv run pyrefly check` — type check
-- `uv run pre-commit run --all-files` — run all pre-commit hooks manually (this also re-dates `CITATION.cff`; revert that unless releasing)
+- `uv run pre-commit run --all-files` — run all pre-commit hooks manually (`CITATION.cff` is re-dated only when the `pyproject.toml` version changes)
 - `uv build` — build the sdist + wheel into `dist/`
 
 ## Conventions

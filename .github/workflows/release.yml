@@ -39,7 +39,7 @@ jobs:
 
       - name: Smoke-test the built wheel in a clean environment
         run: |
-          uv venv --python 3.12 /tmp/smoke
+          uv venv --python 3.13 /tmp/smoke
           VIRTUAL_ENV=/tmp/smoke uv pip install dist/*.whl
           /tmp/smoke/bin/python -c "
           from treegraphduals.core import Tree
