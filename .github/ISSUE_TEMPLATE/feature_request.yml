@@ -1,0 +1,31 @@
+name: Feature request
+description: Suggest new functionality or a change to the public API.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. For open-ended ideas you'd like to discuss first, you can also start a thread in
+        [Discussions](https://github.com/pikhan/treegraphduals/discussions).
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what makes it hard or impossible today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: How you would like to call it. A short code sketch helps.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches or workarounds you've considered, including other libraries.
+    validations:
+      required: false

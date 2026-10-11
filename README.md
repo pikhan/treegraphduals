@@ -149,6 +149,15 @@ The graph classes are intended to become general enough to allow for:
 
 Full API documentation, tutorials, and examples: <https://treegraphduals.readthedocs.io>
 
+## Getting help and contributing
+
+- Questions: [GitHub Discussions](https://github.com/pikhan/treegraphduals/discussions) (Q&A; definition
+  questions go in Math & definitions).
+- Bugs, feature requests and definition disagreements: [issues](https://github.com/pikhan/treegraphduals/issues/new/choose).
+- Security vulnerabilities: report privately, see [`SECURITY.md`](SECURITY.md).
+- Contributing: see the [contributing guide](https://treegraphduals.readthedocs.io/en/latest/contributing.html).
+  Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md); [`SUPPORT.md`](SUPPORT.md) has the details.
+
 ## Citing
 
 If you use this package, please cite it via the DOI above, or see

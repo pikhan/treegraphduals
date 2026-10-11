@@ -1,0 +1,45 @@
+name: Math / definition question
+description: Question or disagree with a mathematical definition or convention the package uses.
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Disagreements about definitions are among the most valuable reports this project can get: the package
+        is only as correct as the definitions it implements. The working definitions are in
+        [docs/definitions.md](https://treegraphduals.readthedocs.io/en/latest/definitions.html).
+        For a more open-ended discussion, you can also use the **Math & definitions** category in
+        [Discussions](https://github.com/pikhan/treegraphduals/discussions).
+  - type: input
+    id: definition
+    attributes:
+      label: Definition involved
+      description: Which definition in docs/definitions.md is involved (its heading), or "missing" if it isn't there.
+      placeholder: "Horton pruning and series reduction"
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: |
+        The source you're comparing against: the thesis (with section, definition or page number) or a paper
+        (with citation and the relevant definition or theorem).
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question or disagreement
+      description: What looks wrong, ambiguous or missing, and what you think it should be.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Small example
+      description: |
+        A small example where the readings differ: an input (for example a short time series or tree), what the
+        package gives, and what you expect according to the source.
+    validations:
+      required: true
