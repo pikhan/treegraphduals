@@ -3,7 +3,8 @@
 - **Status:** Proposed
 - **Date:** 2026-10-11
 - **Issues:** #75, #79
-- **Supersedes:** decision 6 of [ADR 0001](0001-spec-0-support-policy.md)
+- **Supersedes:** decision 6, and the free-threaded part of decision 5, of
+  [ADR 0001](0001-spec-0-support-policy.md)
 
 ## Context
 
