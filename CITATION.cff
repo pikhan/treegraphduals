@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software in your work, please cite it as below."
 title: "treegraphduals"
-version: "0.1.0"
-date-released: "2026-09-19"
+version: "0.2.0"
+date-released: "2026-10-12"
 authors:
   - family-names: "Khan"
     given-names: "Ibraheem"

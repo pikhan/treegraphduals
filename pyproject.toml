@@ -1,6 +1,6 @@
 [project]
 name = "treegraphduals"
-version = "0.1.0"
+version = "0.2.0"
 description = "Trees, their duals, graphs, and time series: level-set trees, Harris paths, Horton-Strahler pruning, and horizontal tunnelability graphs."
 readme = "README.md"
 requires-python = ">=3.13"
