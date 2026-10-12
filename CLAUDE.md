@@ -78,3 +78,11 @@ Reviewer agent (summary; the full brief is `.claude/agents/reviewer.md`):
 - Run the full test suite yourself. For mathematical code, also try to break the change with inputs the tests don't cover, and check it against the thesis definition the issue cites.
 - Report Test integrity, Evidence, Spec, Math and Standards separately, then a verdict with blocking problems backed by evidence.
 - At most two worker ↔ reviewer rounds, then hand the PR to the maintainer, including any disagreement.
+
+## AI use
+
+JOSS and pyOpenSci require a disclosure of AI use (#80). These rules keep the evidence for it.
+
+- AI-generated code, tests and docs enter the repository **only through Claude Code sessions**, never pasted from other AI chats, so provenance tracking (#81) can see them.
+- Every agent PR has a complete "AI use" section (models, session ID, what the AI generated, human input, review rounds). `/work-issue` steps 6–8 say how to fill it in.
+- Agents never draft or post replies in pyOpenSci or JOSS review threads. Both venues require human-written communication with editors and reviewers.
