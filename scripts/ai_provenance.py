@@ -36,6 +36,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import urllib.request
 from collections import Counter
 from collections.abc import Iterable, Iterator
@@ -665,10 +666,28 @@ def count_lines(
 
 
 def gh(*args: str, stdin: str | None = None, cwd: Path = ROOT) -> str:
-    """Run the GitHub CLI and return its standard output."""
-    return subprocess.run(
-        ["gh", *args], cwd=cwd, input=stdin, check=True, capture_output=True, text=True
-    ).stdout
+    """Run the GitHub CLI and return its standard output.
+
+    Reads (calls without ``stdin``) are retried twice: GitHub's API sometimes
+    fails a request transiently, and one failure would abort a whole
+    ``aggregate``. Writes are not retried, so a comment is never posted twice.
+    """
+    attempts = 3 if stdin is None else 1
+    for attempt in range(attempts):
+        try:
+            return subprocess.run(
+                ["gh", *args],
+                cwd=cwd,
+                input=stdin,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout
+        except subprocess.CalledProcessError:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(2 * (attempt + 1))
+    raise AssertionError("unreachable")
 
 
 def gh_json(*args: str, cwd: Path = ROOT) -> Any:
