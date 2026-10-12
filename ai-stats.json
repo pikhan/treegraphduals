@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12T03:40:19+00:00",
+ "generated_at": "2026-10-12T16:46:19+00:00",
  "prs": [
   {
    "author": "ai-assisted",
@@ -1309,28 +1309,28 @@
      }
     },
     "totals": {
-     "active_seconds": 112,
-     "agent_seconds": 85,
-     "answers": 0,
+     "active_seconds": 1084,
+     "agent_seconds": 398,
+     "answers": 1,
      "efforts": [
       "high",
       "medium"
      ],
-     "human_chars": 122,
-     "human_messages": 2,
-     "human_words": 25,
-     "messages_after_approval": 0,
+     "human_chars": 716,
+     "human_messages": 5,
+     "human_words": 140,
+     "messages_after_approval": 3,
      "models": {
       "claude-opus-5-5": {
-       "input_tokens": 1009775,
-       "output_tokens": 7349,
-       "responses": 24
+       "input_tokens": 3349958,
+       "output_tokens": 20682,
+       "responses": 57
       }
      },
      "reviewer_handbacks": [
       "APPROVE"
      ],
-     "wall_clock_seconds": 275
+     "wall_clock_seconds": 1887
     }
    },
    "review_comments": 0,
@@ -1401,9 +1401,9 @@
   "merged_prs": 25,
   "models": {
    "claude-opus-5-5": {
-    "input_tokens": 166408143,
-    "output_tokens": 869296,
-    "responses": 1376
+    "input_tokens": 168748326,
+    "output_tokens": 882629,
+    "responses": 1409
    },
    "claude-sonnet-5-5": {
     "input_tokens": 951153,
@@ -1424,13 +1424,13 @@
   },
   "stale_prs": 1,
   "steering": {
-   "active_seconds": 22572,
-   "agent_seconds": 18266,
-   "answers": 9,
-   "human_messages": 63,
-   "human_words": 4241,
-   "messages_after_approval": 18,
-   "wall_clock_seconds": 188961
+   "active_seconds": 23544,
+   "agent_seconds": 18579,
+   "answers": 10,
+   "human_messages": 66,
+   "human_words": 4356,
+   "messages_after_approval": 21,
+   "wall_clock_seconds": 190573
   }
  }
 }
