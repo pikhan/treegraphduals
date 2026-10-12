@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12T02:54:34+00:00",
+ "generated_at": "2026-10-12T03:04:39+00:00",
  "prs": [
   {
    "author": "ai-assisted",
@@ -1120,6 +1120,73 @@
    ],
    "stale": true,
    "title": "AI provenance tracking: per-PR steering and authorship, stats workflow, mutation testing (#81)"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-12T02:59:35Z",
+   "formal_reviews": 0,
+   "hours_open": 0.08,
+   "merged_at": "2026-10-12T03:04:19Z",
+   "number": 104,
+   "provenance": {
+    "commits": {
+     "ai": 1
+    },
+    "lines": {
+     "docs": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 422,
+     "agent_seconds": 100,
+     "answers": 2,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 14,
+     "human_messages": 1,
+     "human_words": 24,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 1165775,
+       "output_tokens": 9900,
+       "responses": 27
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 589
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Remove the unused LangGraph agents subpackage"
   }
  ],
  "repository": "pikhan/treegraphduals",
@@ -1149,12 +1216,12 @@
     "human": 0
    }
   },
-  "merged_prs": 19,
+  "merged_prs": 20,
   "models": {
    "claude-opus-5-5": {
-    "input_tokens": 160073531,
-    "output_tokens": 826734,
-    "responses": 1254
+    "input_tokens": 161239306,
+    "output_tokens": 836634,
+    "responses": 1281
    },
    "claude-sonnet-5-5": {
     "input_tokens": 951153,
@@ -1163,25 +1230,25 @@
    }
   },
   "mutation": null,
-  "recorded_prs": 16,
+  "recorded_prs": 17,
   "review": {
    "agent_prs_with_human_commits": 1,
-   "approved_first_round": 7,
+   "approved_first_round": 8,
    "formal_reviews": 1,
    "human_commits_on_agent_prs": 2,
-   "prs_reviewed": 12,
+   "prs_reviewed": 13,
    "review_comments": 2,
-   "reviewer_rounds": 21
+   "reviewer_rounds": 22
   },
   "stale_prs": 1,
   "steering": {
-   "active_seconds": 21868,
-   "agent_seconds": 17043,
-   "answers": 7,
-   "human_messages": 58,
-   "human_words": 4171,
+   "active_seconds": 22290,
+   "agent_seconds": 17143,
+   "answers": 9,
+   "human_messages": 59,
+   "human_words": 4195,
    "messages_after_approval": 18,
-   "wall_clock_seconds": 187015
+   "wall_clock_seconds": 187604
   }
  }
 }
