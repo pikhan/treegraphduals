@@ -99,6 +99,7 @@ Contents
 
    contributing
    testing
+   ai_provenance
    changelog
    adr/README
 

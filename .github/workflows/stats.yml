@@ -1,0 +1,103 @@
+name: Stats
+
+# AI provenance and test-strength statistics for the docs (#81, ADR 0006).
+# The `publish` job reads every merged PR's provenance comment and GitHub's
+# review data into ai-stats.json on the orphan `stats` branch, which the Read
+# the Docs build renders. Pushes to main refresh it. The nightly run also runs
+# mutation testing, and picks up provenance comments that were updated after
+# their PR merged (the SessionEnd hook can run after the merge).
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 7 * * *" # nightly
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Queue runs so two can't race on the `stats` branch.
+concurrency:
+  group: stats-branch
+  cancel-in-progress: false
+
+jobs:
+  mutation:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: floor
+        run: echo "python=$(python3 scripts/sync_python_versions.py --floor)" >> "$GITHUB_OUTPUT"
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: ${{ steps.floor.outputs.python }}
+      - run: uv sync --group mutation
+      # Configured in pyproject.toml's [tool.mutmut]. Surviving mutants don't fail
+      # the run (mutmut exits 0); a failing baseline test run does.
+      - run: uv run mutmut run --max-children 4
+      - run: uv run mutmut export-cicd-stats
+      - name: Summary
+        run: |
+          {
+            echo '## Mutation testing'
+            echo '```json'
+            cat mutants/mutmut-cicd-stats.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mutation-stats
+          path: mutants/mutmut-cicd-stats.json
+
+  publish:
+    needs: mutation
+    # Also when `mutation` was skipped (push) or failed: the last score carries over.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push to the `stats` branch
+      pull-requests: read
+      issues: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true # zizmor: ignore[artipacked] `git push` below needs them
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: needs.mutation.result == 'success'
+        with:
+          name: mutation-stats
+          path: ${{ runner.temp }}/mutation
+      - name: Fetch the previous stats
+        run: |
+          if git fetch --depth=1 origin stats; then
+            git show FETCH_HEAD:ai-stats.json > "$RUNNER_TEMP/previous.json" || true
+          fi
+      - name: Aggregate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/ai_provenance.py aggregate "$RUNNER_TEMP/ai-stats.json" \
+            --mutation "$RUNNER_TEMP/mutation/mutmut-cicd-stats.json" \
+            --previous "$RUNNER_TEMP/previous.json"
+      - name: Commit the stats to the stats branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898273+github-actions[bot]@users.noreply.github.com"
+          if git fetch --depth=1 origin stats; then
+            git switch -c stats FETCH_HEAD
+          else
+            git switch --orphan stats
+          fi
+          cp "$RUNNER_TEMP/ai-stats.json" ai-stats.json
+          git add ai-stats.json
+          # generated_at changes on every run, so compare without it.
+          if git diff --cached -I '"generated_at"' --quiet; then
+            echo "Stats unchanged; nothing to push."
+          else
+            git commit -m "Update AI provenance stats for ${GITHUB_SHA::7}"
+            git push origin stats
+          fi

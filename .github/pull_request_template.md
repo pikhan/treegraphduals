@@ -44,7 +44,8 @@ Keep one of the two options below.
 - If no AI tools were used: keep "None: written by a human".
 - Otherwise, describe briefly: which models or tools, and what they produced
   (code, tests, docs, review). AI-generated changes should come through Claude Code
-  sessions so they can be tracked (see #81).
+  sessions so they can be tracked: the "AI provenance" comment that
+  scripts/ai_provenance.py posts holds the numbers (#81, ADR 0006).
 -->
 
 None: written by a human.
