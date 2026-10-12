@@ -41,7 +41,6 @@ Importable as `treegraphduals`; everything ships under `src/treegraphduals/`.
 - `src/treegraphduals/core/` — tree/graph data structures
 - `src/treegraphduals/timeseries/` — time series analysis
 - `src/treegraphduals/visualizations/` — plotting
-- `src/treegraphduals/agents/` — small LangGraph-based tooling (verification assistant, experiment-exploration loop); intermittent, secondary to the core research
 
 Within the package, cross-subpackage imports are relative (`from ..core.tree import Tree`);
 docstring examples use the absolute path a user would type (`from treegraphduals.core import Tree`).
