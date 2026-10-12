@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12T03:04:39+00:00",
+ "generated_at": "2026-10-12T03:16:00+00:00",
  "prs": [
   {
    "author": "ai-assisted",
@@ -1158,7 +1158,7 @@
     },
     "totals": {
      "active_seconds": 422,
-     "agent_seconds": 100,
+     "agent_seconds": 615,
      "answers": 2,
      "efforts": [
       "high",
@@ -1170,15 +1170,15 @@
      "messages_after_approval": 0,
      "models": {
       "claude-opus-5-5": {
-       "input_tokens": 1165775,
-       "output_tokens": 9900,
-       "responses": 27
+       "input_tokens": 1363057,
+       "output_tokens": 10737,
+       "responses": 30
       }
      },
      "reviewer_handbacks": [
       "APPROVE"
      ],
-     "wall_clock_seconds": 589
+     "wall_clock_seconds": 796
     }
    },
    "review_comments": 0,
@@ -1187,6 +1187,75 @@
    ],
    "stale": false,
    "title": "Remove the unused LangGraph agents subpackage"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 3,
+   "created_at": "2026-10-12T03:05:08Z",
+   "formal_reviews": 0,
+   "hours_open": 0.17,
+   "merged_at": "2026-10-12T03:15:37Z",
+   "number": 105,
+   "provenance": {
+    "commits": {
+     "ai": 2
+    },
+    "lines": {
+     "docs": {
+      "ai": 161,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 6,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 12,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 170,
+     "agent_seconds": 244,
+     "answers": 0,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 109,
+     "human_messages": 2,
+     "human_words": 21,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 3639410,
+       "output_tokens": 23280,
+       "responses": 65
+      }
+     },
+     "reviewer_handbacks": [
+      "CHANGES REQUESTED",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 667
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "CHANGES REQUESTED",
+    "APPROVE"
+   ],
+   "stale": true,
+   "title": "Docs page: how this project is built with AI (scaffold with placeholders)"
   }
  ],
  "repository": "pikhan/treegraphduals",
@@ -1196,12 +1265,12 @@
   "human_prs": 0,
   "lines": {
    "docs": {
-    "ai": 691,
+    "ai": 852,
     "ai_edited": 0,
     "human": 0
    },
    "other": {
-    "ai": 3301,
+    "ai": 3307,
     "ai_edited": 0,
     "human": 7
    },
@@ -1211,17 +1280,17 @@
     "human": 0
    },
    "tests": {
-    "ai": 808,
+    "ai": 820,
     "ai_edited": 0,
     "human": 0
    }
   },
-  "merged_prs": 20,
+  "merged_prs": 21,
   "models": {
    "claude-opus-5-5": {
-    "input_tokens": 161239306,
-    "output_tokens": 836634,
-    "responses": 1281
+    "input_tokens": 165075998,
+    "output_tokens": 860751,
+    "responses": 1349
    },
    "claude-sonnet-5-5": {
     "input_tokens": 951153,
@@ -1230,25 +1299,25 @@
    }
   },
   "mutation": null,
-  "recorded_prs": 17,
+  "recorded_prs": 18,
   "review": {
    "agent_prs_with_human_commits": 1,
    "approved_first_round": 8,
    "formal_reviews": 1,
    "human_commits_on_agent_prs": 2,
-   "prs_reviewed": 13,
+   "prs_reviewed": 14,
    "review_comments": 2,
-   "reviewer_rounds": 22
+   "reviewer_rounds": 24
   },
-  "stale_prs": 1,
+  "stale_prs": 2,
   "steering": {
-   "active_seconds": 22290,
-   "agent_seconds": 17143,
+   "active_seconds": 22460,
+   "agent_seconds": 17902,
    "answers": 9,
-   "human_messages": 59,
-   "human_words": 4195,
+   "human_messages": 61,
+   "human_words": 4216,
    "messages_after_approval": 18,
-   "wall_clock_seconds": 187604
+   "wall_clock_seconds": 188478
   }
  }
 }
