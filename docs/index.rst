@@ -100,6 +100,7 @@ Contents
    contributing
    testing
    ai_provenance
+   ai_development
    changelog
    adr/README
 
