@@ -40,7 +40,7 @@ import urllib.request
 from collections import Counter
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -189,7 +189,6 @@ def parse_session(mains: Iterable[Path], subagents: Iterable[Path] = ()) -> Sess
         asked: dict[str, datetime] = {}
         commands: dict[str, tuple[datetime, str]] = {}
         seen_responses: set[str] = set()
-        prompt_turn: Event | None = None  # turn_duration is cumulative per prompt
         for record in iter_records(path):
             kind = record.get("type")
             stamp = record.get("timestamp")
@@ -242,17 +241,13 @@ def parse_session(mains: Iterable[Path], subagents: Iterable[Path] = ()) -> Sess
                     )
             elif kind == "system" and record.get("subtype") == "turn_duration":
                 last_output = when
-                seconds = float(record.get("durationMs") or 0) / 1000
-                if is_main and prompt_turn is not None:
-                    prompt_turn.seconds = max(prompt_turn.seconds, seconds)
-                elif is_main:
-                    prompt_turn = Event("turn", when, branch, seconds=seconds)
-                    session.events.append(prompt_turn)
+                if is_main:
+                    seconds = float(record.get("durationMs") or 0) / 1000
+                    session.events.append(Event("turn", when, branch, seconds=seconds))
             elif kind == "user" and is_main and origin.get("kind") == "human":
                 text = human_text(content)
                 if text.startswith("[Request interrupted"):
                     continue
-                prompt_turn = None
                 gap = (when - last_output).total_seconds() if last_output else 0.0
                 session.events.append(
                     Event(
@@ -324,7 +319,10 @@ def find_sessions(
     """
     prefix = re.sub(r"[^A-Za-z0-9]", "-", str(repo_dir))
     found: dict[str, tuple[list[Path], list[Path]]] = {}
+    worktrees = f"{prefix}--claude-worktrees-"
     for project in sorted(projects.glob(f"{prefix}*")):
+        if project.name != prefix and not project.name.startswith(worktrees):
+            continue  # a sibling such as treegraphduals-old
         for main in sorted(project.glob("*.jsonl")):
             mains, subs = found.setdefault(main.stem, ([], []))
             mains.append(main)
@@ -372,6 +370,34 @@ def assign_pr(
     return default
 
 
+def busy_seconds(turns: list[tuple[datetime, float]]) -> float:
+    """Return the length of the union of the turn intervals ``[end - seconds, end]``.
+
+    A ``turn_duration`` record ends a turn and gives its length. Within one
+    prompt the value is sometimes cumulative (each record covers the earlier
+    ones) and sometimes per turn, so neither a sum nor a maximum is right. The
+    union of the intervals is right in both cases.
+
+    Examples
+    --------
+    >>> from datetime import datetime, timedelta, UTC
+    >>> t = lambda s: datetime(2026, 10, 1, tzinfo=UTC) + timedelta(seconds=s)
+    >>> busy_seconds([(t(20), 20), (t(100), 100)])  # cumulative: [0, 20] in [0, 100]
+    100.0
+    >>> busy_seconds([(t(13), 13), (t(190), 7), (t(249), 3)])  # separate turns
+    23.0
+    """
+    total = 0.0
+    covered_until: datetime | None = None
+    for start, end in sorted((end - timedelta(seconds=s), end) for end, s in turns):
+        if covered_until is not None and start < covered_until:
+            start = covered_until
+        if end > start:
+            total += (end - start).total_seconds()
+        covered_until = end if covered_until is None else max(covered_until, end)
+    return total
+
+
 def summarize(events: list[Event]) -> dict[str, Any]:
     """Total up the events one session contributed to one PR.
 
@@ -408,7 +434,9 @@ def summarize(events: list[Event]) -> dict[str, Any]:
         "answers": len(answers),
         "active_seconds": round(sum(e.seconds for e in prompts + answers)),
         "wall_clock_seconds": round(span),
-        "agent_seconds": round(sum(e.seconds for e in events if e.kind == "turn")),
+        "agent_seconds": round(
+            busy_seconds([(e.timestamp, e.seconds) for e in events if e.kind == "turn"])
+        ),
         "messages_after_approval": sum(
             1 for e in prompts if approved is not None and e.timestamp > approved
         ),
@@ -502,15 +530,18 @@ def ai_edited_lines(
     after ``base``, and adds lines in its place, marks those added lines.
     """
     marked: set[tuple[str, int]] = set()
+    # Fixed prefixes and unquoted paths, whatever the user's git config says.
+    # git ends a "---"/"+++" path containing a space with a tab.
     diff = git(
-        "diff", "-U0", "--no-color", "--no-ext-diff", f"{commit}^", commit, cwd=cwd
-    )
+        "-c", "core.quotePath=false", "diff", "-U0", "--no-color", "--no-ext-diff",
+        "--src-prefix=a/", "--dst-prefix=b/", f"{commit}^", commit, cwd=cwd,
+    )  # fmt: skip
     old_path = new_path = None
     for raw in diff.splitlines():
         if raw.startswith("--- "):
-            old_path = None if raw == "--- /dev/null" else raw[6:]
+            old_path = None if raw == "--- /dev/null" else raw[6:].rstrip("\t")
         elif raw.startswith("+++ "):
-            new_path = None if raw == "+++ /dev/null" else raw[6:]
+            new_path = None if raw == "+++ /dev/null" else raw[6:].rstrip("\t")
         elif raw.startswith("@@") and old_path and new_path:
             hunk = re.match(r"@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@", raw)
             if not hunk:
@@ -631,12 +662,70 @@ def gh_json(*args: str, cwd: Path = ROOT) -> Any:
     return json.loads(gh(*args, cwd=cwd) or "null")
 
 
+def trusted(comment: dict[str, Any]) -> bool:
+    """Return whether a comment is the repository owner's.
+
+    Agents post as the maintainer, so provenance records and automated reviews
+    come only from the owner. Anyone else's comment is ignored, so it can't
+    forge or break the published numbers. ``gh pr list --json`` spells the
+    field ``authorAssociation``, the REST API ``author_association``.
+
+    Examples
+    --------
+    >>> trusted({"authorAssociation": "OWNER"}), trusted({"author_association": "NONE"})
+    (True, False)
+    """
+    association = comment.get("authorAssociation") or comment.get("author_association")
+    return association == "OWNER"
+
+
+def valid_record(record: Any) -> bool:
+    """Return whether ``record`` has the shape `aggregate` and `collect` rely on."""
+    numeric = (int, float)
+    try:
+        return (
+            record["schema"] == SCHEMA
+            and isinstance(record["sessions"], dict)
+            and isinstance(record.get("commits", {}), dict)
+            and all(
+                isinstance(record["lines"][cat][cls], int)
+                for cat in CATEGORIES
+                for cls in CLASSES
+            )
+            and all(
+                isinstance(value, numeric)
+                for key, value in record["totals"].items()
+                if key not in ("models", "efforts", "reviewer_handbacks")
+            )
+        )
+    except (KeyError, TypeError, AttributeError):
+        return False
+
+
 def provenance_from_body(body: str) -> dict[str, Any] | None:
-    """Extract the JSON record from a provenance comment body, if it is one."""
+    """Extract the JSON record from a provenance comment body, if it is a valid one."""
     if not body.startswith(MARKER):
         return None
     match = JSON_BLOCK.search(body)
-    return json.loads(match[1]) if match else None
+    if not match:
+        return None
+    try:
+        record = json.loads(match[1])
+    except ValueError:
+        return None
+    return record if valid_record(record) else None
+
+
+def provenance_comment(
+    comments: Iterable[dict[str, Any]],
+) -> tuple[dict | None, dict | None]:
+    """Return the first trusted comment with a valid record, and the record."""
+    for comment in comments:
+        if trusted(comment):
+            record = provenance_from_body(comment.get("body") or "")
+            if record is not None:
+                return comment, record
+    return None, None
 
 
 def find_comment(repo: str, pr: int, cwd: Path) -> tuple[int | None, dict | None]:
@@ -644,11 +733,8 @@ def find_comment(repo: str, pr: int, cwd: Path) -> tuple[int | None, dict | None
     pages = gh_json(
         "api", "--paginate", "--slurp", f"repos/{repo}/issues/{pr}/comments", cwd=cwd
     )
-    for comment in (c for page in pages or [] for c in page):
-        record = provenance_from_body(comment.get("body") or "")
-        if record is not None:
-            return comment["id"], record
-    return None, None
+    comment, record = provenance_comment(c for page in pages or [] for c in page)
+    return (comment["id"] if comment else None), record
 
 
 def totals(sessions: dict[str, dict[str, Any]]) -> dict[str, Any]:
@@ -696,6 +782,7 @@ def comment_body(record: dict[str, Any]) -> str:
         for cat in CATEGORIES
     )
     models = ", ".join(f"`{m}`" for m in t["models"]) or "none recorded"
+    commits = Counter(record.get("commits", {}).values())
     return f"""{MARKER}
 ### AI provenance
 
@@ -703,13 +790,14 @@ Recorded automatically by `scripts/ai_provenance.py` from {len(record["sessions"
 Claude Code session(s) and the PR's commits (ADR 0006). Lines that no transcript \
 shows an agent committing count as human.
 
-**Human steering:** {t["human_messages"]} message(s), {t["human_words"]} word(s), \
+- **Human steering:** {t["human_messages"]} message(s), {t["human_words"]} word(s), \
 {t["answers"]} question(s) answered, about {t["active_seconds"] / 60:.0f} min active \
 ({t["wall_clock_seconds"] / 3600:.1f} h wall clock); \
 {t["messages_after_approval"]} message(s) after the reviewer approved.
-**Agents:** {models}; {t["agent_seconds"] / 60:.0f} min of agent turns; \
+- **Agents:** {models}; {t["agent_seconds"] / 60:.0f} min of agent turns; \
 reviewer verdicts: {", ".join(str(v) for v in t["reviewer_handbacks"]) or "none"}.
-**Added lines:** {added} non-blank, {share} AI-written.
+- **Commits:** {commits["ai"]} by agents, {commits["human"]} by a human.
+- **Added lines:** {added} non-blank, {share} AI-written.
 
 | | AI | AI, edited by human | Human |
 |---|---:|---:|---:|
@@ -868,16 +956,20 @@ def collect_session(transcript: Path, cwd: Path) -> None:
 def review_rounds(comments: list[dict[str, Any]]) -> list[str | None]:
     r"""Return the verdict of each ``Automated review (round N)`` comment, in order.
 
+    Only the owner's comments count (see `trusted`).
+
     Examples
     --------
-    >>> review_rounds([{"body": "## Automated review (round 1)\n**Verdict: APPROVE**"},
-    ...                {"body": "unrelated"}])
+    >>> review = "## Automated review (round 1)\n**Verdict: APPROVE**"
+    >>> review_rounds([{"body": review, "authorAssociation": "OWNER"},
+    ...                {"body": review, "authorAssociation": "NONE"},
+    ...                {"body": "unrelated", "authorAssociation": "OWNER"}])
     ['APPROVE']
     """
     rounds = []
     for comment in comments:
         body = comment.get("body") or ""
-        if REVIEW_HEADING.match(body):
+        if trusted(comment) and REVIEW_HEADING.match(body):
             found = VERDICT.search(body)
             rounds.append(found[1] if found else None)
     return rounds
@@ -898,9 +990,7 @@ def pr_row(pr: dict[str, Any], details: dict[str, Any], max_issues: set[int]) ->
     ``max_issues`` are the closed ``difficulty: max`` issues.
     """
     comments = pr.get("comments") or []
-    record = next(
-        (r for c in comments if (r := provenance_from_body(c.get("body") or ""))), None
-    )
+    _, record = provenance_comment(comments)
     body = pr.get("body") or ""
     if record is not None:
         ai_lines = sum(
@@ -928,7 +1018,13 @@ def pr_row(pr: dict[str, Any], details: dict[str, Any], max_issues: set[int]) ->
         "stale": record is not None and record.get("head_sha") != pr.get("headRefOid"),
         "provenance": None
         if record is None
-        else {"lines": record["lines"], "totals": record["totals"]},
+        else {
+            "lines": record["lines"],
+            "totals": record["totals"],
+            # Commits by class: the "human" ones are commits the maintainer
+            # pushed to the PR outside any Claude Code session.
+            "commits": dict(Counter(record.get("commits", {}).values())),
+        },
     }
 
 
@@ -974,6 +1070,17 @@ def aggregate_rows(rows: list[dict[str, Any]], mutation: dict | None) -> dict[st
             ),
             "formal_reviews": sum(r["formal_reviews"] for r in rows),
             "review_comments": sum(r["review_comments"] for r in rows),
+            "human_commits_on_agent_prs": sum(
+                r["provenance"]["commits"].get("human", 0)
+                for r in recorded
+                if r["author"] == "ai-assisted"
+            ),
+            "agent_prs_with_human_commits": sum(
+                1
+                for r in recorded
+                if r["author"] == "ai-assisted"
+                and r["provenance"]["commits"].get("human", 0)
+            ),
         },
         "difficulty_max_closed_by_human_prs": sorted(
             {
@@ -1076,6 +1183,13 @@ def render(stats: dict[str, Any] | None) -> str:
         ),
         ("Approved in the first round", pct(review["approved_first_round"], reviewed)),
         ("PRs written by a human", t["human_prs"]),
+        (
+            "Agent PRs where the maintainer pushed commits",
+            (
+                f"{review.get('agent_prs_with_human_commits', 0)} "
+                f"({review.get('human_commits_on_agent_prs', 0)} commits)"
+            ),
+        ),
     ]
     mutation = t.get("mutation")
     if mutation and mutation.get("score") is not None:
@@ -1097,18 +1211,23 @@ def render(stats: dict[str, Any] | None) -> str:
         "",
         "### Per pull request",
         "",
-        "| PR | AI | AI, edited | Human | Messages | Active min | Reviewer rounds |",
-        "|---|---:|---:|---:|---:|---:|---|",
+        (
+            "| PR | AI | AI, edited | Human | Human commits | Messages | Active min "
+            "| Reviewer rounds |"
+        ),
+        "|---|---:|---:|---:|---:|---:|---:|---|",
     ]
     for row in reversed(stats["prs"]):
         p = row["provenance"]
         if p is None:
             note = "human-written" if row["author"] == "human" else "not recorded"
-            cells = [note, "", "", "", ""]
+            cells = [note, "", "", "", "", ""]
         else:
             n = {c: sum(p["lines"][cat][c] for cat in CATEGORIES) for c in CLASSES}
             pt = p["totals"]
-            cells = [n["ai"], n["ai_edited"], n["human"], pt["human_messages"]]
+            cells = [n["ai"], n["ai_edited"], n["human"]]
+            cells.append(p.get("commits", {}).get("human", 0))
+            cells.append(pt["human_messages"])
             cells.append(f"{pt['active_seconds'] / 60:.0f}")
         rounds = ", ".join(str(v) for v in row["reviewer_rounds"]) or "none"
         out.append(" | ".join([f"| #{row['number']}", *map(str, cells), f"{rounds} |"]))

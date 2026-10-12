@@ -13,7 +13,7 @@ squash merges collapse branch history, and Claude Code deletes session
 transcripts after `cleanupPeriodDays` (30 days by default).
 
 #81 left five decisions to the maintainer. They were settled in the issue
-(comment of 2026-10-12) and in the `/work-issue 81` session:
+(the maintainer's comment of 2026-10-11, US time) and in the `/work-issue 81` session:
 
 - **(a) Tool.** git-ai would work, but the goal is to see where human effort
   went, not attribution alone. Custom scripts only if git-ai can't do it.
@@ -69,8 +69,10 @@ last one if it came after all of them.
 
 **Agents**, per PR: models, effort levels and tokens (input including cache
 reads and writes; output), deduplicated per API response, from the main and
-subagent transcripts; agent time as the longest `turn_duration` per human
-prompt (the value is cumulative within a prompt); reviewer verdicts.
+subagent transcripts; agent time as the length of the union of the intervals
+`[t − durationMs, t]` over the `turn_duration` records (within one prompt the
+value is sometimes cumulative and sometimes per turn, and the union is right in
+both cases); reviewer verdicts.
 
 **Line authorship.** Each commit in `merge-base..head` is *ai* if an agent's
 Bash output showed git's `[branch sha]` summary for it, or if its **author
@@ -93,7 +95,11 @@ rounds and verdicts from the `Automated review (round N)` comments, formal
 reviews, line comments, commits, time open, and which closed `difficulty: max`
 issues human-written PRs closed. It writes `ai-stats.json` to the orphan `stats`
 branch, the same pattern as the coverage badge. A PR whose final head differs
-from the head its record was computed at is flagged `stale`. The Read the Docs
+from the head its record was computed at is flagged `stale`. Each row also
+counts the PR's commits by class, so human commits pushed to agent PRs are
+published. Only comments by the repository owner (`authorAssociation`
+`OWNER`) are read, and a malformed record is ignored, so other people's
+comments can't forge or break the numbers. The Read the Docs
 build renders the JSON on the *AI provenance* page. Nothing from the transcripts
 is published except these numbers.
 
@@ -109,8 +115,10 @@ with #51.
   human when their AI use section says "None: written by a human".
 - PRs merged before this lands can be backfilled with `collect <pr>` while their
   transcripts still exist (30 days).
-- Known gaps: a human edit that an agent commits along with its own, or a human
-  amending an agent's commit, counts as AI. Code pasted from other AI chats
+- Known gaps: a human edit that an agent commits along with its own, a human
+  amending an agent's commit, or a human commit authored while an agent's Bash
+  call (such as a long test run) was running in a session on the same PR, counts
+  as AI. Code pasted from other AI chats
   counts as human. Effort in sessions that never touch a PR (planning, triage)
   isn't attributed to any PR.
 - Formal approval records stay impossible (decision b). The review metrics are

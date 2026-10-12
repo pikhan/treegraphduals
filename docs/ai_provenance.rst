@@ -42,9 +42,13 @@ The coverage rule
 Anything the transcripts don't show an agent writing counts as human. AI-written
 code therefore enters the repository only through Claude Code sessions, never
 pasted from another AI chat; pasted code would be counted as human. Errors
-therefore mostly understate AI use. The exceptions run the other way: a human
-edit that an agent commits along with its own, or a human amending an agent's
-commit, counts as AI.
+therefore mostly understate AI use. A few run the other way and count human
+work as AI:
+
+- a human edit that an agent commits along with its own;
+- a human amending an agent's commit;
+- a human commit whose author time falls while an agent's shell command was
+  running in a session on the same pull request (for example a long test run).
 
 Statistics
 ----------

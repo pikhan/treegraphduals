@@ -132,7 +132,8 @@ ASK = {
 #   t=1290  prompt "please also add docs" (4 words): 60 s after the turn ended
 #   t=1300  assistant response m3, split over two records (counted once)
 #   t=1310  turn_duration 20000 ms, then the reviewer hands back APPROVE
-#   t=1400  turn_duration 110000 ms for the same prompt (cumulative): max wins
+#   t=1400  turn_duration 110000 ms for the same prompt, covering [1290, 1400],
+#           which contains [1290, 1310]: agent time is 1230 + 110 s
 #   t=9000  prompt "thanks" (1 word), gap 7600 s capped at 900; after approval
 #   t=9001  "[Request interrupted by user]" is not counted
 SESSION = [
@@ -282,6 +283,20 @@ def test_session_contribution_splits_by_pr(session):
     )
 
 
+def test_separate_turns_within_a_prompt_add_up(tmp_path: Path):
+    """Per-turn durations in one prompt are summed, not maxed (seen in real data)."""
+    # One prompt, then turns of 13 s, 7 s and 3 s ending at 13, 190 and 249 s:
+    # the intervals [0, 13], [183, 190] and [246, 249] are disjoint, total 23 s.
+    records = [
+        human(0, "go"),
+        turn(13, 13_000),
+        turn(190, 7_000),
+        turn(249, 3_000),
+    ]
+    session = ap.parse_session([write_jsonl(tmp_path / "s.jsonl", records)])
+    assert ap.summarize(session.events)["agent_seconds"] == 23
+
+
 def test_messages_before_any_approval_are_not_post_approval(tmp_path: Path):
     """A CHANGES REQUESTED hand-back doesn't start the post-approval count."""
     records = [
@@ -339,6 +354,7 @@ def test_find_sessions_merges_moved_transcripts(tmp_path: Path):
     write_jsonl(wt_dir / "abc.jsonl", [human(5, "b")])
     write_jsonl(main_dir / "abc" / "subagents" / "agent-1.jsonl", [])
     write_jsonl(tmp_path / "-work-other" / "zzz.jsonl", [human(0, "c")])
+    write_jsonl(tmp_path / "-work-repo-old" / "yyy.jsonl", [human(0, "d")])
     found = ap.find_sessions(tmp_path, repo)
     assert list(found) == ["abc"]
     mains, subs = found["abc"]
@@ -432,6 +448,22 @@ def test_line_counts_match_hand_count(history):
     }
 
 
+def test_ai_edited_detection_handles_spaces_in_paths(tmp_path: Path):
+    """A path with a space (git ends its diff header with a tab) still works."""
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    run_git(repo, "init", "-q", "-b", "main")
+    base = commit_files(repo, {"docs/my notes.md": "x\n"}, T0)
+    ai = commit_files(
+        repo, {"docs/my notes.md": "x\nai line\n"}, T0 + timedelta(hours=1)
+    )
+    hum = commit_files(
+        repo, {"docs/my notes.md": "x\nai line, fixed\n"}, T0 + timedelta(hours=2)
+    )
+    counts = ap.count_lines(base, hum, {ai: "ai", hum: "human"}, repo)
+    assert counts["docs"] == {"ai": 0, "ai_edited": 1, "human": 0}
+
+
 def test_all_human_history_has_no_ai_lines(history):
     """With no AI commits, every added line is human."""
     repo, base, ai, hum = history
@@ -445,7 +477,9 @@ def test_all_human_history_has_no_ai_lines(history):
 # ---------------------------------------------------------------------------
 
 
-def make_record(lines_src_ai: int = 3, human_messages: int = 2) -> dict:
+def make_record(
+    lines_src_ai: int = 3, human_messages: int = 2, commits: dict | None = None
+) -> dict:
     """Build a minimal provenance record."""
     lines = {cat: {"ai": 0, "ai_edited": 0, "human": 0} for cat in ap.CATEGORIES}
     lines["src"]["ai"] = lines_src_ai
@@ -455,7 +489,7 @@ def make_record(lines_src_ai: int = 3, human_messages: int = 2) -> dict:
         "pr": 7,
         "head_sha": "h" * 40,
         "sessions": {"s": {}},
-        "commits": {},
+        "commits": commits if commits is not None else {},
         "lines": lines,
         "totals": ap.totals(
             {
@@ -478,6 +512,11 @@ def make_record(lines_src_ai: int = 3, human_messages: int = 2) -> dict:
     }
 
 
+def owner(body: str) -> dict:
+    """Build a comment by the repository owner, as ``gh pr list --json`` has it."""
+    return {"body": body, "authorAssociation": "OWNER"}
+
+
 def test_comment_round_trips_its_record():
     """The comment embeds its record losslessly, behind the marker."""
     record = make_record()
@@ -487,12 +526,41 @@ def test_comment_round_trips_its_record():
     assert ap.provenance_from_body("## Automated review (round 1)") is None
 
 
+def test_malformed_records_are_ignored():
+    """A broken or wrongly shaped record is skipped, not a crash."""
+    assert ap.provenance_from_body(ap.MARKER + "\n```json\n{not json\n```") is None
+    assert ap.provenance_from_body(ap.MARKER + '\n```json\n{"schema": 1}\n```') is None
+    bad = make_record()
+    bad["lines"]["src"]["human"] = "lots"
+    body = f"{ap.MARKER}\n```json\n{json.dumps(bad)}\n```"
+    assert ap.provenance_from_body(body) is None
+
+
+def test_only_the_owners_comments_count():
+    """Another account's provenance record or review comment is ignored."""
+    forged = make_record(lines_src_ai=0)
+    forged["sessions"] = {}
+    forged["lines"]["src"]["human"] = 1_000_000
+    real = make_record()
+    comments = [
+        {"body": ap.comment_body(forged), "authorAssociation": "NONE"},
+        {"body": "## Automated review (round 1)\n**Verdict: APPROVE**"},
+        owner(ap.MARKER + "\n```json\n{not json\n```"),
+        owner(ap.comment_body(real)),
+    ]
+    assert ap.provenance_comment(comments) == (comments[3], real)
+    row = ap.pr_row(github_pr(7, comments), {}, set())
+    assert row["author"] == "ai-assisted"
+    assert row["reviewer_rounds"] == []
+    assert row["provenance"]["lines"]["src"]["human"] == 0
+
+
 def test_review_rounds_reads_each_round_once():
     """Only comments headed ``Automated review (round N)`` count as rounds."""
     comments = [
-        {"body": "## Automated review (round 1)\n\n### Verdict: CHANGES REQUESTED\n"},
-        {"body": "I disagree with the Automated review (round 1) item 2"},
-        {"body": "## Automated review (round 2)\n\n**Verdict: APPROVE**\n"},
+        owner("## Automated review (round 1)\n\n### Verdict: CHANGES REQUESTED\n"),
+        owner("I disagree with the Automated review (round 1) item 2"),
+        owner("## Automated review (round 2)\n\n**Verdict: APPROVE**\n"),
     ]
     assert ap.review_rounds(comments) == ["CHANGES REQUESTED", "APPROVE"]
 
@@ -519,13 +587,21 @@ def test_pr_rows_and_totals():
     recorded = github_pr(
         7,
         [
-            {"body": "## Automated review (round 1)\n**Verdict: CHANGES REQUESTED**"},
-            {"body": "## Automated review (round 2)\n**Verdict: APPROVE**"},
-            {"body": ap.comment_body(make_record())},
+            owner("## Automated review (round 1)\n**Verdict: CHANGES REQUESTED**"),
+            owner("## Automated review (round 2)\n**Verdict: APPROVE**"),
+            owner(
+                ap.comment_body(
+                    make_record(commits={"a" * 40: "ai", "b" * 40: "human"})
+                )
+            ),
         ],
     )
     by_human = github_pr(8, [], body="## AI use\n\nNone: written by a human.\n")
-    stale = github_pr(9, [{"body": ap.comment_body(make_record(1, 1))}], head="x" * 40)
+    stale = github_pr(
+        9,
+        [owner(ap.comment_body(make_record(1, 1, commits={"c" * 40: "ai"})))],
+        head="x" * 40,
+    )
     rows = [
         ap.pr_row(recorded, {"commits": 2, "review_comments": 0}, {40}),
         ap.pr_row(by_human, {"commits": 1, "review_comments": 2}, {40}),
@@ -534,6 +610,7 @@ def test_pr_rows_and_totals():
     assert [r["author"] for r in rows] == ["ai-assisted", "human", "ai-assisted"]
     assert rows[0]["hours_open"] == 3.5
     assert [r["commits"] for r in rows] == [2, 1, 3]
+    assert rows[0]["provenance"]["commits"] == {"ai": 1, "human": 1}
     assert rows[0]["reviewer_rounds"] == ["CHANGES REQUESTED", "APPROVE"]
     assert [r["stale"] for r in rows] == [False, False, True]
     assert rows[1]["closes_difficulty_max"] == [40]
@@ -554,13 +631,18 @@ def test_pr_rows_and_totals():
         "approved_first_round": 0,
         "formal_reviews": 0,
         "review_comments": 2,
+        "human_commits_on_agent_prs": 1,
+        "agent_prs_with_human_commits": 1,
     }
     assert t["difficulty_max_closed_by_human_prs"] == [40]
 
     stats = {"generated_at": "2026-10-02T00:00:00+00:00", "totals": t, "prs": rows}
     page = ap.render(stats)
     assert "| Added lines written by agents | 67% of 6 |" in page  # 4 AI of 4+2
-    assert "| #8 | human-written |  |  |  |  | none |" in page
+    assert "| Agent PRs where the maintainer pushed commits | 1 (1 commits) |" in page
+    assert "| #8 | human-written |  |  |  |  |  | none |" in page
+    # PR 7: 3 AI lines, 0 edited, 1 human line, 1 human commit, 2 messages, 2 min.
+    assert "| #7 | 3 | 0 | 1 | 1 | 2 | 2 | CHANGES REQUESTED, APPROVE |" in page
 
 
 def test_script_doctests():
