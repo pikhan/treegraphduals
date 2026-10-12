@@ -74,7 +74,7 @@ CASES = [
         "DENY",
         (
             "gh api graphql -f query='mutation { mergePullRequest("
-            'input:{pullRequestId:\\"x\\"}) { clientMutationId } }\''
+            'input:{pullRequestId:"x"}) { clientMutationId } }\''
         ),
         REPO,
     ),
@@ -193,7 +193,7 @@ def verdict(result: subprocess.CompletedProcess[str]) -> str:
 @pytest.mark.parametrize(
     ("want", "command", "where"),
     CASES,
-    ids=[f"{want}: {command}" for want, command, _ in CASES],
+    ids=[f"{want} in {where}: {command}" for want, command, where in CASES],
 )
 def test_guard_verdict(
     repos: dict[str, str], want: str, command: str, where: str
@@ -214,6 +214,7 @@ def test_malformed_json_exits_zero() -> None:
     result = subprocess.run(
         [sys.executable, str(HOOK)],
         input="not json",
+        env=clean_env(),
         capture_output=True,
         text=True,
         check=False,
