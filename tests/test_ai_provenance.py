@@ -343,6 +343,17 @@ def test_typed_answer_words_counts_only_typing():
     assert ap.typed_answer_words(ASK) == 7
     clicked = {**ASK, "answers": {"Q1?": "No", "Q2?": "A"}, "annotations": {}}
     assert ap.typed_answer_words(clicked) == 0
+    # A label containing ", " is still one click (seen in a real transcript).
+    comma = {
+        "questions": [
+            {"question": "Q?", "options": [{"label": "Active time, 15-min cap"}]}
+        ],
+        "answers": {"Q?": "Active time, 15-min cap"},
+    }
+    assert ap.typed_answer_words(comma) == 0
+    # A multi-select answer joins two clicked labels with ", ".
+    multi = {**ASK, "answers": {"Q2?": "A, B"}, "annotations": {}}
+    assert ap.typed_answer_words(multi) == 0
 
 
 def test_find_sessions_merges_moved_transcripts(tmp_path: Path):

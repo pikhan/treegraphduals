@@ -163,7 +163,10 @@ def typed_answer_words(result: dict[str, Any]) -> int:
     }
     words = 0
     for answer in (result.get("answers") or {}).values():
-        for part in str(answer).split(", "):
+        answer = str(answer)
+        if answer in labels:  # a label may itself contain ", "
+            continue
+        for part in answer.split(", "):  # a multi-select answer joins labels
             if part not in labels:
                 words += len(part.split())
     for annotation in (result.get("annotations") or {}).values():
