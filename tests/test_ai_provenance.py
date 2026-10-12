@@ -677,6 +677,21 @@ def test_render_without_stats():
     assert "No statistics" in ap.render(None)
 
 
+def test_render_ends_headline_with_and_without_stats():
+    """docs/ai_development.rst includes ai_stats.md up to the headline marker."""
+    page = (ap.ROOT / "docs" / "ai_development.rst").read_text()
+    assert f":end-before: {ap.HEADLINE_END}" in page
+    assert ap.render(None).count(ap.HEADLINE_END) == 1
+
+    by_human = github_pr(8, [], body="## AI use\n\nNone: written by a human.\n")
+    rows = [ap.pr_row(by_human, {"commits": 1, "review_comments": 0}, set())]
+    stats = {"generated_at": "2026-10-02T00:00:00+00:00", "prs": rows}
+    stats["totals"] = ap.aggregate_rows(rows, None)
+    headline, rest = ap.render(stats).split(ap.HEADLINE_END)
+    assert "| Added lines written by agents |" in headline
+    assert "### Per pull request" in rest
+
+
 def test_mutation_summary(tmp_path: Path):
     """Timeouts and segfaults count as caught, skips don't count: 7 of 10 is 70%."""
     path = tmp_path / "m.json"
