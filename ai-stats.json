@@ -1,0 +1,1187 @@
+{
+ "generated_at": "2026-10-12T02:54:34+00:00",
+ "prs": [
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 4,
+   "created_at": "2026-09-25T05:59:45Z",
+   "formal_reviews": 0,
+   "hours_open": 0.2,
+   "merged_at": "2026-09-25T06:11:44Z",
+   "number": 56,
+   "provenance": {
+    "commits": {
+     "ai": 2,
+     "human": 2
+    },
+    "lines": {
+     "docs": {
+      "ai": 40,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 480,
+      "ai_edited": 0,
+      "human": 7
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 5095,
+     "agent_seconds": 2720,
+     "answers": 0,
+     "efforts": [
+      "high"
+     ],
+     "human_chars": 9809,
+     "human_messages": 9,
+     "human_words": 1826,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 31342116,
+       "output_tokens": 208349,
+       "responses": 105
+      }
+     },
+     "reviewer_handbacks": [],
+     "wall_clock_seconds": 8323
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Set up the agent workflow: guard hook, reviewer agent, /work-issue skill, ADRs"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 2,
+   "created_at": "2026-09-25T06:18:48Z",
+   "formal_reviews": 0,
+   "hours_open": 0.12,
+   "merged_at": "2026-09-25T06:26:04Z",
+   "number": 58,
+   "provenance": {
+    "commits": {
+     "ai": 2
+    },
+    "lines": {
+     "docs": {
+      "ai": 57,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 1,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 900,
+     "agent_seconds": 0,
+     "answers": 0,
+     "efforts": [
+      "high"
+     ],
+     "human_chars": 1004,
+     "human_messages": 1,
+     "human_words": 195,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 2692640,
+       "output_tokens": 12700,
+       "responses": 6
+      }
+     },
+     "reviewer_handbacks": [],
+     "wall_clock_seconds": 380
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Ignore DEVNOTES.md; add a skeleton working-definitions page"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-09-25T06:29:22Z",
+   "formal_reviews": 0,
+   "hours_open": 377.72,
+   "merged_at": "2026-10-11T00:12:17Z",
+   "number": 59,
+   "provenance": {
+    "commits": {
+     "ai": 1
+    },
+    "lines": {
+     "docs": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 3,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 2372,
+     "agent_seconds": 925,
+     "answers": 0,
+     "efforts": [
+      "high"
+     ],
+     "human_chars": 3598,
+     "human_messages": 7,
+     "human_words": 651,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 16660133,
+       "output_tokens": 65366,
+       "responses": 34
+      }
+     },
+     "reviewer_handbacks": [],
+     "wall_clock_seconds": 69984
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Use \"Math\", not \"Maths\", in the reviewer brief and CLAUDE.md"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-11T01:19:33Z",
+   "formal_reviews": 0,
+   "hours_open": 17.58,
+   "merged_at": "2026-10-11T18:54:25Z",
+   "number": 85,
+   "provenance": {
+    "commits": {
+     "ai": 1
+    },
+    "lines": {
+     "docs": {
+      "ai": 71,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 943,
+     "agent_seconds": 320,
+     "answers": 1,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 274,
+     "human_messages": 2,
+     "human_words": 57,
+     "messages_after_approval": 1,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 88450,
+       "output_tokens": 57,
+       "responses": 6
+      },
+      "claude-sonnet-5-5": {
+       "input_tokens": 951153,
+       "output_tokens": 10219,
+       "responses": 18
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 64855
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Add ADR 0001: follow SPEC 0 for supported versions"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 6,
+   "created_at": "2026-10-11T19:06:31Z",
+   "formal_reviews": 0,
+   "hours_open": 0.62,
+   "merged_at": "2026-10-11T19:43:49Z",
+   "number": 86,
+   "provenance": {
+    "commits": {
+     "ai": 6
+    },
+    "lines": {
+     "docs": {
+      "ai": 35,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 69,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 1109,
+     "agent_seconds": 1088,
+     "answers": 0,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 726,
+     "human_messages": 3,
+     "human_words": 136,
+     "messages_after_approval": 2,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 5273921,
+       "output_tokens": 30528,
+       "responses": 87
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE",
+      "CHANGES REQUESTED"
+     ],
+     "wall_clock_seconds": 2380
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE",
+    "CHANGES REQUESTED"
+   ],
+   "stale": false,
+   "title": "Require Python 3.13+ and raise dependency floors to SPEC 0 minimums"
+  },
+  {
+   "author": "unrecorded",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-11T19:40:33Z",
+   "formal_reviews": 0,
+   "hours_open": 0.46,
+   "merged_at": "2026-10-11T20:08:21Z",
+   "number": 87,
+   "provenance": null,
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Bump the uv group across 1 directory with 6 updates"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 6,
+   "created_at": "2026-10-11T19:47:09Z",
+   "formal_reviews": 1,
+   "hours_open": 0.53,
+   "merged_at": "2026-10-11T20:18:59Z",
+   "number": 88,
+   "provenance": {
+    "commits": {
+     "ai": 6
+    },
+    "lines": {
+     "docs": {
+      "ai": 43,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 32,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 817,
+     "agent_seconds": 682,
+     "answers": 0,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 626,
+     "human_messages": 2,
+     "human_words": 105,
+     "messages_after_approval": 1,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 3808789,
+       "output_tokens": 26235,
+       "responses": 69
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 2013
+    }
+   },
+   "review_comments": 2,
+   "reviewer_rounds": [
+    "APPROVE",
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "CI: test matrix with 3.13/3.14 blocking and 3.14t/3.15/3.15t experimental"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 6,
+   "created_at": "2026-10-11T20:29:19Z",
+   "formal_reviews": 0,
+   "hours_open": 0.56,
+   "merged_at": "2026-10-11T21:03:06Z",
+   "number": 89,
+   "provenance": {
+    "commits": {
+     "ai": 6
+    },
+    "lines": {
+     "docs": {
+      "ai": 55,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 295,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 1681,
+     "agent_seconds": 1918,
+     "answers": 1,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 879,
+     "human_messages": 5,
+     "human_words": 302,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 10453982,
+       "output_tokens": 57877,
+       "responses": 136
+      }
+     },
+     "reviewer_handbacks": [
+      "CHANGES REQUESTED",
+      "CHANGES REQUESTED"
+     ],
+     "wall_clock_seconds": 3297
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "CHANGES REQUESTED",
+    "CHANGES REQUESTED"
+   ],
+   "stale": false,
+   "title": "Automate SPEC 0: quarterly floor-bump PR, version sync, lowest-direct CI job, maintainer pings"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-11T20:36:34Z",
+   "formal_reviews": 0,
+   "hours_open": 0.19,
+   "merged_at": "2026-10-11T20:48:06Z",
+   "number": 91,
+   "provenance": {
+    "commits": {
+     "ai": 1
+    },
+    "lines": {
+     "docs": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 346,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 851,
+     "agent_seconds": 1235,
+     "answers": 1,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 568,
+     "human_messages": 5,
+     "human_words": 131,
+     "messages_after_approval": 3,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 3982270,
+       "output_tokens": 26153,
+       "responses": 74
+      }
+     },
+     "reviewer_handbacks": [
+      "CHANGES REQUESTED",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 1983
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "CHANGES REQUESTED",
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Upgrade uv.lock so NumPy, SciPy and friends install from wheels on Python 3.15"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 2,
+   "created_at": "2026-10-11T20:37:39Z",
+   "formal_reviews": 0,
+   "hours_open": 0.09,
+   "merged_at": "2026-10-11T20:42:47Z",
+   "number": 92,
+   "provenance": {
+    "commits": {
+     "ai": 2
+    },
+    "lines": {
+     "docs": {
+      "ai": 35,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 101,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 660,
+     "agent_seconds": 607,
+     "answers": 1,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 186,
+     "human_messages": 2,
+     "human_words": 33,
+     "messages_after_approval": 1,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 2920816,
+       "output_tokens": 21641,
+       "responses": 51
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 1128
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Add README/docs badges, GitHub-only coverage badge, and Dependabot version updates"
+  },
+  {
+   "author": "unrecorded",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-11T20:43:48Z",
+   "formal_reviews": 0,
+   "hours_open": 0.15,
+   "merged_at": "2026-10-11T20:52:35Z",
+   "number": 93,
+   "provenance": null,
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Bump astral-sh/setup-uv from 10.1.0 to 10.2.0 in the github-actions group"
+  },
+  {
+   "author": "unrecorded",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-11T20:52:04Z",
+   "formal_reviews": 0,
+   "hours_open": 0.06,
+   "merged_at": "2026-10-11T20:55:51Z",
+   "number": 95,
+   "provenance": null,
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Bump the uv group across 1 directory with 8 updates"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-11T21:00:27Z",
+   "formal_reviews": 0,
+   "hours_open": 0.21,
+   "merged_at": "2026-10-11T21:13:19Z",
+   "number": 96,
+   "provenance": {
+    "commits": {
+     "ai": 1
+    },
+    "lines": {
+     "docs": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 4,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 2663,
+     "agent_seconds": 275,
+     "answers": 0,
+     "efforts": [
+      "high"
+     ],
+     "human_chars": 637,
+     "human_messages": 5,
+     "human_words": 109,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 3653633,
+       "output_tokens": 16130,
+       "responses": 39
+      }
+     },
+     "reviewer_handbacks": [],
+     "wall_clock_seconds": 20356
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [],
+   "stale": false,
+   "title": "Give the release workflow a read-only default token"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 4,
+   "created_at": "2026-10-11T21:31:41Z",
+   "formal_reviews": 0,
+   "hours_open": 0.77,
+   "merged_at": "2026-10-11T22:18:01Z",
+   "number": 97,
+   "provenance": {
+    "commits": {
+     "ai": 4
+    },
+    "lines": {
+     "docs": {
+      "ai": 79,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 133,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 2311,
+     "agent_seconds": 1677,
+     "answers": 1,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 1759,
+     "human_messages": 7,
+     "human_words": 315,
+     "messages_after_approval": 6,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 17515884,
+       "output_tokens": 91903,
+       "responses": 174
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 3948
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE",
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Harden workflows: SHA-pinned actions, no persisted credentials, OpenSSF Scorecard, zizmor"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 3,
+   "created_at": "2026-10-11T21:49:22Z",
+   "formal_reviews": 0,
+   "hours_open": 0.54,
+   "merged_at": "2026-10-11T22:21:33Z",
+   "number": 98,
+   "provenance": {
+    "commits": {
+     "ai": 3
+    },
+    "lines": {
+     "docs": {
+      "ai": 48,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 9,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 1750,
+     "agent_seconds": 1431,
+     "answers": 1,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 844,
+     "human_messages": 4,
+     "human_words": 247,
+     "messages_after_approval": 2,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 4158058,
+       "output_tokens": 32154,
+       "responses": 78
+      }
+     },
+     "reviewer_handbacks": [
+      "CHANGES REQUESTED",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 2894
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "CHANGES REQUESTED",
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Run the test suite once in the Read the Docs pre_build"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 2,
+   "created_at": "2026-10-11T22:33:27Z",
+   "formal_reviews": 0,
+   "hours_open": 0.18,
+   "merged_at": "2026-10-11T22:44:28Z",
+   "number": 100,
+   "provenance": {
+    "commits": {
+     "ai": 2
+    },
+    "lines": {
+     "docs": {
+      "ai": 70,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 263,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 230,
+     "agent_seconds": 576,
+     "answers": 0,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 163,
+     "human_messages": 2,
+     "human_words": 33,
+     "messages_after_approval": 1,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 4149874,
+       "output_tokens": 28633,
+       "responses": 72
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 806
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE",
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Add community health files: code of conduct, issue forms, PR template, SECURITY.md, SUPPORT.md"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 1,
+   "created_at": "2026-10-12T01:44:30Z",
+   "formal_reviews": 0,
+   "hours_open": 0.07,
+   "merged_at": "2026-10-12T01:48:54Z",
+   "number": 101,
+   "provenance": {
+    "commits": {
+     "ai": 1
+    },
+    "lines": {
+     "docs": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 24,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 0,
+     "agent_seconds": 300,
+     "answers": 0,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 14,
+     "human_messages": 1,
+     "human_words": 2,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 1167582,
+       "output_tokens": 9271,
+       "responses": 29
+      }
+     },
+     "reviewer_handbacks": [
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 300
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Record AI use in agent PRs: /work-issue AI use section and CLAUDE.md provenance rules"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 2,
+   "created_at": "2026-10-12T01:54:45Z",
+   "formal_reviews": 0,
+   "hours_open": 0.25,
+   "merged_at": "2026-10-12T02:09:51Z",
+   "number": 102,
+   "provenance": {
+    "commits": {
+     "ai": 2
+    },
+    "lines": {
+     "docs": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 197,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 0,
+     "agent_seconds": 612,
+     "answers": 0,
+     "efforts": [
+      "high",
+      "medium"
+     ],
+     "human_chars": 14,
+     "human_messages": 1,
+     "human_words": 2,
+     "messages_after_approval": 0,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 3057350,
+       "output_tokens": 18350,
+       "responses": 64
+      }
+     },
+     "reviewer_handbacks": [
+      "CHANGES REQUESTED",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 794
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "CHANGES REQUESTED",
+    "APPROVE"
+   ],
+   "stale": false,
+   "title": "Commit the guard hook's test table as a pytest suite"
+  },
+  {
+   "author": "ai-assisted",
+   "closes_difficulty_max": [],
+   "commits": 6,
+   "created_at": "2026-10-12T02:20:57Z",
+   "formal_reviews": 0,
+   "hours_open": 0.56,
+   "merged_at": "2026-10-12T02:54:18Z",
+   "number": 103,
+   "provenance": {
+    "commits": {
+     "ai": 6
+    },
+    "lines": {
+     "docs": {
+      "ai": 158,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "other": {
+      "ai": 1541,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "src": {
+      "ai": 0,
+      "ai_edited": 0,
+      "human": 0
+     },
+     "tests": {
+      "ai": 611,
+      "ai_edited": 0,
+      "human": 0
+     }
+    },
+    "totals": {
+     "active_seconds": 486,
+     "agent_seconds": 2677,
+     "answers": 1,
+     "efforts": [
+      "high"
+     ],
+     "human_chars": 149,
+     "human_messages": 2,
+     "human_words": 27,
+     "messages_after_approval": 1,
+     "models": {
+      "claude-opus-5-5": {
+       "input_tokens": 49148033,
+       "output_tokens": 181387,
+       "responses": 230
+      }
+     },
+     "reviewer_handbacks": [
+      "CHANGES REQUESTED",
+      "APPROVE"
+     ],
+     "wall_clock_seconds": 3574
+    }
+   },
+   "review_comments": 0,
+   "reviewer_rounds": [
+    "CHANGES REQUESTED",
+    "APPROVE"
+   ],
+   "stale": true,
+   "title": "AI provenance tracking: per-PR steering and authorship, stats workflow, mutation testing (#81)"
+  }
+ ],
+ "repository": "pikhan/treegraphduals",
+ "schema": 1,
+ "totals": {
+  "difficulty_max_closed_by_human_prs": [],
+  "human_prs": 0,
+  "lines": {
+   "docs": {
+    "ai": 691,
+    "ai_edited": 0,
+    "human": 0
+   },
+   "other": {
+    "ai": 3301,
+    "ai_edited": 0,
+    "human": 7
+   },
+   "src": {
+    "ai": 0,
+    "ai_edited": 0,
+    "human": 0
+   },
+   "tests": {
+    "ai": 808,
+    "ai_edited": 0,
+    "human": 0
+   }
+  },
+  "merged_prs": 19,
+  "models": {
+   "claude-opus-5-5": {
+    "input_tokens": 160073531,
+    "output_tokens": 826734,
+    "responses": 1254
+   },
+   "claude-sonnet-5-5": {
+    "input_tokens": 951153,
+    "output_tokens": 10219,
+    "responses": 18
+   }
+  },
+  "mutation": null,
+  "recorded_prs": 16,
+  "review": {
+   "agent_prs_with_human_commits": 1,
+   "approved_first_round": 7,
+   "formal_reviews": 1,
+   "human_commits_on_agent_prs": 2,
+   "prs_reviewed": 12,
+   "review_comments": 2,
+   "reviewer_rounds": 21
+  },
+  "stale_prs": 1,
+  "steering": {
+   "active_seconds": 21868,
+   "agent_seconds": 17043,
+   "answers": 7,
+   "human_messages": 58,
+   "human_words": 4171,
+   "messages_after_approval": 18,
+   "wall_clock_seconds": 187015
+  }
+ }
+}
