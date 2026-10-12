@@ -14,6 +14,9 @@ build:
       - pytest --tb=no --no-header -q > docs/test_results.txt; status=$?; cat docs/test_results.txt; [ "$status" -le 1 ]
       - coverage report --format=markdown > docs/coverage_report.md
       - coverage json
+      # AI provenance statistics (#81, ADR 0006), published by the Stats workflow.
+      # Without network or published stats the page says so instead.
+      - python scripts/ai_provenance.py render https://raw.githubusercontent.com/pikhan/treegraphduals/stats/ai-stats.json docs/ai_stats.md
     post_build:
       - mkdir -p $READTHEDOCS_OUTPUT/html/htmlcov
       - cp -r htmlcov/* $READTHEDOCS_OUTPUT/html/htmlcov/

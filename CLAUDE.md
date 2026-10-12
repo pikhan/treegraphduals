@@ -24,6 +24,8 @@ A package for working with trees, their duals, graphs, and time series.
 - `uv run pyrefly check` — type check
 - `uv run pre-commit run --all-files` — run all pre-commit hooks manually (`CITATION.cff` is re-dated only when the `pyproject.toml` version changes)
 - `uv build` — build the sdist + wheel into `dist/`
+- `python3 scripts/ai_provenance.py collect <pr> [--dry-run]` — post or refresh a PR's AI provenance comment from local transcripts (ADR 0006)
+- `uv run --group mutation mutmut run` — mutation testing (runs nightly in CI; config in `pyproject.toml`)
 
 ## Conventions
 
@@ -83,6 +85,7 @@ Reviewer agent (summary; the full brief is `.claude/agents/reviewer.md`):
 
 JOSS and pyOpenSci require a disclosure of AI use (#80). These rules keep the evidence for it.
 
-- AI-generated code, tests and docs enter the repository **only through Claude Code sessions**, never pasted from other AI chats, so provenance tracking (#81) can see them.
+- AI-generated code, tests and docs enter the repository **only through Claude Code sessions**, never pasted from other AI chats, so provenance tracking (#81) can see them. Anything no transcript shows an agent committing counts as human (ADR 0006).
+- Every PR touched by a Claude Code session gets an "AI provenance" comment from `scripts/ai_provenance.py`: `/work-issue` step 8 posts it, and a SessionEnd hook refreshes it. Don't edit it by hand. The `Stats` workflow publishes the totals to the docs.
 - Every agent PR has a complete "AI use" section (models, session ID, what the AI generated, human input, review rounds). `/work-issue` steps 6–8 say how to fill it in.
 - Agents never draft or post replies in pyOpenSci or JOSS review threads. Both venues require human-written communication with editors and reviewers.

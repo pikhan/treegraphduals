@@ -19,3 +19,5 @@ docs/coverage_report.md
 docs/test_results.txt
 .claude/worktrees/
 DEVNOTES.md
+docs/ai_stats.md
+mutants/

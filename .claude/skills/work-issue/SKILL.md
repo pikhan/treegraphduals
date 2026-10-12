@@ -97,6 +97,8 @@ Run everything, and fix failures before going on:
     - **Human input:** the questions you asked the maintainer and their answers
       (cross-reference "Decisions made"), or "none".
     - **Review:** "pending" for now. Step 7 fills it in.
+    - **Provenance:** "See the AI provenance comment." Step 8 posts it: the
+      machine-readable record of human steering and line authorship (ADR 0006).
 
 ## 7. Review loop (at most two rounds)
 
@@ -118,6 +120,11 @@ Run everything, and fix failures before going on:
 
 - Check the AI use section is complete (`gh pr view <pr> --json body`): every
   item filled in, and Review no longer "pending".
+- Record provenance: `python3 scripts/ai_provenance.py collect <pr>`. It posts the
+  PR's "AI provenance" comment, or updates it if one exists. The comment holds the
+  maintainer's steering, the agents' models and time, and which added lines agents
+  wrote (ADR 0006). The SessionEnd hook refreshes it when the session closes, so
+  later messages count too. If it fails, say so in the hand-over.
 - `gh pr ready <pr>` (only if the final verdict is APPROVE; otherwise leave it as a
   draft).
 - Tell the maintainer: the PR link, the final verdict, what you decided and why,

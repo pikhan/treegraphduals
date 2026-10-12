@@ -85,6 +85,17 @@ docs = [
     "sphinx>=8.1.3",
     "sphinx-rtd-theme>=3.0.2",
 ]
+mutation = [
+    "mutmut>=3.8.0",
+]
+
+# Mutation testing (#81, ADR 0006): nightly in CI (.github/workflows/stats.yml).
+# Only the mathematical core is mutated; plotting code has few tests by design.
+[tool.mutmut]
+source_paths = ["src/"]
+only_mutate = ["src/treegraphduals/core/*", "src/treegraphduals/timeseries/*"]
+pytest_add_cli_args_test_selection = ["tests/"]
+pytest_add_cli_args = ["-p", "no:cacheprovider", "--no-cov", "-q"]
 
 [tool.ruff.lint]
 extend-select = ["D"]  # pydocstyle, on top of Ruff's default rule set
