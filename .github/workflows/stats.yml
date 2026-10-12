@@ -36,9 +36,9 @@ jobs:
         with:
           python-version: ${{ steps.floor.outputs.python }}
       - run: uv sync --group mutation
-      # Configured in pyproject.toml's [tool.mutmut]. Surviving mutants are the
-      # result, not a failure, so only export errors fail the job.
-      - run: uv run mutmut run --max-children 4 || true
+      # Configured in pyproject.toml's [tool.mutmut]. Surviving mutants don't fail
+      # the run (mutmut exits 0); a failing baseline test run does.
+      - run: uv run mutmut run --max-children 4
       - run: uv run mutmut export-cicd-stats
       - name: Summary
         run: |
