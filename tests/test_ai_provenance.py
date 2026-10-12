@@ -545,6 +545,14 @@ def test_malformed_records_are_ignored():
     bad["lines"]["src"]["human"] = "lots"
     body = f"{ap.MARKER}\n```json\n{json.dumps(bad)}\n```"
     assert ap.provenance_from_body(body) is None
+    # Empty or incomplete totals would make render() fail, so they are rejected.
+    for totals in (
+        {},
+        {k: v for k, v in make_record()["totals"].items() if k != "answers"},
+    ):
+        record = {**make_record(), "totals": totals}
+        body = f"{ap.MARKER}\n```json\n{json.dumps(record)}\n```"
+        assert ap.provenance_from_body(body) is None
 
 
 def test_only_the_owners_comments_count():
@@ -650,7 +658,7 @@ def test_pr_rows_and_totals():
     stats = {"generated_at": "2026-10-02T00:00:00+00:00", "totals": t, "prs": rows}
     page = ap.render(stats)
     assert "| Added lines written by agents | 67% of 6 |" in page  # 4 AI of 4+2
-    assert "| Agent PRs where the maintainer pushed commits | 1 (1 commits) |" in page
+    assert "| Agent PRs where the maintainer pushed commits | 1 (1 commit) |" in page
     assert "| #8 | human-written |  |  |  |  |  | none |" in page
     # PR 7: 3 AI lines, 0 edited, 1 human line, 1 human commit, 2 messages, 2 min.
     assert "| #7 | 3 | 0 | 1 | 1 | 2 | 2 | CHANGES REQUESTED, APPROVE |" in page

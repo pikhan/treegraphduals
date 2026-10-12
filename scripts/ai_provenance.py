@@ -52,6 +52,17 @@ MARKER = "<!-- ai-provenance:v1 -->"
 ACTIVE_CAP_SECONDS = 15 * 60
 CATEGORIES = ("src", "tests", "docs", "other")
 CLASSES = ("ai", "ai_edited", "human")
+# The counts in a record's totals, summed over its sessions.
+TOTAL_COUNTS = (
+    "human_messages",
+    "human_words",
+    "human_chars",
+    "answers",
+    "active_seconds",
+    "wall_clock_seconds",
+    "agent_seconds",
+    "messages_after_approval",
+)
 # git's summary line after a commit: "[branch 1a2b3c4] message", also
 # "[main (root-commit) 1a2b3c4]" and "[detached HEAD 1a2b3c4]".
 COMMIT_SUMMARY = re.compile(r"^\[[^\]\n]* ([0-9a-f]{7,40})\]", re.MULTILINE)
@@ -683,9 +694,14 @@ def trusted(comment: dict[str, Any]) -> bool:
 
 
 def valid_record(record: Any) -> bool:
-    """Return whether ``record`` has the shape `aggregate` and `collect` rely on."""
+    """Return whether ``record`` has the shape `aggregate` and `collect` rely on.
+
+    Every count `totals` produces must be present and numeric, so that
+    `render` and `comment_body` can't fail on a record that passed.
+    """
     numeric = (int, float)
     try:
+        t = record["totals"]
         return (
             record["schema"] == SCHEMA
             and isinstance(record["sessions"], dict)
@@ -695,11 +711,10 @@ def valid_record(record: Any) -> bool:
                 for cat in CATEGORIES
                 for cls in CLASSES
             )
-            and all(
-                isinstance(value, numeric)
-                for key, value in record["totals"].items()
-                if key not in ("models", "efforts", "reviewer_handbacks")
-            )
+            and all(isinstance(t[key], numeric) for key in TOTAL_COUNTS)
+            and isinstance(t["models"], dict)
+            and isinstance(t["efforts"], list)
+            and isinstance(t["reviewer_handbacks"], list)
         )
     except (KeyError, TypeError, AttributeError):
         return False
@@ -742,18 +757,8 @@ def find_comment(repo: str, pr: int, cwd: Path) -> tuple[int | None, dict | None
 
 def totals(sessions: dict[str, dict[str, Any]]) -> dict[str, Any]:
     """Add up per-session summaries into the PR's totals."""
-    keys = (
-        "human_messages",
-        "human_words",
-        "human_chars",
-        "answers",
-        "active_seconds",
-        "wall_clock_seconds",
-        "agent_seconds",
-        "messages_after_approval",
-    )
     result: dict[str, Any] = {
-        key: sum(s.get(key, 0) for s in sessions.values()) for key in keys
+        key: sum(s.get(key, 0) for s in sessions.values()) for key in TOTAL_COUNTS
     }
     models: dict[str, dict[str, int]] = {}
     for s in sessions.values():
@@ -771,6 +776,17 @@ def totals(sessions: dict[str, dict[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def plural(count: int, noun: str) -> str:
+    """Return ``count`` with ``noun``, pluralized with an ``s`` unless it is 1.
+
+    Examples
+    --------
+    >>> plural(1, "commit"), plural(0, "commit"), plural(3, "message")
+    ('1 commit', '0 commits', '3 messages')
+    """
+    return f"{count} {noun}" if count == 1 else f"{count} {noun}s"
+
+
 def comment_body(record: dict[str, Any]) -> str:
     """Render a provenance record as the PR comment."""
     t = record["totals"]
@@ -786,17 +802,24 @@ def comment_body(record: dict[str, Any]) -> str:
     )
     models = ", ".join(f"`{m}`" for m in t["models"]) or "none recorded"
     commits = Counter(record.get("commits", {}).values())
+    sessions = plural(len(record["sessions"]), "Claude Code session")
+    steering = ", ".join(
+        [
+            plural(t["human_messages"], "message"),
+            plural(t["human_words"], "word"),
+            plural(t["answers"], "question") + " answered",
+        ]
+    )
     return f"""{MARKER}
 ### AI provenance
 
-Recorded automatically by `scripts/ai_provenance.py` from {len(record["sessions"])} \
-Claude Code session(s) and the PR's commits (ADR 0006). Lines that no transcript \
-shows an agent committing count as human.
+Recorded automatically by `scripts/ai_provenance.py` from {sessions} and the \
+PR's commits (ADR 0006). Lines that no transcript shows an agent committing \
+count as human.
 
-- **Human steering:** {t["human_messages"]} message(s), {t["human_words"]} word(s), \
-{t["answers"]} question(s) answered, about {t["active_seconds"] / 60:.0f} min active \
+- **Human steering:** {steering}, about {t["active_seconds"] / 60:.0f} min active \
 ({t["wall_clock_seconds"] / 3600:.1f} h wall clock); \
-{t["messages_after_approval"]} message(s) after the reviewer approved.
+{plural(t["messages_after_approval"], "message")} after the reviewer approved.
 - **Agents:** {models}; {t["agent_seconds"] / 60:.0f} min of agent turns; \
 reviewer verdicts: {", ".join(str(v) for v in t["reviewer_handbacks"]) or "none"}.
 - **Commits:** {commits["ai"]} by agents, {commits["human"]} by a human.
@@ -1190,7 +1213,7 @@ def render(stats: dict[str, Any] | None) -> str:
             "Agent PRs where the maintainer pushed commits",
             (
                 f"{review.get('agent_prs_with_human_commits', 0)} "
-                f"({review.get('human_commits_on_agent_prs', 0)} commits)"
+                f"({plural(review.get('human_commits_on_agent_prs', 0), 'commit')})"
             ),
         ),
     ]
