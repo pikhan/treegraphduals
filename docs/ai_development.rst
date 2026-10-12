@@ -141,8 +141,8 @@ Lessons learned
 
 - **A tautological test enshrined a bug.** The level-set tree builder chained
   minima left to right instead of nesting them by height (#4). An existing test
-  passed anyway, because its expected parent array had been copied from the
-  buggy output, and its input happened to give the same tree either way. This
+  passed anyway: its input happened to give the same tree either way, and its
+  expected value had been copied from the buggy output (#53). This
   is why expected values for the core math are now hand-computed from the
   definitions (#53) and why the reviewer blocks tautological tests.
 - **The guard hook blocked its own pull request.** While #56 was being set up,
@@ -168,7 +168,7 @@ nightly workflow refreshes them. The per-PR table and the method are on the
 
 .. include:: ai_stats.md
    :parser: myst_parser.sphinx_
-   :end-before: ### Per pull request
+   :end-before: <!-- end-of-headline -->
 
 How they map onto the questions this page asks:
 

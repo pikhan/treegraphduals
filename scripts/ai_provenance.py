@@ -48,6 +48,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = 1
 MARKER = "<!-- ai-provenance:v1 -->"
+# Ends the headline part of the rendered stats, also when there are none:
+# docs/ai_development.rst includes ai_stats.md up to this line.
+HEADLINE_END = "<!-- end-of-headline -->"
 # A gap longer than this between Claude's last output and the next human input
 # counts as a break, not as reading and typing (ADR 0006).
 ACTIVE_CAP_SECONDS = 15 * 60
@@ -1193,7 +1196,7 @@ def mutation_summary(path: Path) -> dict[str, Any]:
 def render(stats: dict[str, Any] | None) -> str:
     """Render the stats JSON as the Markdown included by ``docs/ai_provenance.rst``."""
     if not stats:
-        return "_No statistics have been published yet._\n"
+        return f"_No statistics have been published yet._\n\n{HEADLINE_END}\n"
     t = stats["totals"]
     s = t["steering"]
     all_lines = {
@@ -1253,6 +1256,8 @@ def render(stats: dict[str, Any] | None) -> str:
         "| | |",
         "|---|---:|",
         *(f"| {label} | {value} |" for label, value in headline),
+        "",
+        HEADLINE_END,
         "",
         "### Per pull request",
         "",
